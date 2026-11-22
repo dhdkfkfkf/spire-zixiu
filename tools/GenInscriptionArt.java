@@ -119,11 +119,11 @@ public final class GenInscriptionArt {
         g.drawRoundRect(90, 60, 420, 480, 26, 26);
 
         g.setColor(new Color(226, 212, 182));
-        g.setFont(font(52));
+        g.setFont(font(42));
         FontMetrics metrics = g.getFontMetrics();
         for (int i = 0; i < GLYPHS.length; i++) {
             int x = 300 - metrics.stringWidth(GLYPHS[i]) / 2;
-            int y = 120 + i * 52 + metrics.getAscent();
+            int y = 108 + i * 46 + metrics.getAscent();
             g.drawString(GLYPHS[i], x, y);
         }
         g.setColor(new Color(178, 62, 48));
