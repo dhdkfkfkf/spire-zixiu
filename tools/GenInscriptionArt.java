@@ -87,20 +87,20 @@ public final class GenInscriptionArt {
         return image;
     }
 
-    /** 128×128 模组徽章：墨底 + 朱砂字。 */
+    /** 32×32 模组徽章（BaseMod 按原尺寸绘制，32 与官方徽章一致）：墨底 + 朱砂字。 */
     private static BufferedImage badge() {
-        BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setColor(new Color(28, 24, 20, 255));
-        g.fill(new RoundRectangle2D.Float(2f, 2f, 124f, 124f, 18f, 18f));
+        g.fill(new RoundRectangle2D.Float(1f, 1f, 30f, 30f, 6f, 6f));
         g.setColor(new Color(196, 72, 54, 255));
-        g.setFont(font(78));
+        g.setFont(font(22));
         FontMetrics metrics = g.getFontMetrics();
         String glyph = "字";
-        g.drawString(glyph, (128 - metrics.stringWidth(glyph)) / 2,
-                (128 - metrics.getHeight()) / 2 + metrics.getAscent());
+        g.drawString(glyph, (32 - metrics.stringWidth(glyph)) / 2,
+                (32 - metrics.getHeight()) / 2 + metrics.getAscent());
         g.dispose();
         return image;
     }

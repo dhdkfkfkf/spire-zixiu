@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ZixiuCharacter extends CustomPlayer {
 
-    public static final String NAME = "箓生";
+    public static final String NAME = "字修(箓生)";
     public static final int STARTING_HP = 70;
     public static final int MAX_HP = 70;
     public static final int STARTING_GOLD = 99;
@@ -72,7 +72,8 @@ public class ZixiuCharacter extends CustomPlayer {
 
     @Override
     public CharSelectInfo getLoadout() {
-        return new CharSelectInfo(NAME, "似乎很神秘的落魄书生，以一种奇怪的方式战斗，嘴里不断絮叨着「解箓」「成箓」。",
+        return new CharSelectInfo(NAME,
+                "似乎很神秘的落魄书生，以一种奇怪的方式战斗，他手上这本书就是他的武器，嘴里不断絮叨着「解箓」「成箓」。",
                 STARTING_HP, MAX_HP, 0, STARTING_GOLD, CARD_DRAW,
                 this, getStartingRelics(), getStartingDeck(), false);
     }
