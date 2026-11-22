@@ -86,7 +86,14 @@ def main():
             print(problem)
         return 1
 
-    print('OK：所有 PLAYABLE 的字都能合出来，10 个部件都能造卡，遗物文案与图片齐全。')
+    event_problems = audit_events()
+    if event_problems:
+        print()
+        for problem in event_problems:
+            print(problem)
+        return 1
+
+    print('OK：所有 PLAYABLE 的字都能合出来，10 个部件都能造卡，遗物与事件的文案、图片齐全。')
     return 0
 
 
@@ -127,6 +134,43 @@ def audit_relics():
                 problems.append('遗物缺口：%s 缺图 %s' % (relic_id, img.group(1)))
             if not os.path.exists(os.path.join(art_dir, 'outline', img.group(1))):
                 problems.append('遗物缺口：%s 缺描边图 %s' % (relic_id, img.group(1)))
+    return problems
+
+
+def audit_events():
+    """事件：EventStrings 至少 8 条（正文/三个选项/三个结果/离开）且图片存在。"""
+    events_dir = os.path.join(ROOT, 'src', 'main', 'java', 'zixiu', 'events')
+    art_dir = os.path.join(ROOT, 'src', 'main', 'resources')
+    raw = read(os.path.join(ROOT, 'src', 'main', 'resources', 'zixiu',
+                            'localization', 'EventStrings.json'))
+    problems = []
+
+    for name in sorted(os.listdir(events_dir)):
+        if not name.endswith('.java'):
+            continue
+        source = read(os.path.join(events_dir, name))
+        if 'abstract class' in source:
+            continue
+        id_match = re.search(r'makeID\("(\w+)"\)', source)
+        if not id_match:
+            continue
+        event_id = id_match.group(1)
+
+        block = re.search(r'"zixiu:%s"\s*:\s*\{(.*?)\n  \}' % event_id, raw, re.S)
+        if not block:
+            problems.append('事件缺口：%s 缺 EventStrings' % event_id)
+        else:
+            descriptions = re.findall(r'"', block.group(1))
+            count = len(re.findall(r'^\s{6}"', block.group(1), re.MULTILINE))
+            if count < 8:
+                problems.append('事件缺口：%s 只有 %d 条描述，事件要用 8 条' % (event_id, count))
+
+        img = re.search(r'super\([^,]+,[^,]+,\s*"([^"]+)"\)', source)
+        if img and not os.path.exists(os.path.join(art_dir, img.group(1))):
+            problems.append('事件缺口：%s 缺图 %s' % (event_id, img.group(1)))
+
+        if 'D[' not in source:
+            problems.append('事件缺口：%s 没有读取本地化文本' % event_id)
     return problems
 
 
