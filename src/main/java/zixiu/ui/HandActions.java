@@ -264,6 +264,7 @@ public final class HandActions {
     }
 
     private static void triggerFusionEffects() {
+        FusionTracker.recordFusion();
         AbstractPower he = AbstractDungeon.player.getPower(HePower.POWER_ID);
         if (he instanceof HePower) {
             ((HePower) he).onFusion();

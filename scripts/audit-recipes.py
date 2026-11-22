@@ -79,8 +79,55 @@ def main():
             print(problem)
         return 1
 
-    print('OK：所有 PLAYABLE 的字都能合出来，10 个部件都能造卡。')
+    relic_problems = audit_relics()
+    if relic_problems:
+        print()
+        for problem in relic_problems:
+            print(problem)
+        return 1
+
+    print('OK：所有 PLAYABLE 的字都能合出来，10 个部件都能造卡，遗物文案与图片齐全。')
     return 0
+
+
+def audit_relics():
+    """九字与其它遗物：文案、图片、注册三件套。"""
+    relics_dir = os.path.join(ROOT, 'src', 'main', 'java', 'zixiu', 'relics')
+    mod = read(os.path.join(ROOT, 'src', 'main', 'java', 'zixiu', 'ZixiuMod.java'))
+    strings = read(os.path.join(ROOT, 'src', 'main', 'resources', 'zixiu',
+                                'localization', 'RelicStrings.json'))
+    art_dir = os.path.join(ROOT, 'src', 'main', 'resources', 'images', 'relics')
+
+    problems = []
+    inscription_loop = 'InscriptionRelic.ALL' in mod and 'InscriptionRelic.make' in mod
+
+    for name in sorted(os.listdir(relics_dir)):
+        if not name.endswith('.java'):
+            continue
+        source = read(os.path.join(relics_dir, name))
+        if 'abstract class' in source:
+            continue
+        id_match = re.search(r'public static final String ID = "(\w+)"', source)
+        if not id_match:
+            continue
+        relic_id = id_match.group(1)
+        cls = name[:-5]
+
+        if '"zixiu:%s"' % relic_id not in strings:
+            problems.append('遗物缺口：%s 缺 RelicStrings' % relic_id)
+
+        registered = ('new %s()' % cls) in mod or (
+            inscription_loop and 'class ' + cls in source and 'InscriptionRelic' in source)
+        if not registered:
+            problems.append('遗物缺口：%s（%s）没有注册' % (relic_id, cls))
+
+        img = re.search(r'super\(ZixiuMod\.makeID\(ID\),\s*"([\w.]+)"', source)
+        if img:
+            if not os.path.exists(os.path.join(art_dir, img.group(1))):
+                problems.append('遗物缺口：%s 缺图 %s' % (relic_id, img.group(1)))
+            if not os.path.exists(os.path.join(art_dir, 'outline', img.group(1))):
+                problems.append('遗物缺口：%s 缺描边图 %s' % (relic_id, img.group(1)))
+    return problems
 
 
 if __name__ == '__main__':

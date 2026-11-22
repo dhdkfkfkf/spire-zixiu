@@ -16,6 +16,7 @@ public final class FusionTracker {
             Collections.newSetFromMap(new IdentityHashMap<AbstractCard, Boolean>());
 
     private static int splitsThisTurn = 0;
+    private static int fusionsThisTurn = 0;
 
     private FusionTracker() {
     }
@@ -36,8 +37,17 @@ public final class FusionTracker {
         return splitsThisTurn;
     }
 
+    public static void recordFusion() {
+        fusionsThisTurn++;
+    }
+
+    public static int fusionsThisTurn() {
+        return fusionsThisTurn;
+    }
+
     public static void clear() {
         FRESH.clear();
         splitsThisTurn = 0;
+        fusionsThisTurn = 0;
     }
 }

@@ -5,7 +5,7 @@
     "zixiu"
   ],
   "description": "以汉字拆合为核心的《杀戮尖塔》角色。v0.1 最小可玩原型：5 张牌、1 个起始遗物。",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "sts_version": "12-18-2022",
   "mts_version": "3.30.0",
   "dependencies": [

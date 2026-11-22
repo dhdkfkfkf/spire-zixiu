@@ -210,6 +210,7 @@ public class ZixiuMod implements
 
     @Override
     public void receiveEditRelics() {
+        zixiu.core.ZixiuConfig.load();
         BaseMod.addRelicToCustomPool(new TuBi(), ZixiuEnums.ZIXIU_COLOR);
         BaseMod.addRelicToCustomPool(new ZanYan(), ZixiuEnums.ZIXIU_COLOR);
         BaseMod.addRelicToCustomPool(new HuoZheZi(), ZixiuEnums.ZIXIU_COLOR);
@@ -217,6 +218,20 @@ public class ZixiuMod implements
         BaseMod.addRelicToCustomPool(new ShuXia(), ZixiuEnums.ZIXIU_COLOR);
         BaseMod.addRelicToCustomPool(new ZhuBi(), ZixiuEnums.ZIXIU_COLOR);
         BaseMod.addRelicToCustomPool(new HuoZiPan(), ZixiuEnums.ZIXIU_COLOR);
+        BaseMod.addRelicToCustomPool(new zixiu.relics.CanBei(), ZixiuEnums.ZIXIU_COLOR);
+
+        // 九字：隔离开启时只进字修的角色池；关闭后进共享池，任何角色都可能掉到。
+        for (String id : zixiu.relics.InscriptionRelic.ALL) {
+            com.megacrit.cardcrawl.relics.AbstractRelic relic = zixiu.relics.InscriptionRelic.make(id);
+            if (relic == null) {
+                continue;
+            }
+            if (zixiu.core.ZixiuConfig.isolation()) {
+                BaseMod.addRelicToCustomPool(relic, ZixiuEnums.ZIXIU_COLOR);
+            } else {
+                BaseMod.addRelic(relic, basemod.helpers.RelicType.SHARED);
+            }
+        }
     }
 
     @Override
@@ -231,5 +246,33 @@ public class ZixiuMod implements
                 makeID("Rubbing"), ZixiuEnums.ZIXIU);
         BaseMod.addEvent(zixiu.events.CuoZi.ID, zixiu.events.CuoZi.class, "Exordium");
         BaseMod.addEvent(zixiu.events.CanJuan.ID, zixiu.events.CanJuan.class, "Exordium");
+        BaseMod.addEvent(new basemod.eventUtil.AddEventParams.Builder(
+                zixiu.events.JiuZiBei.ID, zixiu.events.JiuZiBei.class)
+                .playerClass(ZixiuEnums.ZIXIU)
+                .spawnCondition(zixiu.events.JiuZiBei::canSpawn)
+                .create());
+
+        registerConfigPanel();
+    }
+
+    /**
+     * 模组设置面板：九字遗物隔离开关（默认开启，改完重启生效）。
+     */
+    private void registerConfigPanel() {
+        basemod.ModPanel panel = new basemod.ModPanel();
+        basemod.ModLabeledToggleButton toggle = new basemod.ModLabeledToggleButton(
+                "九字遗物只进字修的角色池（关闭后任何角色都可能掉到，重启生效）",
+                400.0F, 700.0F,
+                com.badlogic.gdx.graphics.Color.WHITE,
+                com.megacrit.cardcrawl.helpers.FontHelper.charDescFont,
+                zixiu.core.ZixiuConfig.isolation(),
+                panel,
+                text -> { },
+                button -> zixiu.core.ZixiuConfig.setIsolation(button.enabled));
+        panel.addUIElement(toggle);
+        com.badlogic.gdx.graphics.Texture badge =
+                com.megacrit.cardcrawl.helpers.ImageMaster.loadImage("zixiu/images/ui/badge.png");
+        BaseMod.registerModBadge(badge, "字修 Zixiu", "dhdkfkfkf",
+                "把汉字拆开、再合起来打的角色。", panel);
     }
 }
