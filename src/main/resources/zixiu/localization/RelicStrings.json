@@ -1,0 +1,51 @@
+{
+  "zixiu:TuBi": {
+    "NAME": "秃笔",
+    "FLAVOR": "笔尖已经磨秃了，但还能写字。",
+    "DESCRIPTIONS": [
+      "战斗开始时，从 3 张随机部件牌中选择 1 张加入手牌。"
+    ]
+  },
+  "zixiu:ZanYan": {
+    "NAME": "残砚",
+    "FLAVOR": "砚台缺了一角，磨墨时总往一边斜。",
+    "DESCRIPTIONS": [
+      "每场战斗第一次合字后，抽 1 张牌。"
+    ]
+  },
+  "zixiu:HuoZheZi": {
+    "NAME": "火折子",
+    "FLAVOR": "吹一口就能着，书生的随身之物。",
+    "DESCRIPTIONS": [
+      "每回合第一次施加灼烧时，额外施加 1 层。"
+    ]
+  },
+  "zixiu:JiuShuQian": {
+    "NAME": "旧书签",
+    "FLAVOR": "夹在第七卷里，不知道是谁留下的。",
+    "DESCRIPTIONS": [
+      "回合开始时，若手牌中没有部件牌，将 1 张随机部件牌加入手牌。"
+    ]
+  },
+  "zixiu:ShuXia": {
+    "NAME": "书匣",
+    "FLAVOR": "匣底总有些碎纸屑，是从哪本书上掉下来的。",
+    "DESCRIPTIONS": [
+      "每当你拆解一张牌，将 1 张随机部件牌加入手牌（每回合上限 1）。"
+    ]
+  },
+  "zixiu:ZhuBi": {
+    "NAME": "朱笔",
+    "FLAVOR": "批注用的，写下去就不能改了。",
+    "DESCRIPTIONS": [
+      "每当你合出一个成品牌，抽 1 张牌（每回合上限 1）。"
+    ]
+  },
+  "zixiu:HuoZiPan": {
+    "NAME": "活字盘",
+    "FLAVOR": "字是活的，摆在哪里就是哪句话。",
+    "DESCRIPTIONS": [
+      "每回合开始时，将 1 张随机部件牌加入手牌。"
+    ]
+  }
+}

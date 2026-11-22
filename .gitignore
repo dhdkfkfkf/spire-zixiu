@@ -1,0 +1,19 @@
+# 构建产物
+build/
+out/
+tools/out/
+mod/
+dist/
+
+# 游戏与依赖 jar：从安装目录读取，不进仓库
+lib/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# 本地临时
+_tmp/
+*.log
+hs_err_pid*.log
+
+# 反编译的游戏类
+research/javap/

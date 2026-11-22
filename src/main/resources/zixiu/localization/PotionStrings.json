@@ -1,0 +1,20 @@
+{
+  "zixiu:Ink": {
+    "NAME": "墨汁",
+    "DESCRIPTIONS": [
+      "将 2 张随机部件牌加入手牌。"
+    ]
+  },
+  "zixiu:Cinnabar": {
+    "NAME": "朱砂",
+    "DESCRIPTIONS": [
+      "对所有敌人施加 3 层灼烧。"
+    ]
+  },
+  "zixiu:Rubbing": {
+    "NAME": "拓片",
+    "DESCRIPTIONS": [
+      "复制手牌中一张成品牌。"
+    ]
+  }
+}

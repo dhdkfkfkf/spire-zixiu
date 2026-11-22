@@ -1,0 +1,214 @@
+{
+  "zixiu:Jin": {
+    "NAME": "击",
+    "DESCRIPTION": "造成 !D! 点伤害。"
+  },
+  "zixiu:Shou": {
+    "NAME": "守",
+    "DESCRIPTION": "获得 !B! 点格挡。"
+  },
+  "zixiu:Huo": {
+    "NAME": "火",
+    "DESCRIPTION": "造成 !D! 点伤害。"
+  },
+  "zixiu:Mu": {
+    "NAME": "木",
+    "DESCRIPTION": "获得 !B! 点格挡。"
+  },
+  "zixiu:Kou": {
+    "NAME": "口",
+    "DESCRIPTION": "抽 !M! 张牌，然后弃 1 张牌。"
+  },
+  "zixiu:Dai": {
+    "NAME": "呆",
+    "DESCRIPTION": "抽 !M! 张牌。"
+  },
+  "zixiu:Xing": {
+    "NAME": "杏",
+    "DESCRIPTION": "治疗 !M! 点生命。"
+  },
+  "zixiu:Kun": {
+    "NAME": "困",
+    "DESCRIPTION": "给予 !M! 层虚弱。"
+  },
+  "zixiu:Shu": {
+    "NAME": "束",
+    "DESCRIPTION": "给予 !M! 层易伤。"
+  },
+  "zixiu:Sen": {
+    "NAME": "森",
+    "DESCRIPTION": "每当你拆解一张牌，获得 6 点格挡。"
+  },
+  "zixiu:Yan": {
+    "NAME": "炎",
+    "DESCRIPTION": "造成 !D! 点伤害，施加 !M! 层灼烧。"
+  },
+  "zixiu:Can": {
+    "NAME": "灿",
+    "DESCRIPTION": "造成 !D! 点伤害，施加 !M! 层曝光。"
+  },
+  "zixiu:Er": {
+    "NAME": "二",
+    "DESCRIPTION": "造成 !D! 点伤害，重复 !M! 次。"
+  },
+  "zixiu:Zao": {
+    "NAME": "灶",
+    "DESCRIPTION": "获得 !B! 点格挡；若敌人身上有灼烧，抽 1 张牌。"
+  },
+  "zixiu:Da": {
+    "NAME": "大",
+    "DESCRIPTION": "获得 !M! 点力量。"
+  },
+  "zixiu:Pin": {
+    "NAME": "品",
+    "DESCRIPTION": "造成 !D! 点伤害，重复 !M! 次；目标有灼烧时每段 +1。"
+  },
+  "zixiu:YanYan": {
+    "NAME": "焱",
+    "DESCRIPTION": "对所有敌人施加 !M! 层灼烧。"
+  },
+  "zixiu:Beng": {
+    "NAME": "崩",
+    "DESCRIPTION": "对所有敌人造成 !D! 点伤害；本回合每拆解一张牌，伤害 +4。"
+  },
+  "zixiu:Fu": {
+    "NAME": "夫",
+    "DESCRIPTION": "造成 !D! 点伤害；目标生命低于一半时改为 22 点。"
+  },
+  "zixiu:Wang": {
+    "NAME": "王",
+    "DESCRIPTION": "每当你施加灼烧，获得 1 点格挡。"
+  },
+  "zixiu:Zhong": {
+    "NAME": "众",
+    "DESCRIPTION": "对每个敌人造成 !D! 点伤害，每命中一个抽 1（上限 2）。"
+  },
+  "zixiu:Fen": {
+    "NAME": "焚",
+    "DESCRIPTION": "对所有敌人造成 !D! 点伤害，施加 !M! 层灼烧。"
+  },
+  "zixiu:Mie": {
+    "NAME": "灭",
+    "DESCRIPTION": "造成 !D! 点伤害；若目标有灼烧，伤害翻倍并清除其灼烧。"
+  },
+  "zixiu:Jie": {
+    "NAME": "杰",
+    "DESCRIPTION": "每回合首次施加灼烧时，额外施加 2 层。"
+  },
+  "zixiu:Jiong": {
+    "NAME": "炅",
+    "DESCRIPTION": "施加 !M! 层曝光；若目标有灼烧，抽 2 张牌；每当你拆解一张牌，对所有敌人施加 1 层曝光。"
+  },
+  "zixiu:Bathe": {
+    "NAME": "沐",
+    "DESCRIPTION": "治疗 !M! 点生命，移除自身 1 个负面状态。"
+  },
+  "zixiu:Blockade": {
+    "NAME": "杜",
+    "DESCRIPTION": "获得 !B! 点格挡。"
+  },
+  "zixiu:Grove": {
+    "NAME": "林",
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次，获得 !B! 点格挡。"
+  },
+  "zixiu:Body": {
+    "NAME": "体",
+    "DESCRIPTION": "获得 !B! 点格挡；本场战斗最大生命 +!M!。"
+  },
+  "zixiu:Guard": {
+    "NAME": "保",
+    "DESCRIPTION": "获得 !B! 点格挡。"
+  },
+  "zixiu:Drizzle": {
+    "NAME": "淋",
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次。"
+  },
+  "zixiu:Thicket": {
+    "NAME": "丛",
+    "DESCRIPTION": "获得 !B! 点格挡，将 !M! 张随机部件牌加入手牌。"
+  },
+  "zixiu:Benevolence": {
+    "NAME": "仁",
+    "DESCRIPTION": "治疗 !M! 点生命；若已满血，改为获得 8 点格挡。"
+  },
+  "zixiu:Belly": {
+    "NAME": "肚",
+    "DESCRIPTION": "获得 !B! 点格挡；本回合结束时格挡不清空。"
+  },
+  "zixiu:Bland": {
+    "NAME": "淡",
+    "DESCRIPTION": "移除自身所有负面状态；对所有敌人施加 !M! 层虚弱，抽 1 张牌。"
+  },
+  "zixiu:Osmanthus": {
+    "NAME": "桂",
+    "DESCRIPTION": "每当你打出一张技能牌，获得 2 点格挡。"
+  },
+  "zixiu:Hollow": {
+    "NAME": "洼",
+    "DESCRIPTION": "获得 !B! 点格挡。"
+  },
+  "zixiu:Mound": {
+    "NAME": "垚",
+    "DESCRIPTION": "获得 !B! 点格挡；本回合结束时格挡不清空。"
+  },
+  "zixiu:Bright": {
+    "NAME": "明",
+    "DESCRIPTION": "施加 !M! 层曝光，抽 1 张牌。"
+  },
+  "zixiu:Prosper": {
+    "NAME": "昌",
+    "DESCRIPTION": "每回合首次施加曝光时，抽 1 张牌。"
+  },
+  "zixiu:Dawn": {
+    "NAME": "旦",
+    "DESCRIPTION": "抽 !M! 张牌；若这是本回合打出的第一张牌，额外抽 1 张。"
+  },
+  "zixiu:Lucky": {
+    "NAME": "吉",
+    "DESCRIPTION": "将 !M! 张随机部件牌加入手牌，抽 1 张牌。"
+  },
+  "zixiu:Fine": {
+    "NAME": "佳",
+    "DESCRIPTION": "手牌中一张成品牌本回合费用 -1。"
+  },
+  "zixiu:But": {
+    "NAME": "但",
+    "DESCRIPTION": "手牌有 3 张以上部件牌时抽 !M! 张，否则获得 !B! 点格挡。"
+  },
+  "zixiu:Crystal": {
+    "NAME": "晶",
+    "DESCRIPTION": "使一个敌人身上的曝光层数翻倍。"
+  },
+  "zixiu:Noon": {
+    "NAME": "杲",
+    "DESCRIPTION": "造成 !D! 点伤害，施加 !M! 层曝光。"
+  },
+  "zixiu:Cause": {
+    "NAME": "因",
+    "DESCRIPTION": "每当你打出一张成品牌，获得 1 点格挡。"
+  },
+  "zixiu:Immortal": {
+    "NAME": "仙",
+    "DESCRIPTION": "本回合受到的攻击伤害减半，触发一次后消失。"
+  },
+  "zixiu:Trio": {
+    "NAME": "三",
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次；手牌有 3 张以上部件牌时改为 5 次。"
+  },
+  "zixiu:Forever": {
+    "NAME": "永",
+    "DESCRIPTION": "本回合保留手牌，抽 1 张牌。"
+  },
+  "zixiu:Dim": {
+    "NAME": "杳",
+    "DESCRIPTION": "本回合受到的伤害降为 1。"
+  },
+  "zixiu:Whole": {
+    "NAME": "全",
+    "DESCRIPTION": "回合开始时，若手牌有 5 张以上部件牌，抽 1 并获得 1 能量。"
+  },
+  "zixiu:Sky": {
+    "NAME": "天",
+    "DESCRIPTION": "每回合开始时，对所有敌人施加 1 层曝光。"
+  }
+}
