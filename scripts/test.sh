@@ -15,3 +15,8 @@ mkdir -p out/test-run/main out/test-run/test
   $(find src/test/java/zixiu/lexicon -name '*.java')
 "$JDK/bin/java" -Dfile.encoding=UTF-8 -cp "out/test-run/main;out/test-run/test;$CP" \
   org.junit.runner.JUnitCore zixiu.lexicon.ZixiuLexiconTest
+
+# 配方 ↔ 卡牌覆盖：每个 PLAYABLE 的字都必须有卡、已注册、有文案
+if command -v python >/dev/null 2>&1; then
+  python scripts/audit-recipes.py
+fi

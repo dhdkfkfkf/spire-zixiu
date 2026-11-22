@@ -14,6 +14,7 @@ import zixiu.cards.Bathe;
 import zixiu.cards.Belly;
 import zixiu.cards.Benevolence;
 import zixiu.cards.Beng;
+import zixiu.cards.Ben;
 import zixiu.cards.Bland;
 import zixiu.cards.Blockade;
 import zixiu.cards.Body;
@@ -21,9 +22,15 @@ import zixiu.cards.Bright;
 import zixiu.cards.But;
 import zixiu.cards.Can;
 import zixiu.cards.Cause;
+import zixiu.cards.Cha;
+import zixiu.cards.Chang;
+import zixiu.cards.Chu;
+import zixiu.cards.Companion;
+import zixiu.cards.Cong;
 import zixiu.cards.Crystal;
 import zixiu.cards.Da;
 import zixiu.cards.Dai;
+import zixiu.cards.Dan;
 import zixiu.cards.Dawn;
 import zixiu.cards.Dim;
 import zixiu.cards.Drizzle;
@@ -34,7 +41,9 @@ import zixiu.cards.Forever;
 import zixiu.cards.Fu;
 import zixiu.cards.Grove;
 import zixiu.cards.Guard;
+import zixiu.cards.He;
 import zixiu.cards.Hollow;
+import zixiu.cards.Hui;
 import zixiu.cards.Huo;
 import zixiu.cards.Immortal;
 import zixiu.cards.Jie;
@@ -42,27 +51,44 @@ import zixiu.cards.Jin;
 import zixiu.cards.Jiong;
 import zixiu.cards.Kou;
 import zixiu.cards.Kun;
+import zixiu.cards.Lu;
 import zixiu.cards.Lucky;
 import zixiu.cards.Mie;
+import zixiu.cards.Mo;
 import zixiu.cards.Mound;
 import zixiu.cards.Mu;
 import zixiu.cards.Noon;
 import zixiu.cards.Osmanthus;
+import zixiu.cards.Peng;
 import zixiu.cards.Pin;
 import zixiu.cards.Prosper;
+import zixiu.cards.Qie;
+import zixiu.cards.Qiu;
+import zixiu.cards.Ren;
+import zixiu.cards.Renew;
+import zixiu.cards.Ri;
 import zixiu.cards.Sen;
+import zixiu.cards.Shan;
+import zixiu.cards.Shi;
 import zixiu.cards.Shou;
 import zixiu.cards.Shu;
+import zixiu.cards.Shui;
 import zixiu.cards.Sky;
 import zixiu.cards.Thicket;
 import zixiu.cards.Trio;
+import zixiu.cards.Tu;
 import zixiu.cards.Wang;
+import zixiu.cards.Wei;
 import zixiu.cards.Whole;
 import zixiu.cards.Xing;
+import zixiu.cards.Xiu;
 import zixiu.cards.Yan;
 import zixiu.cards.YanYan;
+import zixiu.cards.Yi;
+import zixiu.cards.Yue;
 import zixiu.cards.Zao;
 import zixiu.cards.Zhong;
+import zixiu.cards.Zuo;
 import zixiu.character.ZixiuCharacter;
 import zixiu.character.ZixiuEnums;
 import zixiu.core.CardPlayHook;
@@ -144,21 +170,29 @@ public class ZixiuMod implements
     public void receiveEditCards() {
         com.megacrit.cardcrawl.cards.AbstractCard[] cards = {
                 // 基础牌与部件
-                new Jin(), new Shou(), new Huo(), new Mu(), new Kou(),
+                new Jin(), new Shou(),
+                new Huo(), new Mu(), new Kou(), new Ren(), new Yue(), new Tu(),
+                new Yi(), new Shui(), new Shan(), new Ri(),
                 // 闭环样品
                 new Dai(), new Xing(), new Kun(), new Shu(), new Sen(),
                 // 焚
                 new Yan(), new Can(), new Er(), new Zao(), new Da(), new Pin(),
                 new YanYan(), new Beng(), new Fu(), new Wang(), new Zhong(),
                 new Fen(), new Mie(), new Jie(), new Jiong(),
+                new Cong(), new Companion(), new Mo(), new Chu(), new Dan(),
                 // 润
                 new Bathe(), new Blockade(), new Grove(), new Body(), new Guard(),
                 new Drizzle(), new Thicket(), new Benevolence(), new Belly(),
                 new Bland(), new Osmanthus(), new Hollow(), new Mound(),
+                new Xiu(), new Shi(), new Ben(), new Renew(), new Peng(),
+                new Zuo(), new Qiu(),
                 // 照
                 new Bright(), new Prosper(), new Dawn(), new Lucky(), new Fine(),
                 new But(), new Crystal(), new Noon(), new Cause(), new Immortal(),
-                new Trio(), new Forever(), new Dim(), new Whole(), new Sky()
+                new Trio(), new Forever(), new Dim(), new Whole(), new Sky(),
+                new Wei(), new Chang(), new Cha(),
+                // 通用
+                new Hui(), new Lu(), new Qie(), new He()
         };
         for (com.megacrit.cardcrawl.cards.AbstractCard card : cards) {
             BaseMod.addCard(card);

@@ -15,7 +15,9 @@ import zixiu.core.FusionTracker;
 import zixiu.lexicon.Component;
 import zixiu.lexicon.WordSpec;
 import zixiu.lexicon.ZixiuLexicon;
+import zixiu.powers.HePower;
 import zixiu.powers.JiongPower;
+import zixiu.powers.PengPower;
 import zixiu.powers.SenPower;
 
 import java.util.ArrayList;
@@ -183,10 +185,12 @@ public final class HandActions {
                 ChooseWordAction.putIntoHand(result);
             }
             zixiu.core.RelicHooks.onFusion(AbstractDungeon.player);
+            triggerFusionEffects();
             return;
         }
         AbstractDungeon.actionManager.addToTop(new ChooseWordAction(options));
         zixiu.core.RelicHooks.onFusion(AbstractDungeon.player);
+        triggerFusionEffects();
     }
 
     private static void onSplitSelected(List<AbstractCard> cards) {
@@ -252,6 +256,17 @@ public final class HandActions {
         AbstractPower jiong = AbstractDungeon.player.getPower(JiongPower.POWER_ID);
         if (jiong instanceof JiongPower) {
             ((JiongPower) jiong).onSplit();
+        }
+        AbstractPower peng = AbstractDungeon.player.getPower(PengPower.POWER_ID);
+        if (peng instanceof PengPower) {
+            ((PengPower) peng).onSplit();
+        }
+    }
+
+    private static void triggerFusionEffects() {
+        AbstractPower he = AbstractDungeon.player.getPower(HePower.POWER_ID);
+        if (he instanceof HePower) {
+            ((HePower) he).onFusion();
         }
     }
 }

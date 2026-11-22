@@ -44,6 +44,11 @@ public final class CardComponents {
         register(Mie.GLYPH, Mie::new, Mie.class);
         register(Jie.GLYPH, Jie::new, Jie.class);
         register(Jiong.GLYPH, Jiong::new, Jiong.class);
+        register(Cong.GLYPH, Cong::new, Cong.class);
+        register(Companion.GLYPH, Companion::new, Companion.class);
+        register(Mo.GLYPH, Mo::new, Mo.class);
+        register(Chu.GLYPH, Chu::new, Chu.class);
+        register(Dan.GLYPH, Dan::new, Dan.class);
 
         // 润
         register(Bathe.GLYPH, Bathe::new, Bathe.class);
@@ -76,6 +81,22 @@ public final class CardComponents {
         register(Dim.GLYPH, Dim::new, Dim.class);
         register(Whole.GLYPH, Whole::new, Whole.class);
         register(Sky.GLYPH, Sky::new, Sky.class);
+        register(Wei.GLYPH, Wei::new, Wei.class);
+        register(Chang.GLYPH, Chang::new, Chang.class);
+        register(Cha.GLYPH, Cha::new, Cha.class);
+
+        // 通用
+        register(Qiu.GLYPH, Qiu::new, Qiu.class);
+        register(Xiu.GLYPH, Xiu::new, Xiu.class);
+        register(Shi.GLYPH, Shi::new, Shi.class);
+        register(Hui.GLYPH, Hui::new, Hui.class);
+        register(Lu.GLYPH, Lu::new, Lu.class);
+        register(Ben.GLYPH, Ben::new, Ben.class);
+        register(Renew.GLYPH, Renew::new, Renew.class);
+        register(Peng.GLYPH, Peng::new, Peng.class);
+        register(Qie.GLYPH, Qie::new, Qie.class);
+        register(He.GLYPH, He::new, He.class);
+        register(Zuo.GLYPH, Zuo::new, Zuo.class);
     }
 
     private CardComponents() {
@@ -117,6 +138,20 @@ public final class CardComponents {
                 return new Mu();
             case KOU:
                 return new Kou();
+            case REN:
+                return new Ren();
+            case YUE:
+                return new Yue();
+            case TU:
+                return new Tu();
+            case YI:
+                return new Yi();
+            case SHUI:
+                return new Shui();
+            case SHAN:
+                return new Shan();
+            case RI:
+                return new Ri();
             default:
                 return null;
         }

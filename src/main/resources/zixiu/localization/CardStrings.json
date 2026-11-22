@@ -19,6 +19,34 @@
     "NAME": "口",
     "DESCRIPTION": "抽 !M! 张牌，然后弃 1 张牌。"
   },
+  "zixiu:Ren": {
+    "NAME": "人",
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次。"
+  },
+  "zixiu:Yue": {
+    "NAME": "月",
+    "DESCRIPTION": "获得 !B! 点格挡，治疗 !M! 点生命。"
+  },
+  "zixiu:Tu": {
+    "NAME": "土",
+    "DESCRIPTION": "获得 !B! 点格挡。"
+  },
+  "zixiu:Yi": {
+    "NAME": "一",
+    "DESCRIPTION": "抽 !M! 张牌。"
+  },
+  "zixiu:Shui": {
+    "NAME": "水",
+    "DESCRIPTION": "治疗 !M! 点生命。"
+  },
+  "zixiu:Shan": {
+    "NAME": "山",
+    "DESCRIPTION": "给予 !M! 层虚弱。"
+  },
+  "zixiu:Ri": {
+    "NAME": "日",
+    "DESCRIPTION": "施加 !M! 层曝光。"
+  },
   "zixiu:Dai": {
     "NAME": "呆",
     "DESCRIPTION": "抽 !M! 张牌。"
@@ -210,5 +238,81 @@
   "zixiu:Sky": {
     "NAME": "天",
     "DESCRIPTION": "每回合开始时，对所有敌人施加 1 层曝光。"
+  },
+  "zixiu:Cong": {
+    "NAME": "从",
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次。"
+  },
+  "zixiu:Qiu": {
+    "NAME": "囚",
+    "DESCRIPTION": "给予 !M! 层虚弱和 !M! 层易伤。"
+  },
+  "zixiu:Xiu": {
+    "NAME": "休",
+    "DESCRIPTION": "获得 !B! 点格挡，治疗 !M! 点生命。"
+  },
+  "zixiu:Companion": {
+    "NAME": "伙",
+    "DESCRIPTION": "造成 !D! 点伤害，施加 !M! 层灼烧。目标已有灼烧时多施加 2 层。"
+  },
+  "zixiu:Shi": {
+    "NAME": "仕",
+    "DESCRIPTION": "获得 !B! 点格挡。若你本回合拆解过牌，抽 !M! 张牌。"
+  },
+  "zixiu:Hui": {
+    "NAME": "回",
+    "DESCRIPTION": "抽 !M! 张牌，然后弃 1 张牌。"
+  },
+  "zixiu:Lu": {
+    "NAME": "吕",
+    "DESCRIPTION": "抽 !M! 张牌。"
+  },
+  "zixiu:Ben": {
+    "NAME": "本",
+    "DESCRIPTION": "回合开始时，获得 !M! 点格挡。"
+  },
+  "zixiu:Mo": {
+    "NAME": "末",
+    "DESCRIPTION": "造成 !D! 点伤害。本回合每拆解过一张牌，伤害 +!M!。"
+  },
+  "zixiu:Wei": {
+    "NAME": "未",
+    "DESCRIPTION": "施加 !M! 层曝光，抽 2 张牌。"
+  },
+  "zixiu:Renew": {
+    "NAME": "吐",
+    "DESCRIPTION": "弃 1 张牌，然后抽 !M! 张牌。"
+  },
+  "zixiu:Peng": {
+    "NAME": "朋",
+    "DESCRIPTION": "每当你拆解一张牌，抽 1 张牌（每回合最多 !M! 次）。"
+  },
+  "zixiu:Chu": {
+    "NAME": "出",
+    "DESCRIPTION": "造成 !D! 点伤害。本回合每拆解过一张牌，伤害 +!M!。"
+  },
+  "zixiu:Qie": {
+    "NAME": "且",
+    "DESCRIPTION": "获得 !B! 点格挡，抽 !M! 张牌。"
+  },
+  "zixiu:He": {
+    "NAME": "合",
+    "DESCRIPTION": "每当你合出一个字，抽 1 张牌并获得 1 点格挡（每回合最多 !M! 次）。"
+  },
+  "zixiu:Zuo": {
+    "NAME": "坐",
+    "DESCRIPTION": "获得 !B! 点格挡，治疗 !M! 点生命。"
+  },
+  "zixiu:Chang": {
+    "NAME": "唱",
+    "DESCRIPTION": "对所有敌人施加 !M! 层曝光。"
+  },
+  "zixiu:Cha": {
+    "NAME": "查",
+    "DESCRIPTION": "抽 !M! 张牌，然后弃 1 张牌。"
+  },
+  "zixiu:Dan": {
+    "NAME": "胆",
+    "DESCRIPTION": "失去 !M! 点生命，获得 1 点力量。"
   }
 }
