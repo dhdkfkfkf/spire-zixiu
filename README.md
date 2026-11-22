@@ -25,6 +25,12 @@
 
 适配游戏版本 12-18-2022（最终版），Java 8。
 
+## 创意工坊
+
+已发布：<https://steamcommunity.com/sharedfiles/filedetails/?id=3844170209>
+
+订阅后仍需在 ModTheSpire 里勾选「字修」并搭好 BaseMod、StSLib。发版流程见 [docs/workshop.md](docs/workshop.md)。
+
 ## 构建
 
 需要 JDK 8（游戏只带 JRE）。依赖的 `desktop-1.0.jar`、`ModTheSpire.jar`、`BaseMod.jar`、`StSLib.jar` 都从安装目录读取，不进仓库。
