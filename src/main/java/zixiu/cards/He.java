@@ -36,8 +36,11 @@ public class He extends ZixiuCard {
         if (!this.upgraded) {
             upgradeName();
             this.isInnate = true;
-            this.rawDescription = "固有。" + this.rawDescription;
-            initializeDescription();
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }

@@ -34,8 +34,11 @@ public class Sen extends ZixiuCard {
         if (!this.upgraded) {
             upgradeName();
             this.isInnate = true;
-            this.rawDescription = "固有。每当你拆解一张牌，获得 6 点格挡。";
-            initializeDescription();
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }

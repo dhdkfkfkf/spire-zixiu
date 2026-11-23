@@ -34,6 +34,11 @@ public class Jie extends ZixiuCard {
         if (!this.upgraded) {
             upgradeName();
             this.isInnate = true;
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }
