@@ -5,6 +5,7 @@
 | 资源 | 路径（jar 内） | 尺寸 |
 |---|---|---|
 | 卡面（手牌） | `zixiu/images/cards/<name>.png` | 250×190 |
+| 卡面（大图） | `zixiu/images/cards/<name>_p.png` | 500×380 |
 | 卡框（小） | `zixiu/images/cardui/bg_*_512.png` | 512×512 |
 | 卡框（大） | `zixiu/images/cardui/bg_*_1024.png` | 1024×1024 |
 | 遗物 | `images/relics/<id>.png` | 128×128 画布，主体限制在中心 56px，四周留白 |
@@ -20,6 +21,20 @@
 
 - **遗物和事件**走 `ImageMaster`，会被自动拼上 `images/relics/` 或 `images/events/` 前缀，所以文件要放在 jar 根的 `images/` 下，构造参数只传文件名（遗物不补扩展名，要写 `"tubi.png"`）。
 - **其他资源**直接传 jar 内完整路径（`zixiu/images/...`）。
+
+## 卡图生成流程
+
+卡图由本地 ComfyUI（Anima turbo）批量生成，脚本在 `E:\ComfyUInima_batch.py`：
+
+```bash
+# 1) 生成 500×380 大图（cfg 2.5 才压得住模型自带的水印）
+python E:\ComfyUInima_batch.py --manifest dist/art-cards-manifest.txt   --kind card --out dist/art-cards/big   --style "chinese ink wash painting, anime illustration, xuan paper texture, cinematic lighting" --cfg 2.5
+
+# 2) 落进资源目录（同时产出 250×190 与 500×380）
+python tools/fit-card-art.py dist/art-cards/big
+```
+
+清单格式是 `卡牌ID<TAB>英文提示词`，统一开头是「落魄书生」的固定描述，后面接每张牌的意象。
 
 ## 临时借用
 

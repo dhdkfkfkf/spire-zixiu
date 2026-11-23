@@ -5,7 +5,7 @@
     "zixiu"
   ],
   "description": "以汉字拆合为核心的《杀戮尖塔》角色：10 种部件牌、79 张卡牌、17 件遗物与「临兵斗者皆阵列前行」九字真言。",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "sts_version": "12-18-2022",
   "mts_version": "3.30.0",
   "dependencies": [
