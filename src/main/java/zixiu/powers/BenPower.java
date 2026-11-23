@@ -19,7 +19,9 @@ public class BenPower extends AbstractPower {
         this.amount = blockPerTurn;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("plated_armor");
+        // The vanilla atlas names this region "platedarmor" (no underscore). With a miss, region128
+        // stays null and FlashPowerEffect throws the first time 本 flashes -- a live crash.
+        loadRegion("platedarmor");
         updateDescription();
     }
 

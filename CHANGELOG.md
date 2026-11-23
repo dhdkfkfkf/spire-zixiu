@@ -1,5 +1,14 @@
 # 更新日志
 
+## 0.2.5
+
+修实机闪退：`BenPower`（本）的图集区域名写成了 `plated_armor`，原版图集里是 `platedarmor`。
+`loadRegion` 查不到时 `region128` 为空，打出「本」触发「获得能力」闪光时 `FlashPowerEffect`
+抛 NPE，整局直接关掉；在 spire-pilot 的沙盒里表现为「引擎异常（搜索分支被丢弃）」。
+
+已按图集逐一核对全部能力的区域名（poison / strength / vulnerable / dexterity / intangible /
+focus / flex / platedarmor）。
+
 ## 0.2.4
 
 能力牌数值调整（升级仍是或改为固有，见下）：
