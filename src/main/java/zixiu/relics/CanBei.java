@@ -1,6 +1,5 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import zixiu.ZixiuMod;
@@ -11,7 +10,7 @@ import zixiu.ZixiuMod;
  * 模仿圣主「寻符器」的做法：奖励界面生成时往 room.rewards 里插一条 RewardItem。
  * 它本身是字修专属遗物，不进共享池。
  */
-public class CanBei extends CustomRelic {
+public class CanBei extends ZixiuRelic {
 
     public static final String ID = "CanBei";
 

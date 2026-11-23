@@ -1,13 +1,12 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import zixiu.ZixiuMod;
 import zixiu.actions.ChooseOneComponentAction;
 
-public class TuBi extends CustomRelic {
+public class TuBi extends ZixiuRelic {
 
     public static final String ID = "TuBi";
 

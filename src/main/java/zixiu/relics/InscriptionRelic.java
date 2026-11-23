@@ -1,6 +1,5 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -17,7 +16,7 @@ import java.util.List;
  * 九个字都是一件 SPECIAL 遗物（不进任何遗物池），只能通过「九字碑」事件或「残碑」遗物获得。
  * 隔离开启时只进字修的专属池，普通角色看不到；关闭隔离后进共享池，任何角色都能掉到。
  */
-public abstract class InscriptionRelic extends CustomRelic {
+public abstract class InscriptionRelic extends ZixiuRelic {
 
     public static final List<String> ALL = Arrays.asList(
             "Lin", "Bing", "Dou", "Zhe", "Jie", "Zhen", "Lie", "Qian", "Xing");

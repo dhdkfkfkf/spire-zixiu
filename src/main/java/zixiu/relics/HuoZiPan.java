@@ -1,6 +1,5 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -12,7 +11,7 @@ import zixiu.lexicon.Component;
 /**
  * 活字盘：每回合开始时，将 1 张随机部件牌加入手牌。
  */
-public class HuoZiPan extends CustomRelic {
+public class HuoZiPan extends ZixiuRelic {
 
     public static final String ID = "HuoZiPan";
 

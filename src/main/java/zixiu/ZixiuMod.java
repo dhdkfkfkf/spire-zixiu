@@ -227,16 +227,21 @@ public class ZixiuMod implements
     @Override
     public void receiveEditRelics() {
         zixiu.core.ZixiuConfig.load();
-        BaseMod.addRelicToCustomPool(new TuBi(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new ZanYan(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new HuoZheZi(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new JiuShuQian(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new ShuXia(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new ZhuBi(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new HuoZiPan(), ZixiuEnums.ZIXIU_COLOR);
-        BaseMod.addRelicToCustomPool(new zixiu.relics.CanBei(), ZixiuEnums.ZIXIU_COLOR);
 
-        // 九字：隔离开启时只进字修的角色池；关闭后进共享池，任何角色都可能掉到。
+        // 自定义遗物池在本版本 BaseMod 里是坏的：它依赖的补丁挂在
+        // RelicLibrary.addClassSpecificRelics 上，而游戏本体从不调用该方法。
+        // 这里统一用 SHARED 注册，由 ZixiuRelic.canSpawn() 做角色隔离——
+        // 游戏生成遗物奖励时会调用 canSpawn()。
+        registerSharedRelic(new TuBi());
+        registerSharedRelic(new ZanYan());
+        registerSharedRelic(new HuoZheZi());
+        registerSharedRelic(new JiuShuQian());
+        registerSharedRelic(new ShuXia());
+        registerSharedRelic(new ZhuBi());
+        registerSharedRelic(new HuoZiPan());
+        registerSharedRelic(new zixiu.relics.CanBei());
+
+        // 九字：隔离开启时不进任何池（只能靠九字碑/残碑）；关闭后进稀有池，任何角色都可能掉到。
         for (String id : zixiu.relics.InscriptionRelic.ALL) {
             com.megacrit.cardcrawl.relics.AbstractRelic relic = zixiu.relics.InscriptionRelic.make(id);
             if (relic == null) {
@@ -248,6 +253,10 @@ public class ZixiuMod implements
                 BaseMod.addRelic(relic, basemod.helpers.RelicType.SHARED);
             }
         }
+    }
+
+    private static void registerSharedRelic(com.megacrit.cardcrawl.relics.AbstractRelic relic) {
+        BaseMod.addRelic(relic, basemod.helpers.RelicType.SHARED);
     }
 
     @Override

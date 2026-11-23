@@ -1,13 +1,12 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import zixiu.ZixiuMod;
 
 /**
  * 火折子：每回合第一次施加灼烧时，额外施加 1 层。
  */
-public class HuoZheZi extends CustomRelic {
+public class HuoZheZi extends ZixiuRelic {
 
     public static final String ID = "HuoZheZi";
 

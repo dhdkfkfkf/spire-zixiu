@@ -1,6 +1,5 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -13,7 +12,7 @@ import zixiu.lexicon.Component;
 /**
  * 旧书签：回合开始时，若手牌中没有部件牌，将 1 张随机部件牌加入手牌。
  */
-public class JiuShuQian extends CustomRelic {
+public class JiuShuQian extends ZixiuRelic {
 
     public static final String ID = "JiuShuQian";
 

@@ -1,6 +1,5 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -12,7 +11,7 @@ import zixiu.lexicon.Component;
 /**
  * 书匣：每当你拆解一张牌，将 1 张随机部件牌加入手牌（每回合上限 1）。
  */
-public class ShuXia extends CustomRelic {
+public class ShuXia extends ZixiuRelic {
 
     public static final String ID = "ShuXia";
 

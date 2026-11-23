@@ -1,5 +1,6 @@
 package zixiu.core;
 
+import basemod.interfaces.PostUpdateSubscriber;
 import basemod.interfaces.StartGameSubscriber;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import zixiu.ZixiuMod;
@@ -18,19 +19,36 @@ import java.util.List;
  * 用来回答「为什么一局下来一个本模组遗物/事件都没见到」：如果这里显示 ID 不在池里，
  * 就是注册链路的问题；如果在池里，那就是概率。
  */
-public final class PoolDiagnostics implements StartGameSubscriber {
+public final class PoolDiagnostics implements StartGameSubscriber, PostUpdateSubscriber {
 
     private static final String[] POOL_RELICS = {
             "TuBi", "ZanYan", "HuoZheZi", "JiuShuQian", "ShuXia", "ZhuBi", "HuoZiPan", "CanBei"
     };
     private static final String[] EVENTS = {"CuoZi", "CanJuan", "JiuZiBei"};
 
+    private static boolean dumpedAfterInit = false;
+
     @Override
     public void receiveStartGame() {
-        dump();
+        dumpedAfterInit = false;
+        dump("run-start");
     }
 
-    private static void dump() {
+    /**
+     * 遗物池是进入地牢后才建好的，开局那一刻全是 0。等池子有内容再抓一次，
+     * 这才是「奖励里能不能刷到本模组遗物」的真实答案。
+     */
+    @Override
+    public void receivePostUpdate() {
+        if (dumpedAfterInit || AbstractDungeon.commonRelicPool == null
+                || AbstractDungeon.commonRelicPool.isEmpty()) {
+            return;
+        }
+        dumpedAfterInit = true;
+        dump("pools-ready");
+    }
+
+    private static void dump(String phase) {
         if (AbstractDungeon.player == null) {
             return;
         }
@@ -39,7 +57,7 @@ public final class PoolDiagnostics implements StartGameSubscriber {
             File file = new File("zixiu-diag.txt");
             writer = new PrintWriter(new OutputStreamWriter(
                     new FileOutputStream(file), StandardCharsets.UTF_8));
-            writer.println("zixiu diagnostics");
+            writer.println("zixiu diagnostics [" + phase + "]");
             writer.println("chosenClass = " + AbstractDungeon.player.chosenClass);
             writer.println("cardColor   = " + AbstractDungeon.player.getCardColor());
             writer.println("actNum      = " + AbstractDungeon.actNum);

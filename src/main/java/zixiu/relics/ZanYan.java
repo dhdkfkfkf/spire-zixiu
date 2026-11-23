@@ -1,6 +1,5 @@
 package zixiu.relics;
 
-import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -9,7 +8,7 @@ import zixiu.ZixiuMod;
 /**
  * 残砚：每场战斗第一次合字后，抽 1 张牌。
  */
-public class ZanYan extends CustomRelic {
+public class ZanYan extends ZixiuRelic {
 
     public static final String ID = "ZanYan";
 
