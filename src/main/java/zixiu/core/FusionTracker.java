@@ -18,6 +18,9 @@ public final class FusionTracker {
     private static int splitsThisTurn = 0;
     private static int fusionsThisTurn = 0;
 
+    private static int chain = 0;
+    private static java.util.Set<zixiu.lexicon.Component> lastWordParts = null;
+
     private FusionTracker() {
     }
 
@@ -45,9 +48,39 @@ public final class FusionTracker {
         return fusionsThisTurn;
     }
 
+    /**
+     * 连书：本回合打出的这张成品牌，与上一张成品牌是否共享部件。
+     * 共享则连书 +1，否则归零。返回本次之后的连书数。
+     */
+    public static int recordWord(java.util.Collection<zixiu.lexicon.Component> parts) {
+        java.util.Set<zixiu.lexicon.Component> current =
+                java.util.EnumSet.noneOf(zixiu.lexicon.Component.class);
+        if (parts != null) {
+            current.addAll(parts);
+        }
+        boolean shares = false;
+        if (lastWordParts != null) {
+            for (zixiu.lexicon.Component part : current) {
+                if (lastWordParts.contains(part)) {
+                    shares = true;
+                    break;
+                }
+            }
+        }
+        chain = shares ? chain + 1 : 0;
+        lastWordParts = current;
+        return chain;
+    }
+
+    public static int chain() {
+        return chain;
+    }
+
     public static void clear() {
         FRESH.clear();
         splitsThisTurn = 0;
         fusionsThisTurn = 0;
+        chain = 0;
+        lastWordParts = null;
     }
 }
