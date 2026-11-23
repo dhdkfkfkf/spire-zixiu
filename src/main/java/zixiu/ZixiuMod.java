@@ -145,6 +145,8 @@ public class ZixiuMod implements
         BaseMod.subscribe(new CardPlayHook());
         BaseMod.subscribe(new ScreenToast());
         BaseMod.subscribe(new SplitPreview());
+        BaseMod.subscribe(new zixiu.ui.DeferredCardInsert());
+        BaseMod.subscribe(new zixiu.core.PoolDiagnostics());
         BaseMod.addColor(ZixiuEnums.ZIXIU_COLOR,
                 new Color(0.14F, 0.16F, 0.22F, 1.0F),
                 asset("cardui/bg_attack_512.png"),

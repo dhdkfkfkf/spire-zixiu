@@ -157,8 +157,14 @@ public final class CardComponents {
         }
     }
 
+    /**
+     * 能不能当合字材料。
+     *
+     * 只认部件牌：成品牌要先拆再合（拆免费且不限次数），这样「合」的选牌界面里只会出现材料，
+     * 不会和「拆」的界面混在一起。
+     */
     public static boolean isFusable(AbstractCard card) {
-        return !expand(card).isEmpty();
+        return card instanceof ComponentCard;
     }
 
     public static List<Component> expandAll(List<AbstractCard> cards) {
