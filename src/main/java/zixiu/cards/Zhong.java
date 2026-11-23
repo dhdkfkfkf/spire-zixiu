@@ -17,7 +17,7 @@ public class Zhong extends ZixiuCard {
 
     public Zhong() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
-        this.baseDamage = 5;
+        this.baseDamage = 6;
     }
 
     @Override

@@ -18,7 +18,7 @@ public class Rapids extends ZixiuCard {
 
     public Rapids() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 6;
+        this.baseDamage = 7;
         this.baseBlock = 4;
     }
 

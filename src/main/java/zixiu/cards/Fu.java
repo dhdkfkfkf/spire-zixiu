@@ -15,14 +15,14 @@ public class Fu extends ZixiuCard {
 
     public Fu() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ENEMY);
-        this.baseDamage = 14;
+        this.baseDamage = 16;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         int damage = this.damage;
         if (m.currentHealth * 2 <= m.maxHealth) {
-            damage += 8;
+            damage += 10;
         }
         AbstractDungeon.actionManager.addToBottom(new DamageAction(m,
                 new DamageInfo(p, damage, this.damageTypeForTurn),

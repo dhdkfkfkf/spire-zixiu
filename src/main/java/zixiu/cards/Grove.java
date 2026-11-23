@@ -16,8 +16,8 @@ public class Grove extends ZixiuCard {
 
     public Grove() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 3;
-        this.baseBlock = 3;
+        this.baseDamage = 4;
+        this.baseBlock = 4;
         this.baseMagicNumber = 2;
         this.magicNumber = 2;
     }

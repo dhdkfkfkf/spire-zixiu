@@ -19,8 +19,8 @@ public class Mo extends ZixiuCard {
 
     public Mo() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 4;
-        this.baseMagicNumber = 3;
+        this.baseDamage = 6;
+        this.baseMagicNumber = 4;
         this.magicNumber = 3;
     }
 

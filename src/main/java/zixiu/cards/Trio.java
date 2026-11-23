@@ -15,7 +15,7 @@ public class Trio extends ZixiuCard {
 
     public Trio() {
         super(ID, 1, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ENEMY);
-        this.baseDamage = 3;
+        this.baseDamage = 4;
         this.baseMagicNumber = 3;
         this.magicNumber = 3;
     }

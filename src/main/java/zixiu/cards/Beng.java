@@ -18,7 +18,7 @@ public class Beng extends ZixiuCard {
 
     public Beng() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
-        this.baseDamage = 9;
+        this.baseDamage = 11;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class Can extends ZixiuCard {
 
     public Can() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 5;
+        this.baseDamage = 6;
         this.baseMagicNumber = 1;
         this.magicNumber = 1;
     }

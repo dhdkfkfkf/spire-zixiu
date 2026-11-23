@@ -19,7 +19,7 @@ public class Companion extends ZixiuCard {
 
     public Companion() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 6;
+        this.baseDamage = 7;
         this.baseMagicNumber = 1;
         this.magicNumber = 1;
     }

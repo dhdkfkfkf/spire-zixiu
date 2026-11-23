@@ -16,7 +16,7 @@ public class Yan extends ZixiuCard {
 
     public Yan() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 6;
+        this.baseDamage = 7;
         this.baseMagicNumber = 2;
         this.magicNumber = 2;
     }

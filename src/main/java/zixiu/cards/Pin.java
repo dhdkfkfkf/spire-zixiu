@@ -16,7 +16,7 @@ public class Pin extends ZixiuCard {
 
     public Pin() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 3;
+        this.baseDamage = 4;
         this.baseMagicNumber = 3;
         this.magicNumber = 3;
     }

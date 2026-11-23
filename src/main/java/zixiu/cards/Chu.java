@@ -19,8 +19,8 @@ public class Chu extends ZixiuCard {
 
     public Chu() {
         super(ID, 2, CardType.ATTACK, CardRarity.RARE, CardTarget.ENEMY);
-        this.baseDamage = 12;
-        this.baseMagicNumber = 5;
+        this.baseDamage = 14;
+        this.baseMagicNumber = 6;
         this.magicNumber = 5;
     }
 

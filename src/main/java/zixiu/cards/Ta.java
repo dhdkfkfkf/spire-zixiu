@@ -17,8 +17,8 @@ public class Ta extends ZixiuCard {
 
     public Ta() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 4;
-        this.baseMagicNumber = 8;
+        this.baseDamage = 6;
+        this.baseMagicNumber = 10;
         this.magicNumber = 8;
     }
 

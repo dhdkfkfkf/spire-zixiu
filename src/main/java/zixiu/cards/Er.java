@@ -15,7 +15,7 @@ public class Er extends ZixiuCard {
 
     public Er() {
         super(ID, 1, CardType.ATTACK, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseDamage = 4;
+        this.baseDamage = 5;
         this.baseMagicNumber = 2;
         this.magicNumber = 2;
     }

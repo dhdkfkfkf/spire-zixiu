@@ -16,7 +16,7 @@ public class Noon extends ZixiuCard {
 
     public Noon() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ENEMY);
-        this.baseDamage = 4;
+        this.baseDamage = 6;
         this.baseMagicNumber = 4;
         this.magicNumber = 4;
     }

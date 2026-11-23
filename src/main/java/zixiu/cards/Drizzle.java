@@ -15,7 +15,7 @@ public class Drizzle extends ZixiuCard {
 
     public Drizzle() {
         super(ID, 1, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ENEMY);
-        this.baseDamage = 2;
+        this.baseDamage = 3;
         this.baseMagicNumber = 4;
         this.magicNumber = 4;
     }

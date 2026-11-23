@@ -1,6 +1,7 @@
 package zixiu.powers;
 
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -8,7 +9,10 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 import zixiu.ZixiuMod;
 
 /**
- * 曝光：受到的伤害 +X，每受到一次伤害后减 1。一次性爆发资源。
+ * 曝光：受到的伤害 +X，回合结束时减 1。
+ *
+ * 原先按「每次受伤 -1」，多段攻击会把层数消耗掉，导致 从/二/品/三/林/淋 这些多段牌
+ * 和整个照系增伤互相打架。改成按回合衰减后，多段牌也能吃满。
  */
 public class ExposurePower extends AbstractPower {
 
@@ -27,7 +31,7 @@ public class ExposurePower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "受到的伤害 +" + this.amount + "，每次受伤后减 1。";
+        this.description = "受到的伤害 +" + this.amount + "，回合结束时减 1。";
     }
 
     @Override
@@ -39,18 +43,15 @@ public class ExposurePower extends AbstractPower {
     }
 
     @Override
-    public int onAttacked(DamageInfo info, int damageAmount) {
-        if (this.amount > 0) {
-            this.amount--;
-            if (this.amount <= 0) {
-                AbstractDungeon.actionManager.addToTop(
-                        new com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction(
-                                this.owner, this.owner, POWER_ID));
-            } else {
-                updateDescription();
-            }
+    public void atEndOfRound() {
+        if (this.amount <= 1) {
+            AbstractDungeon.actionManager.addToBottom(
+                    new RemoveSpecificPowerAction(this.owner, this.owner, POWER_ID));
+            return;
         }
-        return damageAmount;
+        this.amount--;
+        this.flash();
+        updateDescription();
     }
 
     public static void apply(AbstractCreature target, int amount) {

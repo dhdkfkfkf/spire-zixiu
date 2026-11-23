@@ -17,7 +17,7 @@ public class Mie extends ZixiuCard {
 
     public Mie() {
         super(ID, 1, CardType.ATTACK, CardRarity.RARE, CardTarget.ENEMY);
-        this.baseDamage = 8;
+        this.baseDamage = 10;
     }
 
     @Override

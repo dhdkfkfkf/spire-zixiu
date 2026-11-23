@@ -17,7 +17,7 @@ public class Fen extends ZixiuCard {
 
     public Fen() {
         super(ID, 2, CardType.ATTACK, CardRarity.RARE, CardTarget.ALL_ENEMY);
-        this.baseDamage = 10;
+        this.baseDamage = 12;
         this.baseMagicNumber = 3;
         this.magicNumber = 3;
     }
