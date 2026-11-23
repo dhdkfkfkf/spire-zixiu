@@ -124,7 +124,7 @@ public class ZixiuCharacter extends CustomPlayer {
      */
     @Override
     public Texture getEnergyImage() {
-        return ImageMaster.ENERGY_RED_LAYER1;
+        return ImageMaster.loadImage("zixiu/images/ui/orb.png");
     }
 
     @Override
