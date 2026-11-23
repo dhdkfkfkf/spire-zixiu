@@ -1,5 +1,11 @@
 # 更新日志
 
+## 0.2.2
+
+- 新增 `zixiu.compat.PilotBridge`：给 spire-pilot 一类外部求解器用的稳定接口
+  （合/拆的合法性、结果枚举、同步执行、回合计数），见 `docs/pilot-compat.md`。
+- `HandActions.notifyFusion()` / `notifySplit()` 公开，同步执行与真实操作共用同一套触发。
+
 ## 0.2.1
 
 **合/拆操作**
