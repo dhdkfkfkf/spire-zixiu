@@ -110,10 +110,10 @@ public final class ZixiuLexicon {
         add("圭", WordRole.SEED, Component.TU, Component.TU);
 
         // ---- 废字：拼得出来，但没有正面用途 ----
-        add("汕", WordRole.JUNK, Component.SHUI, Component.SHAN);
-        add("汨", WordRole.JUNK, Component.SHUI, Component.RI);
-        add("沓", WordRole.JUNK, Component.SHUI, Component.RI);
-        add("哇", WordRole.JUNK, Component.KOU, Component.TU, Component.TU);
+        add("汕", WordRole.PLAYABLE, Component.SHUI, Component.SHAN);
+        add("汨", WordRole.PLAYABLE, Component.SHUI, Component.RI);
+        add("沓", WordRole.PLAYABLE, Component.SHUI, Component.RI);
+        add("哇", WordRole.PLAYABLE, Component.KOU, Component.TU, Component.TU);
 
         // ---- 无配方：拼不出来，但拆得开 / 拆不开 ----
         add("淼", WordRole.PLAYABLE, Component.SHUI, Component.SHUI, Component.SHUI);

@@ -45,6 +45,10 @@ public final class CardComponents {
         register(Jie.GLYPH, Jie::new, Jie.class);
         register(Jiong.GLYPH, Jiong::new, Jiong.class);
         register(Miao.GLYPH, Miao::new, Miao.class);
+        register(Rapids.GLYPH, Rapids::new, Rapids.class);
+        register(Mi.GLYPH, Mi::new, Mi.class);
+        register(Ta.GLYPH, Ta::new, Ta.class);
+        register(Wa.GLYPH, Wa::new, Wa.class);
         register(Cong.GLYPH, Cong::new, Cong.class);
         register(Companion.GLYPH, Companion::new, Companion.class);
         register(Mo.GLYPH, Mo::new, Mo.class);

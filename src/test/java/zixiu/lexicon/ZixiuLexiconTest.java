@@ -65,11 +65,12 @@ public class ZixiuLexiconTest {
     }
 
     @Test
-    public void waterAndSunAreOnlyJunk() {
-        assertTrue(ZixiuLexicon.optionsFor(
-                Arrays.asList(Component.SHUI, Component.RI)).isEmpty());
-        assertEquals(WordRole.JUNK, ZixiuLexicon.word("汨").role());
-        assertEquals(WordRole.JUNK, ZixiuLexicon.word("沓").role());
+    public void waterAndSunOfferTwoWords() {
+        List<WordSpec> options = ZixiuLexicon.optionsFor(
+                Arrays.asList(Component.SHUI, Component.RI));
+        assertEquals(2, options.size());
+        assertEquals(WordRole.PLAYABLE, ZixiuLexicon.word("汨").role());
+        assertEquals(WordRole.PLAYABLE, ZixiuLexicon.word("沓").role());
     }
 
     @Test
@@ -82,14 +83,16 @@ public class ZixiuLexiconTest {
     }
 
     @Test
-    public void junkIsNeverOffered() {
-        assertTrue(ZixiuLexicon.optionsFor(
-                Arrays.asList(Component.SHUI, Component.SHAN)).isEmpty());
-        assertFalse(ZixiuLexicon.canFuse(Arrays.asList(Component.SHUI, Component.SHAN)));
+    public void waterAndMountainMakeShan() {
+        List<WordSpec> options = ZixiuLexicon.optionsFor(
+                Arrays.asList(Component.SHUI, Component.SHAN));
+        assertEquals(1, options.size());
+        assertEquals("汕", options.get(0).glyph());
+        assertEquals(WordRole.PLAYABLE, options.get(0).role());
     }
 
     @Test
-    public void junkStillSplits() {
+    public void shanStillSplits() {
         assertEquals(Arrays.asList(Component.SHUI, Component.SHAN),
                 ZixiuLexicon.partsOf("汕"));
     }
@@ -145,9 +148,9 @@ public class ZixiuLexiconTest {
     }
 
     @Test
-    public void sixOfTheEightyFiveAreNotCraftable() {
-        // 里 / 永 无配方；汕 汨 沓 哇 是废字，都拼不出来（淼 现在是三水可合）
-        String[] blocked = {"里", "永", "汕", "汨", "沓", "哇"};
+    public void twoOfTheEightyFiveAreNotCraftable() {
+        // 里 / 永 没有配方也没有部件；其余 83 字都能通过配方合出
+        String[] blocked = {"里", "永"};
         for (String glyph : blocked) {
             WordSpec spec = ZixiuLexicon.word(glyph);
             assertNotNull(glyph, spec);

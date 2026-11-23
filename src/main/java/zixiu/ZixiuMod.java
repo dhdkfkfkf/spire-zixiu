@@ -54,6 +54,10 @@ import zixiu.cards.Kou;
 import zixiu.cards.Kun;
 import zixiu.cards.Lu;
 import zixiu.cards.Lucky;
+import zixiu.cards.Rapids;
+import zixiu.cards.Mi;
+import zixiu.cards.Ta;
+import zixiu.cards.Wa;
 import zixiu.cards.Miao;
 import zixiu.cards.Mie;
 import zixiu.cards.Mo;
@@ -196,6 +200,7 @@ public class ZixiuMod implements
                 new Yan(), new Can(), new Er(), new Zao(), new Da(), new Pin(),
                 new YanYan(), new Beng(), new Fu(), new Wang(), new Zhong(),
                 new Fen(), new Mie(), new Jie(), new Jiong(), new Miao(),
+                new Rapids(), new Mi(), new Ta(), new Wa(),
                 new Cong(), new Companion(), new Mo(), new Chu(), new Dan(),
                 // 润
                 new Bathe(), new Blockade(), new Grove(), new Body(), new Guard(),
