@@ -19,4 +19,5 @@ mkdir -p out/test-run/main out/test-run/test
 # 配方 ↔ 卡牌覆盖：每个 PLAYABLE 的字都必须有卡、已注册、有文案
 if command -v python >/dev/null 2>&1; then
   python scripts/audit-recipes.py
+  python scripts/format-keywords.py --check
 fi

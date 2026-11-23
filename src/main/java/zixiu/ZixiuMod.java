@@ -160,11 +160,13 @@ public class ZixiuMod implements
 
     @Override
     public void receiveEditKeywords() {
-        BaseMod.addKeyword(new String[]{"灼烧", "burn"},
+        // 中文的关键词匹配走 BaseMod 的 CNUniqueKeywords 补丁，必须带 mod 前缀注册，
+        // 用两参数重载（前缀为 null）时描述里匹配不到，也就不会出现悬浮说明。
+        BaseMod.addKeyword(MOD_ID, "灼烧", new String[]{"灼烧", "burn"},
                 "回合结束时失去 X 点生命。层数不递减，与中毒不同。");
-        BaseMod.addKeyword(new String[]{"曝光", "exposure"},
+        BaseMod.addKeyword(MOD_ID, "曝光", new String[]{"曝光", "exposure"},
                 "受到的伤害 +X；每受到一次伤害后层数减 1。");
-        BaseMod.addKeyword(new String[]{"墨迹未干", "ink"},
+        BaseMod.addKeyword(MOD_ID, "墨迹未干", new String[]{"墨迹未干", "ink"},
                 "本回合合出来的牌，当回合不能拆解。");
     }
 
