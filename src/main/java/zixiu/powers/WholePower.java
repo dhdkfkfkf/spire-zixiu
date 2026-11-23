@@ -10,7 +10,7 @@ import zixiu.ZixiuMod;
 import zixiu.cards.ComponentCard;
 
 /**
- * 全：每回合开始时，若手牌中有 5 张以上部件牌，抽 1 并获得 1 能量。
+ * 全：每回合开始时，若手牌中有 4 张以上部件牌，抽 1 并获得 1 能量。
  */
 public class WholePower extends AbstractPower {
 
@@ -29,7 +29,7 @@ public class WholePower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "回合开始时，若手牌有 5 张以上部件牌，抽 1 并获得 1 能量。";
+        this.description = "回合开始时，若手牌有 4 张以上部件牌，抽 1 并获得 1 能量。";
     }
 
     @Override
@@ -40,7 +40,7 @@ public class WholePower extends AbstractPower {
                 components++;
             }
         }
-        if (components >= 5) {
+        if (components >= 4) {
             this.flash();
             addToBot(new DrawCardAction(this.owner, 1));
             addToBot(new GainEnergyAction(1));
