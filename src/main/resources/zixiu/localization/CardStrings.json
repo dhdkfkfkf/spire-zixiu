@@ -189,8 +189,7 @@
   },
   "zixiu:Prosper": {
     "NAME": "昌",
-    "DESCRIPTION": "每回合首次施加 zixiu:曝光 时，抽 1 张牌。",
-    "UPGRADE_DESCRIPTION": "固有 。 每回合首次施加 zixiu:曝光 时，抽 1 张牌。"
+    "DESCRIPTION": "每回合首次施加 zixiu:曝光 时，抽 !M! 张牌。"
   },
   "zixiu:Dawn": {
     "NAME": "旦",

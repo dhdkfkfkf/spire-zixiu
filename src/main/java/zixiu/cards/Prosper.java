@@ -21,7 +21,7 @@ public class Prosper extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(p, p, new FlourishPower(p), 1));
+                new ApplyPowerAction(p, p, new FlourishPower(p, this.magicNumber), this.magicNumber));
     }
 
     @Override
@@ -33,12 +33,7 @@ public class Prosper extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            this.isInnate = true;
-            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
-            if (upgradeDesc != null) {
-                this.rawDescription = upgradeDesc;
-                initializeDescription();
-            }
+            upgradeMagicNumber(1);
         }
     }
 }
