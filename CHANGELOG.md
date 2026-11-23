@@ -1,12 +1,5 @@
 # 更新日志
 
-## 0.2.5（进行中）
-
-- 合字材料只认部件牌：选牌界面不再混进成品牌，拆/合两个界面各管各的。
-- 合出的牌改用常驻订阅者插入手牌，不再挂 Action —— 回合结束/切屏时 actionManager.clear()
-  会把待插入的牌清掉，材料白烧。
-- `PoolDiagnostics`：开局把遗物池与事件表的自检结果写到游戏目录 `zixiu-diag.txt`。
-
 ## 0.2.5
 
 修实机闪退：`BenPower`（本）的图集区域名写成了 `plated_armor`，原版图集里是 `platedarmor`。
@@ -15,6 +8,28 @@
 
 已按图集逐一核对全部能力的区域名（poison / strength / vulnerable / dexterity / intangible /
 focus / flex / platedarmor）。
+
+## 0.2.6
+
+**遗物真的能掉了**
+
+- 修掉 8 件非九字遗物永远不出现的 bug：`BaseMod.addRelicToCustomPool` 依赖的补丁挂在
+  `RelicLibrary.addClassSpecificRelics` 上，而游戏本体从不调用该方法。改为 `SHARED` 注册 +
+  `ZixiuRelic.canSpawn()` 按角色过滤，隔离开关仍然有效。
+- 新增开局自检 `zixiu-diag.txt`：记录 8 件遗物是否进入各稀有度池、以及本幕事件表内容。
+
+**合/拆**
+
+- 合的选牌界面只显示部件牌，拆只显示成品牌，两者不再混排。
+- 合出的牌改用常驻订阅者插入手牌（原先是 Action，回合结束/切屏时会被 `actionManager.clear()` 清掉，
+  造成材料烧掉、结果消失）。新增 `zixiu-fusion.log` 记录每次插入。
+
+**牌**
+
+- 炅改为纯能力牌：每拆解一张牌，对所有敌人施加 1 层曝光（升级 2 层）。
+- 新增 淼（罕见技能，水+水+水）：施加 3 层曝光，目标有灼烧时抽 2。淼从 NO_RECIPE 改为可合。
+- 原废字 汕 汨 沓 哇 全部做成可用牌；`WordRole.JUNK` 保留但配方表里没有成员。
+- 可合出的字 67 → 72。
 
 ## 0.2.4
 
