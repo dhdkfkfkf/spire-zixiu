@@ -57,9 +57,11 @@ public class ZixiuLexiconTest {
     }
 
     @Test
-    public void threeWatersProduceNothing() {
-        assertTrue(ZixiuLexicon.optionsFor(
-                Arrays.asList(Component.SHUI, Component.SHUI, Component.SHUI)).isEmpty());
+    public void threeWatersProduceMiao() {
+        List<WordSpec> options = ZixiuLexicon.optionsFor(
+                Arrays.asList(Component.SHUI, Component.SHUI, Component.SHUI));
+        assertEquals(1, options.size());
+        assertEquals("淼", options.get(0).glyph());
     }
 
     @Test
@@ -111,10 +113,10 @@ public class ZixiuLexiconTest {
     }
 
     @Test
-    public void miaoSplitsButIsNeverProduced() {
+    public void miaoSplitsAndIsProducedByThreeWaters() {
         assertEquals(Arrays.asList(Component.SHUI, Component.SHUI, Component.SHUI),
                 ZixiuLexicon.partsOf("淼"));
-        assertEquals(WordRole.NO_RECIPE, ZixiuLexicon.word("淼").role());
+        assertEquals(WordRole.PLAYABLE, ZixiuLexicon.word("淼").role());
     }
 
     @Test
@@ -143,9 +145,9 @@ public class ZixiuLexiconTest {
     }
 
     @Test
-    public void sevenOfTheEightyFiveAreNotCraftable() {
-        // 淼 / 里 / 永 无配方；汕 汨 沓 哇 是废字，都拼不出来
-        String[] blocked = {"淼", "里", "永", "汕", "汨", "沓", "哇"};
+    public void sixOfTheEightyFiveAreNotCraftable() {
+        // 里 / 永 无配方；汕 汨 沓 哇 是废字，都拼不出来（淼 现在是三水可合）
+        String[] blocked = {"里", "永", "汕", "汨", "沓", "哇"};
         for (String glyph : blocked) {
             WordSpec spec = ZixiuLexicon.word(glyph);
             assertNotNull(glyph, spec);

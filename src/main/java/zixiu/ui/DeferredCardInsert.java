@@ -8,6 +8,8 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import zixiu.actions.ChooseWordAction;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,17 @@ public final class DeferredCardInsert implements PostUpdateSubscriber {
         return PENDING.size();
     }
 
+    /** 合字落地记录：万一牌又消失，能看出它到底有没有进过手牌。 */
+    private static void log(String line) {
+        try {
+            FileWriter writer = new FileWriter("zixiu-fusion.log", true);
+            writer.write(System.currentTimeMillis() + " " + line + System.lineSeparator());
+            writer.close();
+        } catch (IOException ignored) {
+            // 记不上日志不影响游戏。
+        }
+    }
+
     @Override
     public void receivePostUpdate() {
         if (PENDING.isEmpty() || AbstractDungeon.player == null) {
@@ -53,6 +66,7 @@ public final class DeferredCardInsert implements PostUpdateSubscriber {
         }
         for (AbstractCard card : new ArrayList<AbstractCard>(PENDING)) {
             ChooseWordAction.putIntoHandNow(card);
+            log("insert " + card.cardID + " hand=" + AbstractDungeon.player.hand.size());
         }
         PENDING.clear();
         quiet = 0;

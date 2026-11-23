@@ -116,7 +116,7 @@ public final class ZixiuLexicon {
         add("哇", WordRole.JUNK, Component.KOU, Component.TU, Component.TU);
 
         // ---- 无配方：拼不出来，但拆得开 / 拆不开 ----
-        add("淼", WordRole.NO_RECIPE, Component.SHUI, Component.SHUI, Component.SHUI);
+        add("淼", WordRole.PLAYABLE, Component.SHUI, Component.SHUI, Component.SHUI);
         add("里", WordRole.NO_RECIPE);
         add("永", WordRole.NO_RECIPE);
     }

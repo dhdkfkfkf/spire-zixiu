@@ -128,7 +128,7 @@
   },
   "zixiu:Jiong": {
     "NAME": "炅",
-    "DESCRIPTION": "施加 !M! 层 zixiu:曝光 ；若目标有 zixiu:灼烧 ，抽 2 张牌；每当你拆解一张牌，对所有敌人施加 1 层 zixiu:曝光 。"
+    "DESCRIPTION": "每当你拆解一张牌，对所有敌人施加 !M! 层 zixiu:曝光 。"
   },
   "zixiu:Bathe": {
     "NAME": "沐",
@@ -322,5 +322,9 @@
   "zixiu:Dan": {
     "NAME": "胆",
     "DESCRIPTION": "失去 !M! 点生命，获得 1 点 力量 。"
+  },
+  "zixiu:Miao": {
+    "NAME": "淼",
+    "DESCRIPTION": "施加 !M! 层 zixiu:曝光 ；若目标有 zixiu:灼烧 ，抽 2 张牌。"
   }
 }

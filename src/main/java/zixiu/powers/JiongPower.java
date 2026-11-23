@@ -6,17 +6,17 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 import zixiu.ZixiuMod;
 
 /**
- * 炅：每当你拆解一张牌，对所有敌人施加 1 层曝光。
+ * 炅：每当你拆解一张牌，对所有敌人施加 X 层曝光。
  */
 public class JiongPower extends AbstractPower {
 
     public static final String POWER_ID = ZixiuMod.makeID("JiongPower");
 
-    public JiongPower(AbstractCreature owner) {
+    public JiongPower(AbstractCreature owner, int layers) {
         this.name = "炅";
         this.ID = POWER_ID;
         this.owner = owner;
-        this.amount = 1;
+        this.amount = layers;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
         loadRegion("focus");
@@ -25,7 +25,7 @@ public class JiongPower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "每当你拆解一张牌，对所有敌人施加 1 层曝光。";
+        this.description = "每当你拆解一张牌，对所有敌人施加 " + this.amount + " 层曝光。";
     }
 
     public void onSplit() {

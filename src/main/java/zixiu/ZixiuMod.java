@@ -54,6 +54,7 @@ import zixiu.cards.Kou;
 import zixiu.cards.Kun;
 import zixiu.cards.Lu;
 import zixiu.cards.Lucky;
+import zixiu.cards.Miao;
 import zixiu.cards.Mie;
 import zixiu.cards.Mo;
 import zixiu.cards.Mound;
@@ -194,7 +195,7 @@ public class ZixiuMod implements
                 // 焚
                 new Yan(), new Can(), new Er(), new Zao(), new Da(), new Pin(),
                 new YanYan(), new Beng(), new Fu(), new Wang(), new Zhong(),
-                new Fen(), new Mie(), new Jie(), new Jiong(),
+                new Fen(), new Mie(), new Jie(), new Jiong(), new Miao(),
                 new Cong(), new Companion(), new Mo(), new Chu(), new Dan(),
                 // 润
                 new Bathe(), new Blockade(), new Grove(), new Body(), new Guard(),
