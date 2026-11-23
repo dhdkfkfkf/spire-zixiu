@@ -36,6 +36,9 @@ $cp = @(
 $sources = Get-ChildItem -Recurse -Path $srcDir -Filter *.java
 & (Join-Path $Jdk 'bin\javac.exe') -encoding UTF-8 -source 1.8 -target 1.8 `
     -cp $cp -d $classesDir @($sources.FullName)
+if ($LASTEXITCODE -ne 0) {
+    throw "javac failed with exit code $LASTEXITCODE"
+}
 
 Copy-Item -Recurse -Force (Join-Path $resDir '*') $classesDir
 

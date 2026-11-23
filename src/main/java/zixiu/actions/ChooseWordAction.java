@@ -1,9 +1,12 @@
 package zixiu.actions;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndAddToDiscardEffect;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndAddToHandEffect;
 import zixiu.cards.CardComponents;
@@ -52,6 +55,14 @@ public class ChooseWordAction extends AbstractGameAction {
     }
 
     public static void putIntoHand(AbstractCard card) {
+        if (InputHelper.justClickedLeft || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            AbstractDungeon.actionManager.addToTop(new DelayedAddToHandAction(card));
+            return;
+        }
+        putIntoHandNow(card);
+    }
+
+    static void putIntoHandNow(AbstractCard card) {
         AbstractCard copy = card.makeStatEquivalentCopy();
         copy.current_x = -1000.0F * Settings.xScale;
         FusionTracker.markFresh(copy);

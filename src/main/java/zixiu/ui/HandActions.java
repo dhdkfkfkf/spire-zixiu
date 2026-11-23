@@ -142,22 +142,25 @@ public final class HandActions {
 
     public static void openFusion() {
         splitting = false;
-        // canPickZero = true：强制弹出选牌界面（否则 StSLib 在可选数 <= 2 时会自动完成），
-        // 0 张确认即取消。
+        // anyNumber = true：确定键一直可用，手上一张都没有时点确定就是取消；
+        // canPickZero = true：强制弹出选牌界面（否则 StSLib 在可选数 <= 2 时会自动完成）。
         AbstractDungeon.actionManager.addToBottom(new SelectCardsInHandAction(
-                2, "拼合（选两张部件）", false, true,
+                3, "选择你想拼合的牌（最多3张）", true, true,
                 CardComponents::isFusable, HandActions::executeFusion));
     }
 
     public static void openSplit() {
         splitting = true;
         AbstractDungeon.actionManager.addToBottom(new SelectCardsInHandAction(
-                1, "拆分（选一张）", false, true,
+                1, "拆分（选一张）", true, true,
                 HandActions::canSplit, HandActions::onSplitSelected));
     }
 
     public static void executeFusion(List<AbstractCard> cards) {
-        if (cards.size() != 2) {
+        if (cards.size() < 2) {
+            if (cards.size() == 1) {
+                ScreenToast.show("至少要两张牌才能合字");
+            }
             return;
         }
         List<Component> parts = CardComponents.expandAll(cards);
@@ -170,7 +173,7 @@ public final class HandActions {
         }
         logger.info("[zixiu] fuse parts=" + parts + " options=" + options);
         if (options.isEmpty()) {
-            ScreenToast.show("这两个字合不出结果");
+            ScreenToast.show("这几张牌合不出结果");
             return;
         }
 

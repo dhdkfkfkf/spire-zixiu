@@ -257,7 +257,7 @@
   },
   "zixiu:Shi": {
     "NAME": "仕",
-    "DESCRIPTION": "获得 !B! 点格挡。若你本回合拆解过牌，抽 !M! 张牌。"
+    "DESCRIPTION": "获得 !B! 点格挡。若你本回合拆解过牌，获得 !M! 点能量。"
   },
   "zixiu:Hui": {
     "NAME": "回",
@@ -265,7 +265,7 @@
   },
   "zixiu:Lu": {
     "NAME": "吕",
-    "DESCRIPTION": "抽 !M! 张牌。"
+    "DESCRIPTION": "获得 !M! 点能量。消耗。"
   },
   "zixiu:Ben": {
     "NAME": "本",
@@ -297,7 +297,7 @@
   },
   "zixiu:He": {
     "NAME": "合",
-    "DESCRIPTION": "每当你合出一个字，抽 1 张牌并获得 1 点格挡（每回合最多 !M! 次）。"
+    "DESCRIPTION": "每当你合出一个字，抽 1 张牌并获得 1 点格挡。"
   },
   "zixiu:Zuo": {
     "NAME": "坐",

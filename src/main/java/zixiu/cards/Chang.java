@@ -15,7 +15,7 @@ public class Chang extends ZixiuCard {
     public static final String GLYPH = "唱";
 
     public Chang() {
-        super(ID, 1, CardType.SKILL, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
+        super(ID, 0, CardType.SKILL, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
         this.baseMagicNumber = 2;
         this.magicNumber = 2;
     }

@@ -4,6 +4,7 @@ import basemod.BaseMod;
 import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditCharactersSubscriber;
 import basemod.interfaces.EditRelicsSubscriber;
+import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import com.badlogic.gdx.graphics.Color;
@@ -108,6 +109,7 @@ import zixiu.ui.SplitPreview;
 @SpireInitializer
 public class ZixiuMod implements
         EditStringsSubscriber,
+        EditKeywordsSubscriber,
         EditCardsSubscriber,
         EditCharactersSubscriber,
         EditRelicsSubscriber,
@@ -154,6 +156,16 @@ public class ZixiuMod implements
                 asset("cardui/bg_power_1024.png"),
                 asset("cardui/big_orb.png"),
                 asset("cardui/small_orb.png"));
+    }
+
+    @Override
+    public void receiveEditKeywords() {
+        BaseMod.addKeyword(new String[]{"灼烧", "burn"},
+                "回合结束时失去 X 点生命。层数不递减，与中毒不同。");
+        BaseMod.addKeyword(new String[]{"曝光", "exposure"},
+                "受到的伤害 +X；每受到一次伤害后层数减 1。");
+        BaseMod.addKeyword(new String[]{"墨迹未干", "ink"},
+                "本回合合出来的牌，当回合不能拆解。");
     }
 
     @Override
