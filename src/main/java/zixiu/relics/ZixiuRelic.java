@@ -3,7 +3,6 @@ package zixiu.relics;
 import basemod.abstracts.CustomRelic;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
-import zixiu.ZixiuMod;
 import zixiu.character.ZixiuEnums;
 import zixiu.core.ZixiuConfig;
 
@@ -17,8 +16,9 @@ import zixiu.core.ZixiuConfig;
  */
 public abstract class ZixiuRelic extends CustomRelic {
 
-    protected ZixiuRelic(String localId, String img, RelicTier tier, LandingSound sound) {
-        super(ZixiuMod.makeID(localId), img, tier, sound);
+    /** 子类传进来的已经是完整 ID（{@code ZixiuMod.makeID(...)} 之后的结果），这里不再加前缀。 */
+    protected ZixiuRelic(String relicId, String img, RelicTier tier, LandingSound sound) {
+        super(relicId, img, tier, sound);
     }
 
     @Override

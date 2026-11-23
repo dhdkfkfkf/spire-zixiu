@@ -1,5 +1,11 @@
 # 更新日志
 
+## 0.2.7
+
+修 0.2.6 的启动崩溃：遗物基类 `ZixiuRelic` 对已经带 `zixiu:` 前缀的 ID 又调了一次
+`ZixiuMod.makeID`，实际查的是 `zixiu:zixiu:TuBi`，`getRelicStrings` 返回 null，
+`AbstractRelic` 构造里直接 NPE，游戏一开就关。现在基类不再加前缀。
+
 ## 0.2.5
 
 修实机闪退：`BenPower`（本）的图集区域名写成了 `plated_armor`，原版图集里是 `platedarmor`。
