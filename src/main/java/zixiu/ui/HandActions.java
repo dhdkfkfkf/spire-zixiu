@@ -187,13 +187,11 @@ public final class HandActions {
             if (result != null) {
                 ChooseWordAction.putIntoHand(result);
             }
-            zixiu.core.RelicHooks.onFusion(AbstractDungeon.player);
-            triggerFusionEffects();
+            notifyFusion();
             return;
         }
         AbstractDungeon.actionManager.addToTop(new ChooseWordAction(options));
-        zixiu.core.RelicHooks.onFusion(AbstractDungeon.player);
-        triggerFusionEffects();
+        notifyFusion();
     }
 
     private static void onSplitSelected(List<AbstractCard> cards) {
@@ -247,6 +245,17 @@ public final class HandActions {
             AbstractDungeon.effectList.add(new ShowCardAndAddToDiscardEffect(
                     card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
         }
+    }
+
+    /** 合字触发：遗物 + 能力。外部（求解器）同步执行时也走这里。 */
+    public static void notifyFusion() {
+        zixiu.core.RelicHooks.onFusion(AbstractDungeon.player);
+        triggerFusionEffects();
+    }
+
+    /** 拆字触发：遗物 + 能力 + 本回合计数。 */
+    public static void notifySplit() {
+        triggerSplitEffects();
     }
 
     private static void triggerSplitEffects() {
