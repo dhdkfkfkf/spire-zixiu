@@ -65,14 +65,15 @@ public class ZixiuCardArtPatches {
         TextureAtlas.AtlasRegion ref = ImageMaster.CARD_BANNER_COMMON;
         float scale = __instance.drawScale * Settings.scale;
         // 方块印章：中心直接对准卡名文字的坐标（current_y + 175 * drawScale * Settings.scale）
-        float size = 84.0F;
+        float w = 230.0F;
+        float h = 70.0F;
         float cx = __instance.current_x;
         float cy = __instance.current_y + 175.0F * scale;
         sb.setColor(Color.WHITE);
         sb.draw(tex,
-                cx - size / 2.0F, cy - size / 2.0F,
-                size / 2.0F, size / 2.0F,
-                size, size,
+                cx - w / 2.0F, cy - h / 2.0F,
+                w / 2.0F, h / 2.0F,
+                w, h,
                 scale, scale, __instance.angle);
         return SpireReturn.Return(null);
     }

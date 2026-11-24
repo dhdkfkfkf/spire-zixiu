@@ -3,6 +3,7 @@ package zixiu.ui;
 import basemod.interfaces.PostRenderSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
@@ -29,6 +30,8 @@ public class HandActionButton implements PostUpdateSubscriber, PostRenderSubscri
     private static final float OFFSET_X = 40.0F;
 
     private final String label;
+
+    private static Texture glow;
     private final float offsetY;
     private final BooleanSupplier visible;
     private final BooleanSupplier enabled;
@@ -108,14 +111,24 @@ public class HandActionButton implements PostUpdateSubscriber, PostRenderSubscri
         } else {
             color = Color.WHITE;
         }
+        // 文字先描一层暗影，浅色背景上也读得清
+        sb.setColor(new Color(0.0F, 0.0F, 0.0F, 0.55F));
+        FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, label,
+                x + w / 2.0F, y + h / 2.0F - 2.0F * Settings.scale,
+                new Color(0.0F, 0.0F, 0.0F, 0.55F), 1.3F);
         FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, label,
                 x + w / 2.0F, y + h / 2.0F, color, 1.3F);
 
-        // 悬停时给一条细下划线，提示这里可以点
+        // 悬停时在文字后面点一盏金色光晕，代替原来的下划线
         if (on && hb.hovered) {
-            sb.setColor(new Color(1.0F, 0.90F, 0.55F, 0.9F));
-            sb.draw(ImageMaster.WHITE_SQUARE_IMG,
-                    x + w * 0.2F, y + h * 0.28F, w * 0.6F, 2.0F * Settings.scale);
+            if (glow == null) {
+                glow = ImageMaster.loadImage("zixiu/images/cardui/btn_glow.png");
+            }
+            if (glow != null) {
+                sb.setColor(new Color(1.0F, 1.0F, 1.0F, 0.55F));
+                sb.draw(glow, x + w * 0.5F - w * 0.9F, y + h * 0.5F - w * 0.9F,
+                        w * 1.8F, w * 1.8F);
+            }
         }
         sb.setColor(Color.WHITE);
     }
