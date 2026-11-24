@@ -27,9 +27,17 @@ public final class DeferredCardInsert implements PostUpdateSubscriber {
     private static int quiet = 0;
 
     public static void enqueue(AbstractCard card) {
+        // 不设上限：合字结果必须全部落地，否则材料已烧、字却没了。
+        // 求解器侧的重复调用由它自己的沙盒隔离处理。
         if (card != null) {
             PENDING.add(card);
         }
+    }
+
+    /** 清空待插入队列（求解器在沙盒前后调用，避免跨世界串状态）。 */
+    public static void reset() {
+        PENDING.clear();
+        quiet = 0;
     }
 
     public static int pending() {

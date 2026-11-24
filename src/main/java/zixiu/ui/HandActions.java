@@ -238,7 +238,8 @@ public final class HandActions {
             return;
         }
         card.current_x = -1000.0F * Settings.xScale;
-        // 拆出的部件即使手牌满也直接进手牌，避免玩家拆完看不到东西
+        // 拆出来的部件是虚无：回合结束自动消耗；本回合不占手牌上限
+        card.isEthereal = true;
         AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
                 card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }

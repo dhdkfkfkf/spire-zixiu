@@ -108,6 +108,7 @@ public final class PilotBridge {
 
         AbstractCard copy = result.makeStatEquivalentCopy();
         FusionTracker.markFresh(copy);
+        copy.isEthereal = true;
         AbstractDungeon.player.hand.addToHand(copy);
 
         HandActions.notifyFusion();
@@ -136,6 +137,7 @@ public final class PilotBridge {
             if (component == null) {
                 continue;
             }
+            component.isEthereal = true;
             AbstractDungeon.player.hand.addToHand(component);
         }
         HandActions.notifySplit();

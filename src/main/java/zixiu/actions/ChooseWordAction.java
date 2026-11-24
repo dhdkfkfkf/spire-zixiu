@@ -59,6 +59,8 @@ public class ChooseWordAction extends AbstractGameAction {
         AbstractCard copy = card.makeStatEquivalentCopy();
         copy.current_x = -1000.0F * Settings.xScale;
         FusionTracker.markFresh(copy);
+        // 合出来的牌是虚无：回合结束自动消耗；本回合不占手牌上限
+        copy.isEthereal = true;
         AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
                 copy, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }

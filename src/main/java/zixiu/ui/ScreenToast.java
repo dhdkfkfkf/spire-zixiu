@@ -17,6 +17,12 @@ public class ScreenToast implements PostUpdateSubscriber, PostRenderSubscriber {
     private static String message;
     private static float timer;
 
+    /** 清掉当前提示（沙盒切换时用）。 */
+    public static void reset() {
+        message = null;
+        timer = 0.0F;
+    }
+
     public static void show(String text) {
         message = text;
         timer = DURATION;
