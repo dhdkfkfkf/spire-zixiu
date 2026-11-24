@@ -28,8 +28,8 @@ import zixiu.ui.ScreenToast;
  * 九个字各有一次「言灵」，指针（amount = 1..9）决定接下来吃哪一个：
  * <ul>
  *   <li>没集齐：指针 = 已收集的字数，只在**回合开始**触发一次该字的言灵；</li>
- *   <li>集齐：指针从 1 开始，打出一张牌先按「组成单位数」推进 n，再触发新指针的言灵；
- *       另外按 1–9 可以手动指定并触发（见 {@link zixiu.ui.YanlingKeys}）。</li>
+ *   <li>集齐：指针从 1 开始，打出一张牌先按「组成单位数」推进 n，再触发新指针的言灵 ——
+ *       指针自己往 1→9 轮转，不需要手动选。</li>
  * </ul>
  * 「组成单位数」= 这张牌拆开有几个部件（部件牌 1、单字 1、双字 2、三字 3）。
  */
@@ -76,8 +76,8 @@ public class YanlingPower extends AbstractPower {
         int i = clamp(this.amount);
         this.description = "当前第 " + i + " 字「" + NAMES[i - 1] + "」：" + EFFECTS[i - 1]
                 + (InscriptionRelic.hasAll()
-                ? "（按 1-9 指定；打出 n 单位牌推进 n）"
-                : "（集齐九字后可按 1-9 指定、出牌推进）");
+                ? "（打出 n 单位牌推进 n，指针自动轮转）"
+                : "（集齐九字后出牌推进）");
     }
 
     // ---- 生命周期 ----
@@ -135,22 +135,6 @@ public class YanlingPower extends AbstractPower {
         yanling.trigger();
     }
 
-    /** 按 1–9 手动指定并触发（只有集齐后才允许）。 */
-    public static void triggerIndex(AbstractPlayer player, int index) {
-        if (player == null || !InscriptionRelic.hasAll()) {
-            return;
-        }
-        ensure(player);
-        AbstractPower power = player.getPower(POWER_ID);
-        if (!(power instanceof YanlingPower)) {
-            return;
-        }
-        YanlingPower yanling = (YanlingPower) power;
-        yanling.amount = clamp(index);
-        yanling.updateDescription();
-        yanling.trigger();
-    }
-
     /** 「在」的减费结算：打出耗能 ≥1 的牌时返还 1 点能量。 */
     public static boolean consumeDiscount(AbstractCard card) {
         if (!discountPending || card == null || card.costForTurn < 1) {
@@ -200,7 +184,7 @@ public class YanlingPower extends AbstractPower {
             return;
         }
         announced = true;
-        ScreenToast.show("九字真言·言灵：你领悟了九字真言的力量（按 1-9 指定言灵）");
+        ScreenToast.show("九字真言·言灵：你领悟了九字真言的力量");
     }
 
     private void advance(int units) {

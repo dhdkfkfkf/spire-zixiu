@@ -151,7 +151,6 @@ public class ZixiuMod implements
         BaseMod.subscribe(new CardPlayHook());
         BaseMod.subscribe(new ScreenToast());
         BaseMod.subscribe(new SplitPreview());
-        BaseMod.subscribe(new zixiu.ui.YanlingKeys());
         BaseMod.subscribe(new zixiu.ui.CharSelectRulesButton());
         BaseMod.subscribe(new zixiu.ui.FusionGlow());
         BaseMod.subscribe(new zixiu.ui.DeferredCardInsert());
