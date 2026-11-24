@@ -24,26 +24,33 @@ import zixiu.cards.ZixiuCard;
         paramtypes = {"com.badlogic.gdx.graphics.g2d.SpriteBatch", "float", "float"})
 public class ZixiuCardArtPatches {
 
-    private static TextureRegion banner;
+    private static TextureRegion common;
+    private static TextureRegion uncommon;
+    private static TextureRegion rare;
 
-    private static TextureRegion banner() {
-        if (banner == null) {
-            Texture tex = ImageMaster.loadImage("zixiu/images/cardui/banner.png");
-            if (tex != null) {
-                banner = new TextureRegion(tex);
-            }
-        }
-        return banner;
-    }
-
-    private static Color bannerTint(AbstractCard.CardRarity rarity) {
+    /** 单字牌用方块印章式匾额，按稀有度换贴图（木 / 银 / 金）。 */
+    private static TextureRegion banner(AbstractCard.CardRarity rarity) {
         if (rarity == AbstractCard.CardRarity.RARE) {
-            return new Color(1.0F, 0.92F, 0.72F, 1.0F);
+            if (rare == null) {
+                rare = load("banner_rare.png");
+            }
+            return rare;
         }
         if (rarity == AbstractCard.CardRarity.UNCOMMON) {
-            return new Color(0.88F, 0.92F, 1.0F, 1.0F);
+            if (uncommon == null) {
+                uncommon = load("banner_uncommon.png");
+            }
+            return uncommon;
         }
-        return new Color(0.86F, 0.82F, 0.78F, 1.0F);
+        if (common == null) {
+            common = load("banner_common.png");
+        }
+        return common;
+    }
+
+    private static TextureRegion load(String name) {
+        Texture tex = ImageMaster.loadImage("zixiu/images/cardui/" + name);
+        return tex == null ? null : new TextureRegion(tex);
     }
 
     @SpirePrefixPatch
@@ -51,25 +58,22 @@ public class ZixiuCardArtPatches {
         if (!(__instance instanceof ZixiuCard)) {
             return SpireReturn.Continue();
         }
-        TextureRegion tex = banner();
+        TextureRegion tex = banner(__instance.rarity);
         if (tex == null) {
             return SpireReturn.Continue();
         }
         TextureAtlas.AtlasRegion ref = ImageMaster.CARD_BANNER_COMMON;
         float scale = __instance.drawScale * Settings.scale;
-        // 匾额长度取原版一半、整体上移，避免压住卡图和碰到费用球
-        float w = ref.packedWidth * 0.5F;
-        float h = ref.packedHeight;
-        float cx = x + ref.offsetX;
-        float cy = y + ref.offsetY + 26.0F;
-        // 稀有度用匾额底色区分：普通偏木、罕见偏银、稀有偏金
-        sb.setColor(bannerTint(__instance.rarity));
-        sb.draw(tex,
-                cx - w / 2.0F, cy - h / 2.0F,
-                w / 2.0F, h / 2.0F,
-                w, h,
-                scale, scale, __instance.angle);
+        // 方块印章：中心直接对准卡名文字的坐标（current_y + 175 * drawScale * Settings.scale）
+        float size = 84.0F;
+        float cx = __instance.current_x;
+        float cy = __instance.current_y + 175.0F * scale;
         sb.setColor(Color.WHITE);
+        sb.draw(tex,
+                cx - size / 2.0F, cy - size / 2.0F,
+                size / 2.0F, size / 2.0F,
+                size, size,
+                scale, scale, __instance.angle);
         return SpireReturn.Return(null);
     }
 }
