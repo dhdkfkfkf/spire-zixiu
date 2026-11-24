@@ -135,6 +135,11 @@ public final class CardComponents {
         return factory == null ? null : factory.get();
     }
 
+    /** 这个字有没有实现成卡牌（配方表是 85 字全量，能合的未必有卡）。 */
+    public static boolean isImplemented(String glyph) {
+        return FACTORY.containsKey(glyph);
+    }
+
     public static AbstractCard createComponent(Component component) {
         switch (component) {
             case HUO:
@@ -168,6 +173,19 @@ public final class CardComponents {
      * 只认部件牌：成品牌要先拆再合（拆免费且不限次数），这样「合」的选牌界面里只会出现材料，
      * 不会和「拆」的界面混在一起。
      */
+
+    /** 拆/合产出的牌：标记虚无，并把"虚无"写进描述，玩家悬停能看到词条。 */
+    public static void markEthereal(AbstractCard card) {
+        if (card == null) {
+            return;
+        }
+        card.isEthereal = true;
+        if (card.rawDescription != null && !card.rawDescription.contains("虚无")) {
+            card.rawDescription = card.rawDescription + " 虚无 。";
+            card.initializeDescription();
+        }
+    }
+
     public static boolean isFusable(AbstractCard card) {
         return card instanceof ComponentCard;
     }

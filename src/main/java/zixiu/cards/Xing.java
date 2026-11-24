@@ -16,8 +16,8 @@ public class Xing extends ZixiuCard {
 
     public Xing() {
         super(ID, 1, CardType.SKILL, CardRarity.COMMON, CardTarget.SELF);
-        this.baseMagicNumber = 3;
-        this.magicNumber = 3;
+        this.baseMagicNumber = 6;
+        this.magicNumber = 6;
     }
 
     @Override

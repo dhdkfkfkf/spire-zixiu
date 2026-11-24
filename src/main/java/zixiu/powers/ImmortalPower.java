@@ -21,7 +21,7 @@ public class ImmortalPower extends AbstractPower {
         this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("intangible");
+        PowerIcons.apply(this, "Immortal");
         updateDescription();
     }
 

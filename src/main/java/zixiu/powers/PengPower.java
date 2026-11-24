@@ -21,7 +21,7 @@ public class PengPower extends AbstractPower {
         this.amount = perTurn;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("dexterity");
+        PowerIcons.apply(this, "Peng");
         updateDescription();
     }
 

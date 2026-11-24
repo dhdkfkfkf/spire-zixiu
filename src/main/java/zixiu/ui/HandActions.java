@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import zixiu.actions.ChooseWordAction;
 import zixiu.cards.CardComponents;
 import zixiu.core.FusionTracker;
+import zixiu.core.ZixiuConfig;
 import zixiu.lexicon.Component;
 import zixiu.lexicon.WordSpec;
 import zixiu.lexicon.ZixiuLexicon;
@@ -33,11 +34,42 @@ public final class HandActions {
     /** 当前选牌界面是拆解还是拼合，供 HandHints 决定显示哪种提示。 */
     public static boolean splitting = false;
 
+    /** 当前选牌界面是不是合字选牌（合字界面会给还能合的牌加金光，见 FusionGlow）。 */
+    public static boolean fusing = false;
+
+    /** 一次最多放几张材料。 */
+    public static final int MAX_FUSION_CARDS = 3;
+
+    /** 选牌界面是否真的弹出过 —— 用来区分「还没弹出」和「已经关掉」。 */
+    private static boolean selectScreenSeen;
+
+    /**
+     * 每帧同步选牌界面状态。
+     *
+     * 不能简单写成「screen != HAND_SELECT 就清空标志」：openFusion() 是点按钮当帧执行的，
+     * 选牌界面要等 action 队列下一帧才弹出，中间那一帧的标志会被立刻清掉，
+     * 结果就是整个界面里都没有任何提示。
+     */
+    public static void tickSelectScreen() {
+        boolean on = AbstractDungeon.screen == AbstractDungeon.CurrentScreen.HAND_SELECT;
+        if (on) {
+            selectScreenSeen = true;
+        } else if (selectScreenSeen) {
+            selectScreenSeen = false;
+            splitting = false;
+            fusing = false;
+        }
+    }
+
     private HandActions() {
     }
 
     public static boolean inCombat() {
         if (AbstractDungeon.player == null) {
+            return false;
+        }
+        // 拆合是字修独有的操作：其他角色（含自定义角色）不显示按钮
+        if (!(AbstractDungeon.player instanceof zixiu.character.ZixiuCharacter)) {
             return false;
         }
         if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE) {
@@ -142,15 +174,17 @@ public final class HandActions {
 
     public static void openFusion() {
         splitting = false;
+        fusing = true;
         // anyNumber = true：确定键一直可用，手上一张都没有时点确定就是取消；
         // canPickZero = true：强制弹出选牌界面（否则 StSLib 在可选数 <= 2 时会自动完成）。
         AbstractDungeon.actionManager.addToBottom(new SelectCardsInHandAction(
-                3, "选择你想拼合的牌（最多3张）", true, true,
+                MAX_FUSION_CARDS, "选择你想拼合的牌（最多3张）", true, true,
                 CardComponents::isFusable, HandActions::executeFusion));
     }
 
     public static void openSplit() {
         splitting = true;
+        fusing = false;
         AbstractDungeon.actionManager.addToBottom(new SelectCardsInHandAction(
                 1, "拆分（选一张）", true, true,
                 HandActions::canSplit, HandActions::onSplitSelected));
@@ -177,7 +211,14 @@ public final class HandActions {
             return;
         }
 
-        for (AbstractCard card : cards) {
+        // 升级传递：升级材料数 >= 未升级材料数 → 合出来的牌是升级版
+        boolean upgradeResult = shouldUpgradeResult(cards);
+
+        // 必须遍历副本：StSLib 传进来的 cards 就是 handCardSelectScreen.selectedCards.group，
+        // consumeCard 会从里面删元素——直接遍历会在删掉第一张后让 hasNext() 变 false，
+        // 循环静默结束，剩下的材料被选牌界面还回手牌（两个木合林 → 剩一个木）。
+        // 三张材料时更糟：第二次 next() 会抛 ConcurrentModificationException。
+        for (AbstractCard card : new ArrayList<AbstractCard>(cards)) {
             consumeCard(card);
         }
         AbstractDungeon.player.hand.refreshHandLayout();
@@ -185,12 +226,15 @@ public final class HandActions {
         if (options.size() == 1) {
             AbstractCard result = CardComponents.create(options.get(0).glyph());
             if (result != null) {
+                if (upgradeResult) {
+                    upgradeIfPossible(result);
+                }
                 ChooseWordAction.putIntoHand(result);
             }
             notifyFusion();
             return;
         }
-        AbstractDungeon.actionManager.addToTop(new ChooseWordAction(options));
+        AbstractDungeon.actionManager.addToTop(new ChooseWordAction(options, upgradeResult));
         notifyFusion();
     }
 
@@ -216,12 +260,35 @@ public final class HandActions {
         List<Component> parts = ZixiuLexicon.partsOf(glyph);
         logger.info("[zixiu] split " + glyph + " -> " + parts);
 
+        boolean upgraded = card.upgraded;
         consumeCard(card);
         AbstractDungeon.player.hand.refreshHandLayout();
         for (Component part : parts) {
-            addToHand(CardComponents.createComponent(part));
+            AbstractCard piece = CardComponents.createComponent(part);
+            if (upgraded) {
+                upgradeIfPossible(piece);
+            }
+            addToHand(piece);
         }
         triggerSplitEffects();
+    }
+
+    /** 升级材料数 >= 未升级材料数 → 结果升级（UI 与 PilotBridge 共用）。 */
+    public static boolean shouldUpgradeResult(List<AbstractCard> cards) {
+        int upgraded = 0;
+        for (AbstractCard card : cards) {
+            if (card.upgraded) {
+                upgraded++;
+            }
+        }
+        return upgraded * 2 >= cards.size();
+    }
+
+    /** 能升级就升级（UI 与 PilotBridge 共用）。 */
+    public static void upgradeIfPossible(AbstractCard card) {
+        if (card != null && !card.upgraded && card.canUpgrade()) {
+            card.upgrade();
+        }
     }
 
     /**
@@ -230,7 +297,12 @@ public final class HandActions {
      */
     private static void consumeCard(AbstractCard card) {
         AbstractDungeon.handCardSelectScreen.selectedCards.group.remove(card);
-        AbstractDungeon.player.hand.moveToExhaustPile(card);
+        // 方案 1：进弃牌堆（下回合还能摸回来）；方案 2：进消耗堆
+        if (ZixiuConfig.exhaustsMaterials()) {
+            AbstractDungeon.player.hand.moveToExhaustPile(card);
+        } else {
+            AbstractDungeon.player.hand.moveToDiscardPile(card);
+        }
     }
 
     private static void addToHand(AbstractCard card) {
@@ -238,8 +310,10 @@ public final class HandActions {
             return;
         }
         card.current_x = -1000.0F * Settings.xScale;
-        // 拆出来的部件是虚无：回合结束自动消耗；本回合不占手牌上限
-        card.isEthereal = true;
+        // 方案 1：产出牌虚无（回合结束消耗）；方案 2：产出牌保留
+        if (ZixiuConfig.etherealResults()) {
+            zixiu.cards.CardComponents.markEthereal(card);
+        }
         AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
                 card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }

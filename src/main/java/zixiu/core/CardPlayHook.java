@@ -3,23 +3,23 @@ package zixiu.core;
 import basemod.interfaces.OnCardUseSubscriber;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAction;
+import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
-import com.megacrit.cardcrawl.powers.VulnerablePower;
-import com.megacrit.cardcrawl.powers.WeakPower;
 import zixiu.cards.CardComponents;
 import zixiu.powers.CausePower;
 import zixiu.powers.ChainPower;
 import zixiu.lexicon.ZixiuLexicon;
+import zixiu.ZixiuMod;
 import zixiu.powers.OsmanthusPower;
-import zixiu.relics.InscriptionRelic;
+import zixiu.powers.YanlingPower;
+import zixiu.powers.TaPower;
 
 /**
  * 打出卡牌时的全局钩子：桂（技能牌）、因（成品牌）、九字遗物、真言。
@@ -32,6 +32,11 @@ public class CardPlayHook implements OnCardUseSubscriber {
         if (player == null) {
             return;
         }
+        // 沓：上一张牌的翻倍窗口到此为止；这一张如果是攻击牌，消耗一层并开窗
+        TaPower.closeWindow();
+        if (card.type == AbstractCard.CardType.ATTACK) {
+            TaPower.onAttackCardPlayed(player);
+        }
         if (card.type == AbstractCard.CardType.SKILL) {
             AbstractPower gui = player.getPower(OsmanthusPower.POWER_ID);
             if (gui instanceof OsmanthusPower) {
@@ -39,7 +44,8 @@ public class CardPlayHook implements OnCardUseSubscriber {
             }
         }
         String glyph = CardComponents.glyphOf(card);
-        if (glyph != null) {
+        // 连书现在是初始遗物的能力，没有这件遗物就不接链
+        if (glyph != null && player.hasRelic(ZixiuMod.makeID(zixiu.relics.LianShu.ID))) {
             AbstractPower yin = player.getPower(CausePower.POWER_ID);
             if (yin instanceof CausePower) {
                 ((CausePower) yin).onWordPlayed();
@@ -54,8 +60,11 @@ public class CardPlayHook implements OnCardUseSubscriber {
             }
         }
         RelicHooks.onCardPlayed(player, card);
-        if (InscriptionRelic.hasAll()) {
-            applyTrueWord(player);
+        // 九字真言·言灵：集齐后每张牌按组成单位数轮转并触发一次
+        YanlingPower.onCardPlayed(player, card);
+        // 言灵「在」：上一轮给的减费在这里结算（牌已付费，返还 1 点）
+        if (YanlingPower.consumeDiscount(card)) {
+            AbstractDungeon.actionManager.addToBottom(new GainEnergyAction(1));
         }
     }
 
@@ -74,19 +83,4 @@ public class CardPlayHook implements OnCardUseSubscriber {
         }
     }
 
-    /** 真言：集齐九字后，每打出一张牌，所有敌人获得 1 层虚弱与 1 层易伤。 */
-    private static void applyTrueWord(AbstractPlayer player) {
-        if (AbstractDungeon.getMonsters() == null) {
-            return;
-        }
-        for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
-            if (monster == null || monster.isDeadOrEscaped()) {
-                continue;
-            }
-            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, player,
-                    new WeakPower(monster, 1, false), 1));
-            AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(monster, player,
-                    new VulnerablePower(monster, 1, false), 1));
-        }
-    }
 }

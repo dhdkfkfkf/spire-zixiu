@@ -17,3 +17,7 @@ hs_err_pid*.log
 
 # 反编译的游戏类
 research/javap/
+
+# 临时工作区与 Python 缓存
+.scratch/
+__pycache__/

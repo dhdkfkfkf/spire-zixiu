@@ -23,7 +23,7 @@ public class ChainPower extends AbstractPower {
         this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("flex");
+        PowerIcons.apply(this, "Chain");
         updateDescription();
     }
 
@@ -54,12 +54,7 @@ public class ChainPower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "本回合连书 " + this.amount + "：每接一张成品牌，对所有敌人造成 "
-                + (2 * this.amount) + " 点伤害。";
-    }
-
-    @Override
-    public void atStartOfTurn() {
-        addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, POWER_ID));
+        this.description = "连书 " + this.amount + "：每接一张与上一张共享部件的成品牌，"
+                + "对所有敌人造成 " + (2 * this.amount) + " 点伤害。连书可以跨回合续上。";
     }
 }

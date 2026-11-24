@@ -21,7 +21,7 @@ public class FlourishPower extends AbstractPower {
         this.amount = cards;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("dexterity");
+        PowerIcons.apply(this, "Flourish");
         updateDescription();
     }
 

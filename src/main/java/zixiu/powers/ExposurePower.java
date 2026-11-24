@@ -25,7 +25,7 @@ public class ExposurePower extends AbstractPower {
         this.amount = amount;
         this.type = PowerType.DEBUFF;
         this.isTurnBased = false;
-        loadRegion("vulnerable");
+        PowerIcons.apply(this, "Exposure");
         updateDescription();
     }
 
@@ -39,7 +39,12 @@ public class ExposurePower extends AbstractPower {
         if (this.amount <= 0) {
             return damage;
         }
-        return damage + this.amount;
+        int bonus = this.amount;
+        // 沓：窗口内（正在结算被打出的那张攻击牌）曝光加成翻倍
+        if (type == DamageInfo.DamageType.NORMAL && TaPower.isWindowOpenFor(this.owner)) {
+            bonus *= 2;
+        }
+        return damage + bonus;
     }
 
     @Override

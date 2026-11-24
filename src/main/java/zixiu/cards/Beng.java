@@ -19,15 +19,40 @@ public class Beng extends ZixiuCard {
     public Beng() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
         this.baseDamage = 11;
+        this.baseMagicNumber = 4;
+        this.magicNumber = 4;
+    }
+
+    @Override
+    public void applyPowers() {
+        // 原版「完美打击」的写法：临时把拆解加成并进基础伤害
+        int realBaseDamage = this.baseDamage;
+        this.baseDamage = realBaseDamage + splitBonus();
+        super.applyPowers();
+        this.baseDamage = realBaseDamage;
+        this.isDamageModified = this.damage != this.baseDamage;
+    }
+
+    @Override
+    public void calculateCardDamage(AbstractMonster mo) {
+        int realBaseDamage = this.baseDamage;
+        this.baseDamage = realBaseDamage + splitBonus();
+        super.calculateCardDamage(mo);
+        this.baseDamage = realBaseDamage;
+        this.isDamageModified = this.damage != this.baseDamage;
+    }
+
+    private int splitBonus() {
+        return FusionTracker.splitsThisTurn() * this.magicNumber;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        int damage = this.damage + 4 * FusionTracker.splitsThisTurn();
+        // this.damage 已含拆解加成
         for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
             if (!monster.isDeadOrEscaped()) {
                 AbstractDungeon.actionManager.addToBottom(new DamageAction((AbstractCreature) monster,
-                        new DamageInfo(p, damage, this.damageTypeForTurn),
+                        new DamageInfo(p, this.damage, this.damageTypeForTurn),
                         AbstractGameAction.AttackEffect.BLUNT_HEAVY));
             }
         }

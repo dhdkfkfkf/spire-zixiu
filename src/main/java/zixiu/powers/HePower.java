@@ -20,7 +20,7 @@ public class HePower extends AbstractPower {
         this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("flex");
+        PowerIcons.apply(this, "He");
         updateDescription();
     }
 

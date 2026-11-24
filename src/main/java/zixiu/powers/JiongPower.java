@@ -19,7 +19,7 @@ public class JiongPower extends AbstractPower {
         this.amount = layers;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("focus");
+        PowerIcons.apply(this, "Jiong");
         updateDescription();
     }
 

@@ -23,7 +23,7 @@ public class WholePower extends AbstractPower {
         this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("dexterity");
+        PowerIcons.apply(this, "Whole");
         updateDescription();
     }
 

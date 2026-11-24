@@ -21,7 +21,7 @@ public class JiePower extends AbstractPower {
         this.amount = BONUS;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("flex");
+        PowerIcons.apply(this, "Jie");
         updateDescription();
     }
 

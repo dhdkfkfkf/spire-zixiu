@@ -37,6 +37,8 @@ public class Qiu extends ZixiuCard {
         if (!this.upgraded) {
             upgradeName();
             upgradeMagicNumber(1);
+            // 升级后费用降为 0（层数加成保留）
+            upgradeBaseCost(0);
         }
     }
 }

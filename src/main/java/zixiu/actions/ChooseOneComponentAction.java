@@ -54,21 +54,19 @@ public class ChooseOneComponentAction extends AbstractGameAction {
         this.tickDuration();
     }
 
+    /** 从 10 个部件里随机抽 3 张（以前固定给 火/木/口）。 */
     private ArrayList<AbstractCard> generateChoices() {
-        ArrayList<AbstractCard> pool = componentPool();
+        ArrayList<zixiu.lexicon.Component> pool =
+                new ArrayList<zixiu.lexicon.Component>(java.util.Arrays.asList(
+                        zixiu.lexicon.Component.values()));
         ArrayList<AbstractCard> choices = new ArrayList<AbstractCard>();
-        int count = Math.min(3, pool.size());
-        for (int i = 0; i < count; i++) {
-            choices.add(pool.get(i));
+        for (int i = 0; i < 3 && !pool.isEmpty(); i++) {
+            int index = AbstractDungeon.cardRandomRng.random(pool.size() - 1);
+            AbstractCard card = zixiu.cards.CardComponents.createComponent(pool.remove(index));
+            if (card != null) {
+                choices.add(card);
+            }
         }
         return choices;
-    }
-
-    private ArrayList<AbstractCard> componentPool() {
-        ArrayList<AbstractCard> pool = new ArrayList<AbstractCard>();
-        pool.add(new Huo());
-        pool.add(new Mu());
-        pool.add(new Kou());
-        return pool;
     }
 }

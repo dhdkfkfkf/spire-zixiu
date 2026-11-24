@@ -16,13 +16,15 @@ public class Fu extends ZixiuCard {
     public Fu() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ENEMY);
         this.baseDamage = 16;
+        this.baseMagicNumber = 26;
+        this.magicNumber = 26;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         int damage = this.damage;
-        if (m.currentHealth * 2 <= m.maxHealth) {
-            damage += 10;
+        if (m != null && m.currentHealth * 2 <= m.maxHealth) {
+            damage = this.magicNumber;
         }
         AbstractDungeon.actionManager.addToBottom(new DamageAction(m,
                 new DamageInfo(p, damage, this.damageTypeForTurn),
@@ -38,7 +40,9 @@ public class Fu extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
+            // 两个数值都强化：主伤害 16→20，残血替换伤害 26→30
             upgradeDamage(4);
+            upgradeMagicNumber(4);
         }
     }
 }

@@ -2,7 +2,7 @@ package zixiu.character;
 
 import basemod.abstracts.CustomPlayer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
@@ -12,17 +12,17 @@ import com.megacrit.cardcrawl.core.EnergyManager;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
-import com.megacrit.cardcrawl.helpers.ImageMaster;
+
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
-import com.megacrit.cardcrawl.ui.panels.energyorb.EnergyOrbRed;
 import zixiu.ZixiuMod;
 import zixiu.cards.Jin;
+import zixiu.ui.ZixiuEnergyOrb;
 
 import java.util.ArrayList;
 
 public class ZixiuCharacter extends CustomPlayer {
 
-    public static final String NAME = "字修(箓生)";
+    public static final String NAME = "砚秋";
     public static final int STARTING_HP = 70;
     public static final int MAX_HP = 70;
     public static final int STARTING_GOLD = 99;
@@ -41,7 +41,7 @@ public class ZixiuCharacter extends CustomPlayer {
     private static final String CORPSE_IMG = "zixiu/images/char/corpse.png";
 
     public ZixiuCharacter(String name, AbstractPlayer.PlayerClass playerClass) {
-        super(name, playerClass, new EnergyOrbRed(), new StaticAnimation());
+        super(name, playerClass, new ZixiuEnergyOrb(), new StaticAnimation());
         initializeClass(CHAR_IMG, SHOULDER_2, SHOULDER_1, CORPSE_IMG, getLoadout(),
                 20.0F, -10.0F, 220.0F, 290.0F, new EnergyManager(ENERGY_PER_TURN));
     }
@@ -67,13 +67,16 @@ public class ZixiuCharacter extends CustomPlayer {
     public ArrayList<String> getStartingRelics() {
         ArrayList<String> relics = new ArrayList<String>();
         relics.add(ZixiuMod.makeID("TuBi"));
+        relics.add(ZixiuMod.makeID(zixiu.relics.LianShu.ID));
         return relics;
     }
 
     @Override
     public CharSelectInfo getLoadout() {
         return new CharSelectInfo(NAME,
-                "似乎很神秘的落魄书生，以一种奇怪的方式战斗，他手上这本书就是他的武器，嘴里不断絮叨着「解箓」「成箓」。",
+                // 选角界面的简介是按空格折行的，纯中文不会自动换行，所以手动断成两行
+                "旧家出身的公子，家道中落后只剩一支笔、一方砚。\n"
+                        + "他不修仙、不炼丹，只信手里的字：拆开是道理，合上是命。",
                 STARTING_HP, MAX_HP, 0, STARTING_GOLD, CARD_DRAW,
                 this, getStartingRelics(), getStartingDeck(), false);
     }
@@ -118,15 +121,6 @@ public class ZixiuCharacter extends CustomPlayer {
         return FontHelper.energyNumFontRed;
     }
 
-    /**
-     * CustomPlayer 的默认实现只在 energyOrb 是 CustomEnergyOrb 时才返回贴图，否则直接抛异常。
-     * 我们用官方的红球，所以这里要自己给。
-     */
-    @Override
-    public Texture getEnergyImage() {
-        return ImageMaster.loadImage("zixiu/images/ui/orb.png");
-    }
-
     @Override
     public ArrayList<AbstractCard> getCardPool(ArrayList<AbstractCard> tmpPool) {
         CardLibrary.addCardsIntoPool(tmpPool, ZixiuEnums.ZIXIU_COLOR);
@@ -135,7 +129,7 @@ public class ZixiuCharacter extends CustomPlayer {
 
     @Override
     public String getVampireText() {
-        return "字修端起砚台，问你要不要喝一口。";
+        return "砚秋端起砚台，问你要不要喝一口。";
     }
 
     @Override
@@ -170,6 +164,44 @@ public class ZixiuCharacter extends CustomPlayer {
     @Override
     public String getCustomModeCharacterButtonSoundKey() {
         return "ATTACK_DAGGER_6";
+    }
+
+    /**
+     * 通关动画。图片放在下面这几个路径，四张都齐了才启用；缺一张就退回原版结尾。
+     * 尺寸全部 1920×1200（和原版 images/scenes/* 一致）。
+     */
+    private static final String CUTSCENE_BG = "zixiu/images/scenes/yanqiu_bg.jpg";
+    private static final String[] CUTSCENE_PANELS = {
+            "zixiu/images/scenes/yanqiu1.png",
+            "zixiu/images/scenes/yanqiu2.png",
+            "zixiu/images/scenes/yanqiu3.png"
+    };
+
+    @Override
+    public com.badlogic.gdx.graphics.Texture getCutsceneBg() {
+        return exists(CUTSCENE_BG)
+                ? com.megacrit.cardcrawl.helpers.ImageMaster.loadImage(CUTSCENE_BG)
+                : null;
+    }
+
+    @Override
+    public java.util.List<com.megacrit.cardcrawl.cutscenes.CutscenePanel> getCutscenePanels() {
+        for (String path : CUTSCENE_PANELS) {
+            if (!exists(path)) {
+                return null;
+            }
+        }
+        java.util.ArrayList<com.megacrit.cardcrawl.cutscenes.CutscenePanel> panels =
+                new java.util.ArrayList<com.megacrit.cardcrawl.cutscenes.CutscenePanel>();
+        for (String path : CUTSCENE_PANELS) {
+            panels.add(new com.megacrit.cardcrawl.cutscenes.CutscenePanel(path));
+        }
+        return panels;
+    }
+
+    private static boolean exists(String path) {
+        return com.badlogic.gdx.Gdx.files != null
+                && com.badlogic.gdx.Gdx.files.internal(path).exists();
     }
 
     @Override

@@ -38,6 +38,56 @@ public final class PilotBridge {
     private PilotBridge() {
     }
 
+    /** 当前连书数（没有连书遗物时也照实返回，链是否生效看 {@link #chainRelic()}）。 */
+    public static int chain() {
+        return FusionTracker.chain();
+    }
+
+    /** 是否带着连书遗物（连书接链的前提）。 */
+    public static boolean chainRelic() {
+        return AbstractDungeon.player != null
+                && AbstractDungeon.player.hasRelic(zixiu.ZixiuMod.makeID(zixiu.relics.LianShu.ID));
+    }
+
+    /** 「沓」还欠几次曝光翻倍。 */
+    public static int taCharges() {
+        if (AbstractDungeon.player == null) {
+            return 0;
+        }
+        AbstractPower ta = AbstractDungeon.player.getPower(zixiu.powers.TaPower.POWER_ID);
+        return ta == null ? 0 : ta.amount;
+    }
+
+    /** 「沓」的翻倍窗口是否正开着（正在结算那张攻击牌）。 */
+    public static boolean taWindowOpen() {
+        return zixiu.powers.TaPower.windowOpen();
+    }
+
+    /** 言灵指针 1..9，没有这个能力时返回 0。 */
+    public static int yanlingIndex() {
+        return zixiu.powers.YanlingPower.index(AbstractDungeon.player);
+    }
+
+    /** 言灵「在」的减费欠账。 */
+    public static boolean yanlingDiscountPending() {
+        return zixiu.powers.YanlingPower.discountPending();
+    }
+
+    /** 本次战斗累计合字次数（「因」的伤害基数）。 */
+    public static int fusionsThisCombat() {
+        return FusionTracker.fusionsThisCombat();
+    }
+
+    /** 拆合规则方案：1 = 产出虚无/材料保留，2 = 产出保留/材料消耗。 */
+    public static int fusionMode() {
+        return zixiu.core.ZixiuConfig.fusionMode();
+    }
+
+    /** 快照全部需要镜像的静态量；{@link zixiu.compat.PilotStatics#restore()} 写回。 */
+    public static zixiu.compat.PilotStatics captureStatics() {
+        return zixiu.compat.PilotStatics.capture();
+    }
+
     /** 一张牌能不能当合字材料。成品牌按配方展开，部件牌算一个部件。 */
     public static boolean canFuse(AbstractCard card) {
         return card != null && CardComponents.isFusable(card);
@@ -89,8 +139,21 @@ public final class PilotBridge {
         return FusionTracker.fusionsThisTurn();
     }
 
+    /** 材料去处：方案 2 进消耗堆，方案 1 进弃牌堆（与 HandActions.consumeCard 一致）。 */
+    private static void moveMaterial(AbstractCard card) {
+        if (zixiu.core.ZixiuConfig.exhaustsMaterials()) {
+            AbstractDungeon.player.hand.moveToExhaustPile(card);
+        } else {
+            AbstractDungeon.player.hand.moveToDiscardPile(card);
+        }
+    }
+
     /**
-     * 同步合字：消耗这些材料，把结果放进手牌，并按正常流程触发遗物/能力/计数。
+     * 同步合字：和 {@link HandActions#executeFusion} 完全同口径——
+     * 材料去处看 {@link zixiu.core.ZixiuConfig#exhaustsMaterials()}（消耗堆 / 弃牌堆），
+     * 产出是否虚无看 {@link zixiu.core.ZixiuConfig#etherealResults()}，
+     * 升级按「升级材料数 ≥ 未升级材料数」传递。
+     *
      * 调用方负责先用 {@link #fusionResults} 过滤出合法组合。
      */
     public static void resolveFusion(List<AbstractCard> cards, String glyph) {
@@ -101,25 +164,29 @@ public final class PilotBridge {
         if (result == null) {
             return;
         }
+        boolean upgradeResult = HandActions.shouldUpgradeResult(cards);
         for (AbstractCard card : new ArrayList<AbstractCard>(cards)) {
-            AbstractDungeon.player.hand.moveToExhaustPile(card);
+            moveMaterial(card);
         }
         AbstractDungeon.player.hand.refreshHandLayout();
 
+        if (upgradeResult) {
+            HandActions.upgradeIfPossible(result);
+        }
         AbstractCard copy = result.makeStatEquivalentCopy();
         FusionTracker.markFresh(copy);
-        copy.isEthereal = true;
+        if (zixiu.core.ZixiuConfig.etherealResults()) {
+            zixiu.cards.CardComponents.markEthereal(copy);
+        }
         AbstractDungeon.player.hand.addToHand(copy);
 
+        // notifyFusion() 里已经含「合」的触发（HePower），不要再单独调一次
         HandActions.notifyFusion();
-        AbstractPower he = AbstractDungeon.player.getPower(HePower.POWER_ID);
-        if (he instanceof HePower) {
-            ((HePower) he).onFusion();
-        }
     }
 
     /**
-     * 同步拆字：原牌进消耗堆，部件直接进手牌，并触发拆解相关的能力。
+     * 同步拆字：口径同 {@link HandActions#executeSplit}——
+     * 源牌去处看方案（消耗堆 / 弃牌堆），部件继承源牌的升级状态，产出是否虚无也看方案。
      */
     public static void resolveSplit(AbstractCard card) {
         String glyph = CardComponents.glyphOf(card);
@@ -130,14 +197,20 @@ public final class PilotBridge {
         if (parts.isEmpty()) {
             return;
         }
-        AbstractDungeon.player.hand.moveToExhaustPile(card);
+        boolean upgraded = card.upgraded;
+        moveMaterial(card);
         AbstractDungeon.player.hand.refreshHandLayout();
         for (Component part : parts) {
             AbstractCard component = CardComponents.createComponent(part);
             if (component == null) {
                 continue;
             }
-            component.isEthereal = true;
+            if (upgraded) {
+                HandActions.upgradeIfPossible(component);
+            }
+            if (zixiu.core.ZixiuConfig.etherealResults()) {
+                zixiu.cards.CardComponents.markEthereal(component);
+            }
             AbstractDungeon.player.hand.addToHand(component);
         }
         HandActions.notifySplit();

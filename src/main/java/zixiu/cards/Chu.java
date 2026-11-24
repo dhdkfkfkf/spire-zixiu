@@ -25,10 +25,33 @@ public class Chu extends ZixiuCard {
     }
 
     @Override
+    public void applyPowers() {
+        // 原版「完美打击」的写法：临时把拆解加成并进基础伤害，力量/易伤照常参与
+        int realBaseDamage = this.baseDamage;
+        this.baseDamage = realBaseDamage + splitBonus();
+        super.applyPowers();
+        this.baseDamage = realBaseDamage;
+        this.isDamageModified = this.damage != this.baseDamage;
+    }
+
+    @Override
+    public void calculateCardDamage(AbstractMonster mo) {
+        int realBaseDamage = this.baseDamage;
+        this.baseDamage = realBaseDamage + splitBonus();
+        super.calculateCardDamage(mo);
+        this.baseDamage = realBaseDamage;
+        this.isDamageModified = this.damage != this.baseDamage;
+    }
+
+    private int splitBonus() {
+        return FusionTracker.splitsThisTurn() * this.magicNumber;
+    }
+
+    @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        int bonus = FusionTracker.splitsThisTurn() * this.magicNumber;
+        // this.damage 已含拆解加成
         AbstractDungeon.actionManager.addToBottom(new DamageAction(m,
-                new DamageInfo(p, this.damage + bonus, this.damageTypeForTurn),
+                new DamageInfo(p, this.damage, this.damageTypeForTurn),
                 AbstractGameAction.AttackEffect.SMASH));
     }
 

@@ -20,9 +20,9 @@ public class SplitPreview implements PostUpdateSubscriber, PostRenderSubscriber 
 
     @Override
     public void receivePostUpdate() {
-        if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.HAND_SELECT) {
-            HandActions.splitting = false;
-        }
+        // 标志清理统一交给 HandActions：选牌界面是 action 队列下一帧才弹出来的，
+        // 这里直接按 screen 清，会把刚点出来的状态立刻抹掉。
+        HandActions.tickSelectScreen();
     }
 
     @Override

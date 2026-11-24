@@ -1,62 +1,57 @@
-# 字修 · Zixiu
+# 字修——汉字拆合玩法
 
-《杀戮尖塔 1》的角色 Mod：把汉字拆开、再合起来打。
+《杀戮尖塔 1》的角色 Mod：**把汉字拆开、再合起来打**。
 
-角色是「字修(箓生)」——似乎很神秘的落魄书生，以一种奇怪的方式战斗，手上这本书就是武器，嘴里不断絮叨着「解箓」「成箓」。10 个部件（人 口 木 月 土 一 水 火 山 日）既是 0 费卡牌，也是拼字材料：
+## 角色
 
-- **合**：免费、不限次数，选两张部件牌拼成一个字。
+**砚秋**，家境中落的儒雅贵公子。衣袍洗得发白，礼数一点没少；不修仙、不炼丹，
+只信手里的字——拆开了是道理，合起来是命。
+
+## 玩法
+
+10 个部件（人 口 木 月 土 一 水 火 山 日）既是 0 费卡牌，也是拼字材料：
+
+- **合**：免费、不限次数，选 2–3 张部件牌拼成一个新字。
 - **拆**：免费、不限次数，把成品牌拆回部件；原牌进消耗堆。
 - **墨迹未干**：本回合合出来的字不能当回合拆，杜绝无限循环。
+- **连书**：初始遗物。每打出一张与上一张共享部件的成品牌，对所有敌人造成 2 × 连书 的伤害。
+- **曝光**：受到的伤害 +X，回合结束 −1。
+- **灼烧**：回合结束失去 X 点生命，然后层数 −1（无视格挡）。
+- **九字真言 · 言灵**：集齐「临兵斗者皆阵列前行」后，每打一张牌按组成单位数推进指针，
+  触发对应言灵；也可按数字键 1–9 手动指定。
 
-85 个汉字的拆解表是唯一真相来源；一组部件能写出多个字时（`口+木` → 呆 / 杏 / 困 / 束）由选字面板让玩家挑。
+85 个汉字的拆解表是唯一真相来源；一组部件能写出多个字时（`口+木` → 呆 / 杏 / 困 / 束）
+由选字面板让玩家挑。
+
+## 内容量
+
+| | |
+|---|---|
+| 角色 | 1（砚秋，含选角背景、战斗立绘、死亡图、通关动画） |
+| 卡牌 | 84（72 张成品牌 + 10 张部件 + 2 张基础牌） |
+| 遗物 | 18（含九字真言九件、连书、残碑） |
+| 药水 | 3 |
+| 事件 | 3（九字碑 / 残卷 / 错字） |
+| 能力 | 19 |
+
+## 美术
+
+全套自制：84 张卡图与重绘卡框、稀有度描边、能力图标、遗物图标、
+墨池朱砂的费用球与能量球、选角背景、战斗立绘、死亡图、三张通关分镜。
 
 ## 当前状态
 
-**0.2.0 早期版本**，机制完整可玩，但：
-
-- 全部卡牌共用一个纯色占位卡图，正式美术未接。
-- 数值与平衡未经实战验证。
+**1.0.0**——战斗验证初步完成：可正常从头打到结局，数值仍在微调。
+求解器（spire-pilot）适配见 `docs/pilot-compat.md`。
 
 ## 安装
 
 1. 安装 [ModTheSpire](https://steamcommunity.com/sharedfiles/filedetails/?id=1605060445)、[BaseMod](https://steamcommunity.com/sharedfiles/filedetails/?id=1605833019)、[StSLib](https://steamcommunity.com/sharedfiles/filedetails/?id=1609158507)。
 2. 把 `zixiu.jar` 放进游戏的 `mods/` 目录。
-3. 用 ModTheSpire 启动，选角界面翻到最后一个「字修」。
+3. 用 ModTheSpire 启动，选角界面翻到最后一个角色。
 
 适配游戏版本 12-18-2022（最终版），Java 8。
 
 ## 创意工坊
 
-已发布：<https://steamcommunity.com/sharedfiles/filedetails/?id=3844170209>
-
-订阅后仍需在 ModTheSpire 里勾选「字修」并搭好 BaseMod、StSLib。发版流程见 [docs/workshop.md](docs/workshop.md)。
-
-## 构建
-
-需要 JDK 8（游戏只带 JRE）。依赖的 `desktop-1.0.jar`、`ModTheSpire.jar`、`BaseMod.jar`、`StSLib.jar` 都从安装目录读取，不进仓库。
-
-```powershell
-powershell -NoProfile -File tools\build.ps1      # 产出 mod\zixiu.jar
-powershell -NoProfile -File tools\install.ps1    # 构建并装进游戏 mods\
-```
-
-游戏装在别的盘时传 `-GameDir` / `-WorkshopDir`。字学核心的单元测试不依赖游戏：
-
-```bash
-bash scripts/test.sh
-```
-
-## 文档
-
-- [GLOSSARY.md](GLOSSARY.md)：部件、配方、字序、废字等术语
-- [docs/spec-zixiu.md](docs/spec-zixiu.md)：v1 规格（问题 / 用户故事 / 实现决策 / 测试决策）
-- [docs/cards-v1.md](docs/cards-v1.md)：72 张成品牌与 10 张部件牌的数值
-- [docs/relics-v1.md](docs/relics-v1.md)：遗物、药水、事件
-- [docs/assets.md](docs/assets.md)：美术资源尺寸规范
-- [docs/asset-todo.md](docs/asset-todo.md)：待补美术清单
-- [docs/adr/](docs/adr/)：架构决策记录
-- [.scratch/zixiu-v1/issues/](.scratch/zixiu-v1/issues/)：实现票（tracer bullet 切片）
-
-## 许可
-
-尚未确定，见 issue。
+<https://steamcommunity.com/sharedfiles/filedetails/?id=3844170209>

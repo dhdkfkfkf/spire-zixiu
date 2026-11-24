@@ -3,9 +3,13 @@
 
 原版把卡框存在 cardui.atlas + cardui*.png 里。这里按 atlas 的 offset 把区域拼回
 1024x1024 的完整卡框，再做一层「水墨 + 宣纸」的重绘，保留原版版式（玩家熟悉），
-只换材质和配色。输出 BaseMod.addColor 需要的 512/1024 与能量球。
+只换材质和配色。输出 BaseMod.addColor 需要的 512/1024 卡框和稀有度描边环；
+费用球（card_orb / big_orb / small_orb）是手绘素材，不在这里生成。
 
-用法： python tools/make-card-frames.py [--game D:\\Steam\\...\\SlayTheSpire]
+用法： python tools/make-card-frames.py [--game D:\\Steam\\...\\SlayTheSpire] [--only all|frames|ring]
+
+注意 --only frames 会重新跑噪声，每次产出的底图都不一样；只改描边环时用 --only ring，
+免得把已经调好的卡框底图冲掉。
 """
 import argparse
 import io
@@ -14,6 +18,7 @@ import re
 import sys
 import zipfile
 
+import numpy as np
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +31,14 @@ TINTS = {
     "attack": (178, 74, 58),
     "skill": (74, 107, 120),
     "power": (107, 90, 122),
+}
+
+# 稀有度 -> 线框/角饰颜色（对齐原版匾额：普通银灰、罕见青、稀有金）
+ACCENTS = {
+    "common": (198, 198, 204),
+    "uncommon": (86, 186, 214),
+    "rare": (201, 164, 92),
+    "special": (110, 158, 132),
 }
 
 
@@ -76,32 +89,33 @@ def compose(pages, region):
     return canvas
 
 
-def gradient_map(lum, stops):
-    """把亮度映射到颜色：stops = [(亮度, (r,g,b)), ...]"""
-    r, g, b = Image.new("L", lum.size), Image.new("L", lum.size), Image.new("L", lum.size)
-    r_lut, g_lut, b_lut = [], [], []
-    for i in range(256):
-        # 找到所在区间
-        for j in range(len(stops) - 1):
-            lo, hi = stops[j], stops[j + 1]
-            if lo[0] <= i <= hi[0]:
-                t = 0.0 if hi[0] == lo[0] else (i - lo[0]) / float(hi[0] - lo[0])
-                r_lut.append(int(lo[1][0] + (hi[1][0] - lo[1][0]) * t))
-                g_lut.append(int(lo[1][1] + (hi[1][1] - lo[1][1]) * t))
-                b_lut.append(int(lo[1][2] + (hi[1][2] - lo[1][2]) * t))
-                break
-        else:
-            last = stops[-1][1]
-            r_lut.append(last[0]); g_lut.append(last[1]); b_lut.append(last[2])
-    r.putdata(r_lut); g.putdata(g_lut); b.putdata(b_lut)
-    return Image.merge("RGB", (r, g, b))
+def body_rect(alpha, margin=0.25):
+    """卡身矩形：取中间 50% 行列左右/上下边界的中位数。
+
+    原版底图的 alpha 里混着几处零散像素（`1024/bg_attack_colorless` 的 bbox 右边到 828，
+    而卡身实际只到 806）。照着 bbox 画线框，右侧金线就被画到了 alpha 外面、整条被裁掉——
+    表现就是「左边有金线，右边没有 / 边框没贴合」。
+    """
+    a = np.asarray(alpha)
+    h, w = a.shape
+    rows = a[int(h * margin):int(h * (1 - margin)), :] > 8
+    lefts = np.argmax(rows, axis=1)
+    rights = w - 1 - np.argmax(rows[:, ::-1], axis=1)
+    cols = a[:, int(w * margin):int(w * (1 - margin))] > 8
+    tops = np.argmax(cols, axis=0)
+    bottoms = h - 1 - np.argmax(cols[::-1, :], axis=0)
+    return (int(np.median(lefts)), int(np.median(tops)),
+            int(np.median(rights)), int(np.median(bottoms)))
 
 
-def restyle(mask_source, kind):
-    """原版卡身压暗 + 程序化金线/角饰。素材来自原版图集，版式不会跑偏。"""
+def restyle(mask_source, kind, accent, seal=(150, 46, 38, 235)):
+    """原版卡身压暗 + 程序化线框/角饰。素材来自原版图集，版式不会跑偏。
+
+    accent 是线框与角饰的颜色，按稀有度取原版匾额的配色：
+    普通=银灰、罕见=青、稀有=金。
+    """
     alpha = mask_source.getchannel("A")
-    bbox = alpha.getbbox()
-    x0, y0, x1, y1 = bbox
+    x0, y0, x1, y1 = body_rect(alpha)
     width, height = mask_source.size
 
     # 压暗、降饱和，并向类型色偏一点
@@ -117,28 +131,67 @@ def restyle(mask_source, kind):
 
     overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     d = ImageDraw.Draw(overlay)
-    gold = (201, 164, 92, 255)
+    gold = accent + (255,)
     ink = (30, 25, 21, 220)
-    for inset, line_width, color in ((12, 7, gold), (26, 3, gold), (40, 2, ink)):
+    dark_edge = (60, 45, 32, 255)
+    for inset, line_width, color in ((8, 7, gold), (22, 3, gold), (36, 2, ink)):
         d.rounded_rectangle([x0 + inset, y0 + inset, x1 - inset, y1 - inset],
-                            radius=52, outline=color, width=line_width)
-    for cx, cy in ((x0 + 40, y0 + 40), (x1 - 40, y0 + 40), (x0 + 40, y1 - 40), (x1 - 40, y1 - 40)):
-        d.polygon([(cx, cy - 18), (cx + 18, cy), (cx, cy + 18), (cx - 18, cy)],
-                  fill=gold, outline=(60, 45, 32, 255))
+                            radius=50, outline=color, width=line_width)
     cx = (x0 + x1) // 2
-    cy = y0 + 52
+    cy = y0 + 40
     d.polygon([(cx, cy - 13), (cx + 13, cy), (cx, cy + 13), (cx - 13, cy)],
-              fill=(150, 46, 38, 235), outline=gold)
+              fill=seal, outline=gold)
 
     out = Image.alpha_composite(body, overlay)
-    out.putalpha(alpha)
+    # 原版卡框四角有一块深色缺口，压暗后会变成黑色菱形；按圆角矩形裁掉。
+    # inset 8 而不是 10：最外那道金线画在 inset 12，留 4px 余量，缩放后不会被裁掉半条
+    # （右边少一条金线就是这么来的）。
+    clean = Image.new("L", (width, height), 0)
+    ImageDraw.Draw(clean).rounded_rectangle(
+        [x0, y0, x1, y1], radius=58, fill=255)
+    out.putalpha(ImageChops.multiply(alpha, clean))
+
+    # 卡身挪到画布正中：卡图、费用、描述都是游戏按画布中心摆放的，
+    # 原版卡框图在画布里偏了几个像素，不校正就会左右留白一边宽一边窄。
+    box = out.getchannel("A").getbbox()
+    if box:
+        piece = out.crop(box)
+        centered = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+        centered.paste(piece, ((width - piece.width) // 2, (height - piece.height) // 2))
+        return centered
     return out
+
+
+def make_ring(mask, band=3):
+    """稀有度描边环：白色中空轮廓，Java 端按稀有度着色后叠在卡面上。
+
+    mask 是 1024 的卡身（只用它的 alpha，确定卡身圆角矩形的范围）。
+
+    环画在卡身轮廓**外面**（从轮廓向外 band 像素，默认 3px，也就是“超细”那条），卡面上任何东西都不会被压住——
+    匾额和费用球就贴在卡顶边缘，画在里面一定会盖到它们。
+    先在 1024 空间画，再缩到 512：PIL 的圆角矩形没有抗锯齿，直接画 512 会有锯齿。
+    """
+    ax0, ay0, ax1, ay1 = mask.getchannel("A").getbbox()
+    b = band * 2  # 1024 空间
+    ring = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+    d = ImageDraw.Draw(ring)
+    # 外沿：轮廓按 b 外扩，圆角半径同比放大
+    d.rounded_rectangle([ax0 - b, ay0 - b, ax1 + b, ay1 + b],
+                        radius=58 + b, fill=(255, 255, 255, 255))
+    # 挖掉卡身：只留外面这一圈
+    d.rounded_rectangle([ax0, ay0, ax1, ay1], radius=58, fill=(0, 0, 0, 0))
+    return ring.resize((512, 512), Image.LANCZOS)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--game", default=r"D:\Steam\steamapps\common\SlayTheSpire")
+    # 注意：card_orb / big_orb / small_orb 是手绘的「墨池朱砂」素材（见 git 历史），
+    # 不由本脚本生成——之前的自动生成把它们盖成了黑菱形，别再重蹈覆辙。
+    ap.add_argument("--only", choices=("all", "frames", "ring"), default="all")
     opt = ap.parse_args()
+    do_frames = opt.only in ("all", "frames")
+    do_ring = opt.only in ("all", "ring")
 
     jar = os.path.join(opt.game, "desktop-1.0.jar")
     if not os.path.isfile(jar):
@@ -150,36 +203,34 @@ def main():
         pages = [Image.open(io.BytesIO(z.read("cardui/" + p))).convert("RGBA") for p in PAGES]
         regions = parse_atlas(atlas)
 
-        for kind in ("attack", "skill", "power"):
-            big_name = "1024/bg_%s_colorless" % kind
-            small_name = "512/bg_%s_colorless" % kind
+        if do_frames or do_ring:
+            big_name = "1024/bg_attack_colorless"
             if big_name not in regions:
-                print("缺少区域", big_name)
-                continue
-            big = compose(pages, regions[big_name])
-            big = restyle(big, kind)
-            big.save(os.path.join(OUT, "bg_%s_1024.png" % kind))
-            big.resize((512, 512), Image.LANCZOS).save(
-                os.path.join(OUT, "bg_%s_512.png" % kind))
-            if small_name in regions:
-                small = compose(pages, regions[small_name])
-                small.resize((512, 512), Image.LANCZOS).save(
-                    os.path.join(OUT, "bg_%s_512_vanilla.png" % kind))
-            print("frames:", kind)
+                sys.exit("缺少区域 %s" % big_name)
+            attack_big = restyle(compose(pages, regions[big_name]), "attack", ACCENTS["rare"])
 
-        # 能量球：原版无色球
-        orb = "512/card_colorless_orb"
-        if orb in regions:
-            ball = compose(pages, regions[orb])
-            alpha = ball.getchannel("A")
-            rgb = ball.convert("RGB").convert("L")
-            tinted = gradient_map(rgb, [(0, (28, 24, 20)), (140, (120, 96, 72)), (255, (245, 232, 200))])
-            ball = tinted.convert("RGBA")
-            ball.putalpha(alpha)
-            ball.save(os.path.join(OUT, "card_orb.png"))
-            ball.resize((128, 128), Image.LANCZOS).save(os.path.join(OUT, "big_orb.png"))
-            ball.resize((64, 64), Image.LANCZOS).save(os.path.join(OUT, "small_orb.png"))
-            print("orbs: ok")
+        if do_frames:
+            for kind in ("attack", "skill", "power"):
+                big_name = "1024/bg_%s_colorless" % kind
+                small_name = "512/bg_%s_colorless" % kind
+                if big_name not in regions:
+                    print("缺少区域", big_name)
+                    continue
+                big = attack_big if kind == "attack" else restyle(
+                    compose(pages, regions[big_name]), kind, ACCENTS["rare"])
+                big.save(os.path.join(OUT, "bg_%s_1024.png" % kind))
+                big.resize((512, 512), Image.LANCZOS).save(
+                    os.path.join(OUT, "bg_%s_512.png" % kind))
+                if small_name in regions:
+                    small = compose(pages, regions[small_name])
+                    small.resize((512, 512), Image.LANCZOS).save(
+                        os.path.join(OUT, "bg_%s_512_vanilla.png" % kind))
+                print("frames:", kind)
+
+        if do_ring:
+            make_ring(attack_big).save(os.path.join(OUT, "frame_ring.png"))
+            print("ring: ok")
+
     return 0
 
 

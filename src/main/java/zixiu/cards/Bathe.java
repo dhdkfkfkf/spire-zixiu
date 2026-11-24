@@ -22,11 +22,14 @@ public class Bathe extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(new HealAction(p, p, this.magicNumber));
+        // 未升级：移除 1 个负面；升级后：移除全部负面
         for (AbstractPower power : p.powers) {
             if (power.type == AbstractPower.PowerType.DEBUFF) {
                 AbstractDungeon.actionManager.addToBottom(
                         new RemoveSpecificPowerAction(p, p, power.ID));
-                break;
+                if (!this.upgraded) {
+                    break;
+                }
             }
         }
     }
@@ -40,7 +43,12 @@ public class Bathe extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(2);
+            // 升级只改「移除全部负面」，治疗量保持 4
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }

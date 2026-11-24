@@ -11,9 +11,9 @@ import zixiu.ZixiuMod;
 import zixiu.core.FusionTracker;
 
 /**
- * 因：每当你打出一张成品牌，对所有敌人造成等同于本回合合字次数的伤害。
+ * 因：每当你打出一张成品牌，对所有敌人造成等同于**本次战斗**合字次数的伤害。
  *
- * 直接抽上手的成品牌在本回合没有合过字，伤害为 0——它是为「合出来的字」付钱的。
+ * 战斗刚开始、还没合过字时伤害为 0——它是为「合出来的字」付钱的。
  */
 public class CausePower extends AbstractPower {
 
@@ -26,17 +26,17 @@ public class CausePower extends AbstractPower {
         this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("dexterity");
+        PowerIcons.apply(this, "Cause");
         updateDescription();
     }
 
     @Override
     public void updateDescription() {
-        this.description = "每当你打出一张成品牌，对所有敌人造成等同于本回合合字次数的伤害。";
+        this.description = "每当你打出一张成品牌，对所有敌人造成等同于本次战斗合字次数的伤害。";
     }
 
     public void onWordPlayed() {
-        int damage = FusionTracker.fusionsThisTurn();
+        int damage = FusionTracker.fusionsThisCombat();
         if (damage <= 0) {
             return;
         }

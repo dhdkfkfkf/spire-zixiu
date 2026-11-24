@@ -21,11 +21,19 @@ public class Trio extends ZixiuCard {
     }
 
     @Override
-    public void use(AbstractPlayer p, AbstractMonster m) {
-        int hits = this.magicNumber;
-        if (CardComponents.componentCount(p.hand.group) >= 3) {
+    public void applyPowers() {
+        int hits = this.baseMagicNumber;
+        if (CardComponents.componentCount(AbstractDungeon.player.hand.group) >= 3) {
             hits += 2;
         }
+        this.magicNumber = hits;
+        super.applyPowers();
+        this.initializeDescription();
+    }
+
+    @Override
+    public void use(AbstractPlayer p, AbstractMonster m) {
+        int hits = this.magicNumber;
         for (int i = 0; i < hits; i++) {
             AbstractDungeon.actionManager.addToBottom(new DamageAction(m,
                     new DamageInfo(p, this.damage, this.damageTypeForTurn),

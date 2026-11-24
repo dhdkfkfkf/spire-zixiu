@@ -98,11 +98,11 @@
   },
   "zixiu:Beng": {
     "NAME": "崩",
-    "DESCRIPTION": "对所有敌人造成 !D! 点伤害；本回合每拆解一张牌，伤害 +4。"
+    "DESCRIPTION": "对所有敌人造成 !D! 点伤害；本回合每拆解一张牌，伤害 +!M!。"
   },
   "zixiu:Fu": {
     "NAME": "夫",
-    "DESCRIPTION": "造成 !D! 点伤害；目标生命低于一半时改为 22 点。"
+    "DESCRIPTION": "造成 !D! 点伤害；目标生命低于一半时改为 !M! 点。"
   },
   "zixiu:Wang": {
     "NAME": "王",
@@ -132,7 +132,8 @@
   },
   "zixiu:Bathe": {
     "NAME": "沐",
-    "DESCRIPTION": "治疗 !M! 点生命，移除自身 1 个负面状态。"
+    "DESCRIPTION": "治疗 !M! 点生命，移除自身 1 个负面状态。",
+    "UPGRADE_DESCRIPTION": "治疗 !M! 点生命，移除自身所有负面状态。"
   },
   "zixiu:Blockade": {
     "NAME": "杜",
@@ -217,8 +218,8 @@
   },
   "zixiu:Cause": {
     "NAME": "因",
-    "DESCRIPTION": "每当你打出一张成品牌，对所有敌人造成等同于本回合合字次数的伤害。",
-    "UPGRADE_DESCRIPTION": "固有 。 每当你打出一张成品牌，对所有敌人造成等同于本回合合字次数的伤害。"
+    "DESCRIPTION": "每当你打出一张成品牌，对所有敌人造成等同于本次战斗合字次数的伤害。",
+    "UPGRADE_DESCRIPTION": "固有 。 每当你打出一张成品牌，对所有敌人造成等同于本次战斗合字次数的伤害。"
   },
   "zixiu:Immortal": {
     "NAME": "仙",
@@ -226,7 +227,7 @@
   },
   "zixiu:Trio": {
     "NAME": "三",
-    "DESCRIPTION": "造成 !D! 点伤害 !M! 次；手牌有 3 张以上部件牌时改为 5 次。"
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次；手牌有 3 张以上部件牌时额外 2 次。"
   },
   "zixiu:Forever": {
     "NAME": "永",
@@ -248,7 +249,7 @@
   },
   "zixiu:Cong": {
     "NAME": "从",
-    "DESCRIPTION": "造成 !D! 点伤害 !M! 次。"
+    "DESCRIPTION": "造成 !D! 点伤害。连书每有 1 层，伤害 +!M!。"
   },
   "zixiu:Qiu": {
     "NAME": "囚",
@@ -337,7 +338,7 @@
   },
   "zixiu:Ta": {
     "NAME": "沓",
-    "DESCRIPTION": "造成 !D! 点伤害；若目标有 zixiu:曝光 ，改为 !M! 点。"
+    "DESCRIPTION": "造成 !D! 点伤害。接下来 !M! 张攻击牌从 zixiu:曝光 得到的伤害加成翻倍。"
   },
   "zixiu:Wa": {
     "NAME": "哇",

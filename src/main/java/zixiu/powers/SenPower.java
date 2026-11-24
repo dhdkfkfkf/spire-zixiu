@@ -20,7 +20,7 @@ public class SenPower extends AbstractPower {
         this.amount = -1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
-        loadRegion("strength");
+        PowerIcons.apply(this, "Sen");
         updateDescription();
     }
 

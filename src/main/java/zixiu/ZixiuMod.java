@@ -100,6 +100,7 @@ import zixiu.character.ZixiuEnums;
 import zixiu.core.CardPlayHook;
 import zixiu.core.TurnReset;
 import zixiu.relics.HuoZheZi;
+import zixiu.relics.LianShu;
 import zixiu.relics.HuoZiPan;
 import zixiu.relics.JiuShuQian;
 import zixiu.relics.ShuXia;
@@ -150,6 +151,9 @@ public class ZixiuMod implements
         BaseMod.subscribe(new CardPlayHook());
         BaseMod.subscribe(new ScreenToast());
         BaseMod.subscribe(new SplitPreview());
+        BaseMod.subscribe(new zixiu.ui.YanlingKeys());
+        BaseMod.subscribe(new zixiu.ui.CharSelectRulesButton());
+        BaseMod.subscribe(new zixiu.ui.FusionGlow());
         BaseMod.subscribe(new zixiu.ui.DeferredCardInsert());
         BaseMod.subscribe(new zixiu.core.PoolDiagnostics());
         BaseMod.addColor(ZixiuEnums.ZIXIU_COLOR,
@@ -170,7 +174,7 @@ public class ZixiuMod implements
         // 中文的关键词匹配走 BaseMod 的 CNUniqueKeywords 补丁，必须带 mod 前缀注册，
         // 用两参数重载（前缀为 null）时描述里匹配不到，也就不会出现悬浮说明。
         BaseMod.addKeyword(MOD_ID, "灼烧", new String[]{"灼烧", "burn"},
-                "回合结束时失去 X 点生命。层数不递减，与中毒不同。");
+                "回合结束时失去 X 点生命，然后层数减 1。无视格挡，不受力量影响。");
         BaseMod.addKeyword(MOD_ID, "曝光", new String[]{"曝光", "exposure"},
                 "受到的伤害 +X；回合结束时层数减 1。");
         BaseMod.addKeyword(MOD_ID, "墨迹未干", new String[]{"墨迹未干", "ink"},
@@ -239,6 +243,7 @@ public class ZixiuMod implements
         // 这里统一用 SHARED 注册，由 ZixiuRelic.canSpawn() 做角色隔离——
         // 游戏生成遗物奖励时会调用 canSpawn()。
         registerSharedRelic(new TuBi());
+        registerSharedRelic(new LianShu());
         registerSharedRelic(new ZanYan());
         registerSharedRelic(new HuoZheZi());
         registerSharedRelic(new JiuShuQian());
@@ -301,6 +306,7 @@ public class ZixiuMod implements
                 text -> { },
                 button -> zixiu.core.ZixiuConfig.setIsolation(button.enabled));
         panel.addUIElement(toggle);
+
         com.badlogic.gdx.graphics.Texture badge =
                 com.megacrit.cardcrawl.helpers.ImageMaster.loadImage("zixiu/images/ui/badge.png");
         BaseMod.registerModBadge(badge, "字修 Zixiu", "dhdkfkfkf",

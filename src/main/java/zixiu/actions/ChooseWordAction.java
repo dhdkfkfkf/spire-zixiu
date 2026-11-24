@@ -6,6 +6,8 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndAddToDiscardEffect;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndAddToHandEffect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import zixiu.cards.CardComponents;
 import zixiu.core.FusionTracker;
 import zixiu.lexicon.WordSpec;
@@ -19,11 +21,20 @@ import java.util.List;
  */
 public class ChooseWordAction extends AbstractGameAction {
 
+    private static final Logger logger = LogManager.getLogger(ChooseWordAction.class);
+
     private final List<WordSpec> options;
+    /** 这组合成的结果是否是升级版（升级材料数 >= 未升级材料数）。 */
+    private final boolean upgradeResult;
     private boolean opened = false;
 
     public ChooseWordAction(List<WordSpec> options) {
+        this(options, false);
+    }
+
+    public ChooseWordAction(List<WordSpec> options, boolean upgradeResult) {
         this.options = options;
+        this.upgradeResult = upgradeResult;
         this.actionType = ActionType.CARD_MANIPULATION;
         this.duration = Settings.ACTION_DUR_FAST;
     }
@@ -35,6 +46,9 @@ public class ChooseWordAction extends AbstractGameAction {
             for (WordSpec spec : options) {
                 AbstractCard card = CardComponents.create(spec.glyph());
                 if (card != null) {
+                    if (upgradeResult && card.canUpgrade()) {
+                        card.upgrade();
+                    }
                     cards.add(card);
                 }
             }
@@ -58,9 +72,15 @@ public class ChooseWordAction extends AbstractGameAction {
     public static void putIntoHandNow(AbstractCard card) {
         AbstractCard copy = card.makeStatEquivalentCopy();
         copy.current_x = -1000.0F * Settings.xScale;
+        // 墨迹未干与方案无关：两种方案下合出来的牌当回合都不能拆
         FusionTracker.markFresh(copy);
-        // 合出来的牌是虚无：回合结束自动消耗；本回合不占手牌上限
-        copy.isEthereal = true;
+        // 只有「虚无」随方案变化：方案 1 产出虚无，方案 2 保留
+        if (zixiu.core.ZixiuConfig.etherealResults()) {
+            zixiu.cards.CardComponents.markEthereal(copy);
+        }
+        logger.info("[zixiu] fusion result " + copy.cardID
+                + " fresh=true ethereal=" + copy.isEthereal
+                + " mode=" + zixiu.core.ZixiuConfig.fusionMode());
         AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
                 copy, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }

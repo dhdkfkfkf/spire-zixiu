@@ -2,6 +2,7 @@ package zixiu.powers;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.actions.common.DamageAction;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.AbstractCreature;
@@ -24,13 +25,13 @@ public class BurnPower extends AbstractPower {
         this.amount = amount;
         this.type = PowerType.DEBUFF;
         this.isTurnBased = false;
-        loadRegion("poison");
+        PowerIcons.apply(this, "Burn");
         updateDescription();
     }
 
     @Override
     public void updateDescription() {
-        this.description = "回合结束时失去 " + this.amount + " 点生命。";
+        this.description = "回合结束时失去 " + this.amount + " 点生命，然后层数减 1。";
     }
 
     @Override
@@ -42,6 +43,14 @@ public class BurnPower extends AbstractPower {
         addToBot(new DamageAction(this.owner,
                 new DamageInfo(this.owner, this.amount, DamageInfo.DamageType.HP_LOSS),
                 AbstractGameAction.AttackEffect.FIRE));
+        // 回合结束烧掉一层（伤害按扣减前的层数结算）
+        this.amount--;
+        if (this.amount <= 0) {
+            AbstractDungeon.actionManager.addToBottom(new RemoveSpecificPowerAction(
+                    this.owner, this.owner, POWER_ID));
+        } else {
+            updateDescription();
+        }
     }
 
     /**
