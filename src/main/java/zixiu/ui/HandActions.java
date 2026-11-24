@@ -238,13 +238,9 @@ public final class HandActions {
             return;
         }
         card.current_x = -1000.0F * Settings.xScale;
-        if (AbstractDungeon.player.hand.size() < 10) {
-            AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
-                    card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
-        } else {
-            AbstractDungeon.effectList.add(new ShowCardAndAddToDiscardEffect(
-                    card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
-        }
+        // 拆出的部件即使手牌满也直接进手牌，避免玩家拆完看不到东西
+        AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
+                card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }
 
     /** 合字触发：遗物 + 能力。外部（求解器）同步执行时也走这里。 */

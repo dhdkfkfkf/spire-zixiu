@@ -50,7 +50,7 @@ bash scripts/test.sh
 
 - [GLOSSARY.md](GLOSSARY.md)：部件、配方、字序、废字等术语
 - [docs/spec-zixiu.md](docs/spec-zixiu.md)：v1 规格（问题 / 用户故事 / 实现决策 / 测试决策）
-- [docs/cards-v1.md](docs/cards-v1.md)：64 张成品牌与 10 张部件牌的数值
+- [docs/cards-v1.md](docs/cards-v1.md)：72 张成品牌与 10 张部件牌的数值
 - [docs/relics-v1.md](docs/relics-v1.md)：遗物、药水、事件
 - [docs/assets.md](docs/assets.md)：美术资源尺寸规范
 - [docs/asset-todo.md](docs/asset-todo.md)：待补美术清单

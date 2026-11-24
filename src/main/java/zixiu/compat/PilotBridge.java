@@ -108,11 +108,7 @@ public final class PilotBridge {
 
         AbstractCard copy = result.makeStatEquivalentCopy();
         FusionTracker.markFresh(copy);
-        if (AbstractDungeon.player.hand.size() < 10) {
-            AbstractDungeon.player.hand.addToHand(copy);
-        } else {
-            AbstractDungeon.player.discardPile.addToTop(copy);
-        }
+        AbstractDungeon.player.hand.addToHand(copy);
 
         HandActions.notifyFusion();
         AbstractPower he = AbstractDungeon.player.getPower(HePower.POWER_ID);
@@ -140,11 +136,7 @@ public final class PilotBridge {
             if (component == null) {
                 continue;
             }
-            if (AbstractDungeon.player.hand.size() < 10) {
-                AbstractDungeon.player.hand.addToHand(component);
-            } else {
-                AbstractDungeon.player.discardPile.addToTop(component);
-            }
+            AbstractDungeon.player.hand.addToHand(component);
         }
         HandActions.notifySplit();
     }

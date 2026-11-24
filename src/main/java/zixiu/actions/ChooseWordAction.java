@@ -59,12 +59,7 @@ public class ChooseWordAction extends AbstractGameAction {
         AbstractCard copy = card.makeStatEquivalentCopy();
         copy.current_x = -1000.0F * Settings.xScale;
         FusionTracker.markFresh(copy);
-        if (AbstractDungeon.player.hand.size() < 10) {
-            AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
-                    copy, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
-        } else {
-            AbstractDungeon.effectList.add(new ShowCardAndAddToDiscardEffect(
-                    copy, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
-        }
+        AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
+                copy, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }
 }
