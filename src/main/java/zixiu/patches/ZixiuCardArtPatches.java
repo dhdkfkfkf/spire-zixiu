@@ -29,6 +29,10 @@ public class ZixiuCardArtPatches {
     private static TextureRegion rare;
 
     /** 单字牌用方块印章式匾额，按稀有度换贴图（木 / 银 / 金）。 */
+    static TextureRegion bannerFor(AbstractCard.CardRarity rarity) {
+        return banner(rarity);
+    }
+
     private static TextureRegion banner(AbstractCard.CardRarity rarity) {
         if (rarity == AbstractCard.CardRarity.RARE) {
             if (rare == null) {
@@ -55,26 +59,46 @@ public class ZixiuCardArtPatches {
 
     @SpirePrefixPatch
     public static SpireReturn<Void> Prefix(AbstractCard __instance, SpriteBatch sb, float x, float y) {
-        if (!(__instance instanceof ZixiuCard)) {
-            return SpireReturn.Continue();
+        // 字修牌的匾额由 renderTitle 统一绘制（不旋转），这里只负责屏蔽原版匾额
+        if (__instance instanceof ZixiuCard) {
+            return SpireReturn.Return(null);
         }
-        TextureRegion tex = banner(__instance.rarity);
-        if (tex == null) {
+        return SpireReturn.Continue();
+    }
+}
+
+/**
+ * 卡名：匾额不跟着手牌扇形旋转，固定在卡顶水平显示，名字也由这里自己画（避免和原版旋转文字重叠）。
+ */
+@SpirePatch(clz = AbstractCard.class, method = "renderTitle",
+        paramtypes = {"com.badlogic.gdx.graphics.g2d.SpriteBatch"})
+class ZixiuCardTitlePatch {
+
+    @SpirePrefixPatch
+    public static SpireReturn<Void> Prefix(AbstractCard __instance, SpriteBatch sb) {
+        if (!(__instance instanceof ZixiuCard)) {
             return SpireReturn.Continue();
         }
         TextureAtlas.AtlasRegion ref = ImageMaster.CARD_BANNER_COMMON;
         float scale = __instance.drawScale * Settings.scale;
-        // 方块印章：中心直接对准卡名文字的坐标（current_y + 175 * drawScale * Settings.scale）
         float w = 230.0F;
         float h = 70.0F;
         float cx = __instance.current_x;
         float cy = __instance.current_y + 175.0F * scale;
+        com.badlogic.gdx.graphics.g2d.TextureRegion tex =
+                ZixiuCardArtPatches.bannerFor(__instance.rarity);
+        if (tex != null) {
+            sb.setColor(Color.WHITE);
+            sb.draw(tex,
+                    cx - w / 2.0F * scale, cy - h / 2.0F * scale,
+                    w / 2.0F * scale, h / 2.0F * scale,
+                    w * scale, h * scale,
+                    1.0F, 1.0F, 0.0F);
+        }
+        com.megacrit.cardcrawl.helpers.FontHelper.renderFontCentered(sb,
+                com.megacrit.cardcrawl.helpers.FontHelper.cardTitleFont,
+                __instance.name, cx, cy, Color.WHITE, __instance.drawScale * 0.95F);
         sb.setColor(Color.WHITE);
-        sb.draw(tex,
-                cx - w / 2.0F, cy - h / 2.0F,
-                w / 2.0F, h / 2.0F,
-                w, h,
-                scale, scale, __instance.angle);
         return SpireReturn.Return(null);
     }
 }
