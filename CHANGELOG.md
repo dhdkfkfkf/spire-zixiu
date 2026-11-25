@@ -1,5 +1,20 @@
 # 更新日志
 
+## 1.0.9
+
+**修复：没有贴图的环境里造牌会 NPE（求解器镜像沙盒踩到）**
+
+- 现症：`Shan.makeCopy()` → `new Shan()` → BaseMod `CustomCard.loadCardImage` 拿 null 贴图
+  调 `getWidth()` → NPE；选牌结果没落地，后面整批推演分支全报「界面没给出这个选项」。
+- 根因：`ZixiuCard` 每次构造都调 `Gdx.files.internal(...).exists()` 找卡图。镜像沙盒把
+  `Gdx.files` 换成不碰磁盘的假实现，所有 exists() 都返回 false → 卡图路径退成占位图 →
+  占位图这张图从没被加载过（imgMap 里没有）→ 无纹理环境加载失败 → NPE。
+- 修法两层：
+  1. 卡图路径**每个字只判一次**并缓存（卡池在模组加载时就构造过，之后沙盒只用路径，
+     不再依赖 exists()，命中 BaseMod 的 imgMap 就不碰磁盘）；
+  2. `ZixiuCard.loadCardImage` 兜底：贴图加载抛异常时记一条 warn 并继续构造（镜像不需要贴图）。
+- 真机上行为不变：路径照旧、贴图照旧。
+
 ## 1.0.8
 
 **未的选牌流程更稳（根据求解器反馈调整）**

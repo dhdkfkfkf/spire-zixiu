@@ -452,3 +452,14 @@ zixiu | 砚秋 | zixiu.
 - 沓 / 天 / 王 / 本 / 炅 / 昌 原本就按 `amount` 工作，行为不变。
 - 保（`zixiu:GuardPower`）是当回合临时减伤，**不叠层**，别按 `amount` 加。
 - 镜像里如果缓存过这几个 power 的常数值（例如把森写成 6），改成读 `power.amount`。
+
+## 1.0.9 追加：沙盒里造牌不再 NPE（求解器）
+
+- 现象：`new Shan()` / `makeStatEquivalentCopy()` 在镜像沙盒里 NPE 在
+  `basemod.abstracts.CustomCard.loadCardImage`，导致选牌结果没落地、整批分支失败。
+- 根因：`ZixiuCard` 构造时用 `Gdx.files.internal(...).exists()` 判断卡图是否存在。沙盒把
+  `Gdx.files` 换成假实现 → 全部判成不存在 → 用占位图 → 占位图的贴图不在 BaseMod 的
+  `imgMap` 里 → 无纹理环境加载失败 → `loadCardImage` 拿 null 调 `getWidth()` → NPE。
+- 现在：卡图路径**每个字只判一次并缓存**（真进程里卡池已构造过，沙盒直接用缓存路径，
+  命中 `imgMap` 不碰磁盘）；并且 `ZixiuCard.loadCardImage` 兜底吞掉加载异常、记一条 warn。
+- 求解器侧不需要改动；沙盒里造出来的牌 `portrait` 可能是 null，**不要对卡图做断言**。
