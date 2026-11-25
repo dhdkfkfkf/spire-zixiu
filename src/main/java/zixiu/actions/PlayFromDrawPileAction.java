@@ -29,8 +29,9 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
     /** 打出几次。 */
     private final int times;
     /**
-     * 选中的牌。**一看到就记下来**，不等到界面关掉再读：
-     * 有些流程会在关闭时清空 {@code selectedCards}，那样子会变成「取消了」。
+     * 当前选中的牌。界面开着时**每帧跟着界面刷新**（最后一笔选择赢），界面关掉后冻结：
+     * 有些流程（含求解器的实时路径）会在关闭时清空 {@code selectedCards}，
+     * 所以关闭后再去读会变成「取消」，只能靠关闭前记下的这一笔。
      */
     private AbstractCard picked;
     private boolean opened = false;
@@ -53,21 +54,28 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
                 this.isDone = true;
                 return;
             }
+            // 开界面前先清掉上一次留下的选择，免得把旧牌当成这次选的
+            AbstractDungeon.gridSelectScreen.selectedCards.clear();
             AbstractDungeon.gridSelectScreen.open(AbstractDungeon.player.drawPile, 1,
                     "选择一张牌：打出 " + this.times + " 次后消耗",
                     false, false, true, false);
             this.opened = true;
             return;
         }
-        // 先记下选择（界面还开着、正等确定也没关系），但先不打——等界面关掉
-        if (this.picked == null && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
-            this.picked = AbstractDungeon.gridSelectScreen.selectedCards.get(0);
-        }
         if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.GRID) {
+            // 界面还开着：跟着界面走，但先不打。
+            // 这样「选了 A 又改成 B」打的是 B，「选完又清掉选择」回到「没选」。
+            this.picked = AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()
+                    ? null
+                    : AbstractDungeon.gridSelectScreen.selectedCards.get(0);
             return;
         }
+        if (this.picked == null && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
+            // 兜底：填选和关界面挤在同一帧时，上一帧没来得及记
+            this.picked = AbstractDungeon.gridSelectScreen.selectedCards.get(0);
+        }
         if (this.picked == null) {
-            // 取消（界面关掉但没有选牌）：这次就不打了
+            // 没选过就关了：当作取消，什么都不打
             this.isDone = true;
             return;
         }
