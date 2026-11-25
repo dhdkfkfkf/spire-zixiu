@@ -1,5 +1,16 @@
 # 更新日志
 
+## 1.0.3
+
+**拆合产出不再丢牌**
+- 合出的字、拆出的部件、秃笔开局给的部件牌，全部改成**直接写入手牌**
+  （`CardComponents.insertIntoHand`：`hand.addToHand` + `refreshHandLayout` + `applyPowers`），
+  不再经过 `ShowCardAndAddToHandEffect`，也不再看手牌上限。
+- 秃笔三选一里原来硬编码的 `hand.size() < 10`（满了就丢进弃牌堆）一并去掉。
+- 背景：手机版满手时产出牌会进弃牌堆（桌面版不会）。根因未在手机版反编译确认，
+  但改动后代码里已经没有「满手 → 弃牌堆」的分支，材料不会再被白烧。
+- 插入手牌时会打一条诊断日志 `[zixiu] insert-into-hand <id> hand=<n>`，方便手机端核对。
+
 ## 1.0.2
 
 **卡牌**
