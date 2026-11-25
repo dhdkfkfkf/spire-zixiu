@@ -27,7 +27,7 @@ public class JiePower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "每回合首次施加灼烧时，额外施加 " + BONUS + " 层。";
+        this.description = "每回合首次施加灼烧时，额外施加 " + this.amount + " 层。";
     }
 
     /** 返回本回合尚未用掉的额外层数，用掉后归零。 */
@@ -37,7 +37,7 @@ public class JiePower extends AbstractPower {
         }
         this.usedThisTurn = true;
         this.flash();
-        return BONUS;
+        return this.amount;
     }
 
     @Override

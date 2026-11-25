@@ -21,7 +21,7 @@ public class Jie extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(p, p, new JiePower(p), 1));
+                new ApplyPowerAction(p, p, new JiePower(p), JiePower.BONUS));
     }
 
     @Override

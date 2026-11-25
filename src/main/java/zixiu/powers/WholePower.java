@@ -29,7 +29,8 @@ public class WholePower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "回合开始时，若手牌有 4 张以上部件牌，抽 1 并获得 1 能量。";
+        this.description = "回合开始时，若手牌有 4 张以上部件牌，抽 " + this.amount
+                + " 并获得 " + this.amount + " 能量。";
     }
 
     @Override
@@ -42,8 +43,8 @@ public class WholePower extends AbstractPower {
         }
         if (components >= 4) {
             this.flash();
-            addToBot(new DrawCardAction(this.owner, 1));
-            addToBot(new GainEnergyAction(1));
+            addToBot(new DrawCardAction(this.owner, this.amount));
+            addToBot(new GainEnergyAction(this.amount));
         }
     }
 }

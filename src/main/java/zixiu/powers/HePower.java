@@ -26,12 +26,12 @@ public class HePower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "每当你合出一个字，抽 1 张牌并获得 1 点格挡。";
+        this.description = "每当你合出一个字，抽 " + this.amount + " 张牌并获得 " + this.amount + " 点格挡。";
     }
 
     public void onFusion() {
         this.flash();
-        addToBot(new GainBlockAction(this.owner, this.owner, 1));
-        addToBot(new DrawCardAction(this.owner, 1));
+        addToBot(new GainBlockAction(this.owner, this.owner, this.amount));
+        addToBot(new DrawCardAction(this.owner, this.amount));
     }
 }

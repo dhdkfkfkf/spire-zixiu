@@ -26,7 +26,8 @@ public class XingPower extends AbstractPower {
         this.name = "行";
         this.ID = POWER_ID;
         this.owner = owner;
-        this.amount = -1;
+        // amount = 这次给的敏捷；叠一份就 +敏捷（两条「行」就是 +10）
+        this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
         PowerIcons.apply(this, "Xing");
@@ -37,12 +38,12 @@ public class XingPower extends AbstractPower {
         AbstractDungeon.actionManager.addToBottom(
                 new ApplyPowerAction(player, player, new DexterityPower(player, dexterity), dexterity));
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(player, player, new XingPower(player), 1));
+                new ApplyPowerAction(player, player, new XingPower(player), dexterity));
     }
 
     @Override
     public void updateDescription() {
-        this.description = "下回合获得敏捷，下回合结束时失去它。";
+        this.description = "下回合获得 " + this.amount + " 点敏捷，下回合结束时失去。";
     }
 
     @Override
@@ -56,7 +57,7 @@ public class XingPower extends AbstractPower {
             return;
         }
         this.flash();
-        addToBot(new ReducePowerAction(this.owner, this.owner, DexterityPower.POWER_ID, 5));
+        addToBot(new ReducePowerAction(this.owner, this.owner, DexterityPower.POWER_ID, this.amount));
         addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, POWER_ID));
     }
 }

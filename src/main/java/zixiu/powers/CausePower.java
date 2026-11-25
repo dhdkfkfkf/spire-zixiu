@@ -32,11 +32,12 @@ public class CausePower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "每当你打出一张成品牌，对所有敌人造成等同于本次战斗合字次数的伤害。";
+        this.description = "每当你打出一张成品牌，对所有敌人造成 本次战斗合字次数 × "
+                + this.amount + " 的伤害。";
     }
 
     public void onWordPlayed() {
-        int damage = FusionTracker.fusionsThisCombat();
+        int damage = FusionTracker.fusionsThisCombat() * this.amount;
         if (damage <= 0) {
             return;
         }

@@ -21,7 +21,7 @@ public class Osmanthus extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(p, p, new OsmanthusPower(p), 1));
+                new ApplyPowerAction(p, p, new OsmanthusPower(p), OsmanthusPower.BLOCK));
     }
 
     @Override

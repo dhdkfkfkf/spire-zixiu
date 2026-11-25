@@ -21,7 +21,7 @@ public class Sen extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(p, p, new SenPower(p), 1));
+                new ApplyPowerAction(p, p, new SenPower(p), SenPower.BLOCK));
     }
 
     @Override

@@ -432,3 +432,23 @@ zixiu | 砚秋 | zixiu.
 > 7. **击 / 守** 补了原版标签（`STRIKE` + `STARTER_STRIKE` / `STARTER_DEFEND`），按标签筛牌会多出这两张。
 > 8. 连书提示（手牌金光 + 血条下 buff 的「上一字」）是纯 UI；`PilotStatics` 多了个
 >    `lastWordGlyph` 显示字段，capture/restore 的调用方式没变，推演不用读它。
+
+## 1.0.7 追加：能力牌叠层（求解器）
+
+原版 `ApplyPowerAction` 按 power ID 叠层（`amount` 相加），但字修有几个能力把数值写死在代码里、
+`amount` 只是占位，第二张牌等于白打。1.0.7 起统一改成「数值放在 `amount` 上」，推演时**按层数乘**：
+
+| 能力 | `amount` 的含义 |
+|---|---|
+| `zixiu:SenPower`（森） | 每次拆解得**多少格挡**（默认 6，叠一份 +6） |
+| `zixiu:JiePower`（杰） | 每回合首次灼烧额外**多少层**（默认 2） |
+| `zixiu:HePower`（合） | 每次合字**抽几张 / 得几格挡**（默认 1） |
+| `zixiu:PengPower`（朋） | 每次拆牌**抽几张**（默认 1） |
+| `zixiu:OsmanthusPower`（桂） | 每张技能牌**得几格挡**（默认 2） |
+| `zixiu:WholePower`（全） | 回合开始**抽几张 / 得几能量**（默认 1） |
+| `zixiu:CausePower`（因） | 伤害 = `fusionsThisCombat × amount`（默认 1） |
+| `zixiu:XingPower`（行） | 下回合**+多少敏捷**、结束时再减同样多（默认 5，叠一份 +5） |
+
+- 沓 / 天 / 王 / 本 / 炅 / 昌 原本就按 `amount` 工作，行为不变。
+- 保（`zixiu:GuardPower`）是当回合临时减伤，**不叠层**，别按 `amount` 加。
+- 镜像里如果缓存过这几个 power 的常数值（例如把森写成 6），改成读 `power.amount`。

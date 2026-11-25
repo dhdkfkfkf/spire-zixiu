@@ -25,12 +25,12 @@ public class PengPower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "每当你拆解一张牌，抽 1 张牌。";
+        this.description = "每当你拆解一张牌，抽 " + this.amount + " 张牌。";
     }
 
     /** 拆解一张牌就抽一张，没有次数上限。 */
     public void onSplit() {
         this.flash();
-        addToBot(new DrawCardAction(this.owner, 1));
+        addToBot(new DrawCardAction(this.owner, this.amount));
     }
 }

@@ -17,7 +17,8 @@ public class SenPower extends AbstractPower {
         this.name = "森";
         this.ID = POWER_ID;
         this.owner = owner;
-        this.amount = -1;
+        // 数值就放在 amount 上：叠一张就 +6（原版 ApplyPowerAction 按 ID 叠层）
+        this.amount = BLOCK;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
         PowerIcons.apply(this, "Sen");
@@ -26,11 +27,11 @@ public class SenPower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "每当你拆解一张牌，获得 " + BLOCK + " 点格挡。";
+        this.description = "每当你拆解一张牌，获得 " + this.amount + " 点格挡。";
     }
 
     public void onSplit() {
         this.flash();
-        addToBot(new GainBlockAction(this.owner, this.owner, BLOCK));
+        addToBot(new GainBlockAction(this.owner, this.owner, this.amount));
     }
 }
