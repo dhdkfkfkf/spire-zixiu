@@ -28,6 +28,11 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
     private final AbstractMonster target;
     /** 打出几次。 */
     private final int times;
+    /**
+     * 选中的牌。**一看到就记下来**，不等到界面关掉再读：
+     * 有些流程会在关闭时清空 {@code selectedCards}，那样子会变成「取消了」。
+     */
+    private AbstractCard picked;
     private boolean opened = false;
 
     public PlayFromDrawPileAction(AbstractMonster target, int times) {
@@ -54,23 +59,25 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
             this.opened = true;
             return;
         }
+        // 先记下选择（界面还开着、正等确定也没关系），但先不打——等界面关掉
+        if (this.picked == null && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
+            this.picked = AbstractDungeon.gridSelectScreen.selectedCards.get(0);
+        }
         if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.GRID) {
-            // 界面还开着（可能已选中、正等确定）：等它关掉再动，别在网格背后开始打牌
             return;
         }
-        if (AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
+        if (this.picked == null) {
             // 取消（界面关掉但没有选牌）：这次就不打了
             this.isDone = true;
             return;
         }
-        AbstractCard picked = AbstractDungeon.gridSelectScreen.selectedCards.get(0);
         AbstractDungeon.gridSelectScreen.selectedCards.clear();
-        logger.info("[zixiu] wei pick " + picked.cardID + " times=" + this.times);
+        logger.info("[zixiu] wei pick " + this.picked.cardID + " times=" + this.times);
         for (int i = 0; i < this.times; i++) {
-            queuePlay(picked.makeSameInstanceOf());
+            queuePlay(this.picked.makeSameInstanceOf());
         }
         AbstractDungeon.actionManager.addToBottom(
-                new ExhaustSpecificCardAction(picked, AbstractDungeon.player.drawPile));
+                new ExhaustSpecificCardAction(this.picked, AbstractDungeon.player.drawPile));
         this.isDone = true;
     }
 
