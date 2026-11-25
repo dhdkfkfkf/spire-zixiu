@@ -48,13 +48,19 @@ public class FusionGlow implements PostUpdateSubscriber {
             }
         }
         for (AbstractCard card : want) {
-            if (!lit.contains(card)) {
+            // 按 isGlowing 判断而不是「有没有点过灯」：界面上有东西会把 isGlowing 抹掉，
+            // 抹掉后如果只看 lit 就再也不会重新点亮（表现为冒一下就消失，得重新选牌）。
+            if (!savedGlow.containsKey(card)) {
                 savedGlow.put(card, new Color(card.glowColor));
-                card.glowColor = new Color(GOLD);
-                card.beginGlowing();
-                lit.add(card);
-                logger.info("[zixiu] fusion glow on: " + card.cardID);
             }
+            card.glowColor = new Color(GOLD);
+            if (!card.isGlowing) {
+                card.beginGlowing();
+                if (!lit.contains(card)) {
+                    logger.info("[zixiu] fusion glow on: " + card.cardID);
+                }
+            }
+            lit.add(card);
         }
     }
 

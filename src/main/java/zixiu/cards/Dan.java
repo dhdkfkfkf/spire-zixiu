@@ -9,7 +9,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.StrengthPower;
 
 /**
- * 胆：以血壮胆，0 费的力量。
+ * 胆：以血壮胆。失去 1 点生命，获得 2 点力量（升级 3）。
  */
 public class Dan extends ZixiuCard {
 
@@ -24,9 +24,9 @@ public class Dan extends ZixiuCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(p, p, this.magicNumber));
+        AbstractDungeon.actionManager.addToBottom(new LoseHPAction(p, p, 1));
         AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(p, p,
-                new StrengthPower(p, 1), 1));
+                new StrengthPower(p, this.magicNumber), this.magicNumber));
     }
 
     @Override
@@ -38,9 +38,7 @@ public class Dan extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            this.magicNumber = 1;
-            this.baseMagicNumber = 1;
-            this.isMagicNumberModified = true;
+            upgradeMagicNumber(1);
         }
     }
 }

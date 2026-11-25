@@ -149,7 +149,8 @@
   },
   "zixiu:Guard": {
     "NAME": "保",
-    "DESCRIPTION": "获得 !B! 点 格挡 。"
+    "DESCRIPTION": "获得 !B! 点格挡。本回合你受到的下一次攻击伤害减半。",
+    "UPGRADE_DESCRIPTION": "获得 !B! 点格挡。本回合你受到的所有攻击伤害减半。"
   },
   "zixiu:Drizzle": {
     "NAME": "淋",
@@ -202,7 +203,7 @@
   },
   "zixiu:Fine": {
     "NAME": "佳",
-    "DESCRIPTION": "手牌中一张成品牌本回合费用 -1。"
+    "DESCRIPTION": "手牌中 !M! 张成品牌本回合费用 -1。"
   },
   "zixiu:But": {
     "NAME": "但",
@@ -223,7 +224,8 @@
   },
   "zixiu:Immortal": {
     "NAME": "仙",
-    "DESCRIPTION": "本回合受到的攻击伤害减半，触发一次后消失。"
+    "DESCRIPTION": "消耗 。 消耗手牌中所有状态牌与诅咒牌。",
+    "UPGRADE_DESCRIPTION": "消耗手牌中所有状态牌与诅咒牌。"
   },
   "zixiu:Trio": {
     "NAME": "三",
@@ -293,7 +295,7 @@
   },
   "zixiu:Peng": {
     "NAME": "朋",
-    "DESCRIPTION": "每当你拆解一张牌，抽 1 张牌（每回合最多 !M! 次）。"
+    "DESCRIPTION": "每当你拆解一张牌，抽 1 张牌。"
   },
   "zixiu:Chu": {
     "NAME": "出",
@@ -322,7 +324,7 @@
   },
   "zixiu:Dan": {
     "NAME": "胆",
-    "DESCRIPTION": "失去 !M! 点生命，获得 1 点 力量 。"
+    "DESCRIPTION": "失去 1 点生命，获得 !M! 点 力量 。"
   },
   "zixiu:Miao": {
     "NAME": "淼",

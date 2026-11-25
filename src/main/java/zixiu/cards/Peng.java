@@ -17,14 +17,12 @@ public class Peng extends ZixiuCard {
 
     public Peng() {
         super(ID, 1, CardType.POWER, CardRarity.UNCOMMON, CardTarget.SELF);
-        this.baseMagicNumber = 2;
-        this.magicNumber = 2;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(p, p,
-                new PengPower(p, this.magicNumber), this.magicNumber));
+                new PengPower(p), 1));
     }
 
     @Override
@@ -36,7 +34,8 @@ public class Peng extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(1);
+            // 升级只降费（效果不限次数，没有数值可加）
+            upgradeBaseCost(0);
         }
     }
 }
