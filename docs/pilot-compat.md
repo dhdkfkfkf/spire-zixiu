@@ -315,7 +315,7 @@ zixiu | 砚秋 | zixiu.
 - `ZixiuConfig.consumesMaterials()` 已改名 **`exhaustsMaterials()`**（语义：材料是否进消耗堆）。
   如果用反射读过旧名字，换成新名字；或者干脆用 `PilotBridge.fusionMode()` 判断。
 
-## 1.0.1 追加：卡牌与能力变化（求解器）
+## 1.0.2 追加：卡牌与能力变化（求解器）
 
 `PilotBridge` / `PilotStatics` **没有再变**，要跟的是卡牌数据和两个能力。
 
