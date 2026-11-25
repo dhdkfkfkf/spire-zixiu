@@ -82,7 +82,7 @@
   },
   "zixiu:Zao": {
     "NAME": "灶",
-    "DESCRIPTION": "获得 !B! 点 格挡 ；若敌人身上有 zixiu:灼烧 ，抽 1 张牌。"
+    "DESCRIPTION": "本回合内，每当你拆解一张牌，对所有敌人施加 !M! 层 zixiu:灼烧 。"
   },
   "zixiu:Da": {
     "NAME": "大",
@@ -94,7 +94,7 @@
   },
   "zixiu:YanYan": {
     "NAME": "焱",
-    "DESCRIPTION": "对所有敌人施加 !M! 层 zixiu:灼烧 。"
+    "DESCRIPTION": "使所有敌人身上的 zixiu:灼烧 层数翻倍。"
   },
   "zixiu:Beng": {
     "NAME": "崩",
@@ -106,8 +106,8 @@
   },
   "zixiu:Wang": {
     "NAME": "王",
-    "DESCRIPTION": "每当你施加 zixiu:灼烧 ，获得 1 点 格挡 。",
-    "UPGRADE_DESCRIPTION": "固有 。 每当你施加 zixiu:灼烧 ，获得 1 点 格挡 。"
+    "DESCRIPTION": "回合结束时，敌人身上的 zixiu:灼烧 额外爆发 !M! 次。",
+    "UPGRADE_DESCRIPTION": "固有 。 回合结束时，敌人身上的 zixiu:灼烧 额外爆发 !M! 次。"
   },
   "zixiu:Zhong": {
     "NAME": "众",
@@ -115,11 +115,11 @@
   },
   "zixiu:Fen": {
     "NAME": "焚",
-    "DESCRIPTION": "对所有敌人造成 !D! 点伤害，施加 !M! 层 zixiu:灼烧 。"
+    "DESCRIPTION": "对所有敌人施加 !M! 层 zixiu:灼烧 。"
   },
   "zixiu:Mie": {
     "NAME": "灭",
-    "DESCRIPTION": "造成 !D! 点伤害；若目标有 zixiu:灼烧 ，伤害翻倍并清除其 zixiu:灼烧 。"
+    "DESCRIPTION": "对所有敌人造成 !D! 点伤害，施加 !M! 层 zixiu:灼烧 。"
   },
   "zixiu:Jie": {
     "NAME": "杰",
@@ -128,7 +128,8 @@
   },
   "zixiu:Jiong": {
     "NAME": "炅",
-    "DESCRIPTION": "每当你拆解一张牌，对所有敌人施加 !M! 层 zixiu:曝光 。"
+    "DESCRIPTION": "敌人不再获得 zixiu:曝光 ，而是获得等量的 zixiu:灼烧 。",
+    "UPGRADE_DESCRIPTION": "固有 。 敌人不再获得 zixiu:曝光 ，而是获得等量的 zixiu:灼烧 。"
   },
   "zixiu:Bathe": {
     "NAME": "沐",
@@ -174,8 +175,8 @@
   },
   "zixiu:Osmanthus": {
     "NAME": "桂",
-    "DESCRIPTION": "每当你打出一张技能牌，获得 2 点 格挡 。",
-    "UPGRADE_DESCRIPTION": "固有 。 每当你打出一张技能牌，获得 2 点 格挡 。"
+    "DESCRIPTION": "每当你打出一张技能牌，获得 3 点 格挡 。",
+    "UPGRADE_DESCRIPTION": "固有 。 每当你打出一张技能牌，获得 3 点 格挡 。"
   },
   "zixiu:Hollow": {
     "NAME": "洼",
@@ -211,7 +212,7 @@
   },
   "zixiu:Crystal": {
     "NAME": "晶",
-    "DESCRIPTION": "使一个敌人身上的 zixiu:曝光 层数翻倍。"
+    "DESCRIPTION": "施加 !M! 层 zixiu:曝光 ；若目标有 zixiu:灼烧 ，抽 2 张牌。"
   },
   "zixiu:Noon": {
     "NAME": "杲",
@@ -328,7 +329,8 @@
   },
   "zixiu:Miao": {
     "NAME": "淼",
-    "DESCRIPTION": "施加 !M! 层 zixiu:曝光 ；若目标有 zixiu:灼烧 ，抽 2 张牌。"
+    "DESCRIPTION": "每当你触发连书，获得等同于连书层数的 格挡 。",
+    "UPGRADE_DESCRIPTION": "固有 。 每当你触发连书，获得等同于连书层数的 格挡 。"
   },
   "zixiu:Rapids": {
     "NAME": "汕",

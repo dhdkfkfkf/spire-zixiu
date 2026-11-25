@@ -42,6 +42,8 @@ ICONS = {
     "He": ("合", "buff"),
     "Sen": ("森", "buff"),
     "Jiong": ("炅", "buff"),
+    "Zao": ("灶", "buff"),
+    "Miao": ("淼", "buff"),
     "Peng": ("朋", "buff"),
     "Jie": ("杰", "buff"),
     "Sky": ("天", "buff"),

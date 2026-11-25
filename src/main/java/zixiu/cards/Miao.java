@@ -1,17 +1,16 @@
 package zixiu.cards;
 
-import com.megacrit.cardcrawl.actions.common.DrawCardAction;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import zixiu.powers.BurnPower;
-import zixiu.powers.ExposurePower;
+import zixiu.powers.MiaoPower;
 
 /**
- * 淼：水面反光。把火的余光摊到整片水上。
+ * 淼：水面托着字。连书每接上一环，水面就托起一层格挡。
  *
- * 淼的配方是三水：拆得开，也合得回来（水+水+水）。
+ * 砚秋自带连书遗物，所以这张牌进场就有收益。
  */
 public class Miao extends ZixiuCard {
 
@@ -19,17 +18,15 @@ public class Miao extends ZixiuCard {
     public static final String GLYPH = "淼";
 
     public Miao() {
-        super(ID, 1, CardType.SKILL, CardRarity.UNCOMMON, CardTarget.ENEMY);
-        this.baseMagicNumber = 3;
-        this.magicNumber = 3;
+        super(ID, 1, CardType.POWER, CardRarity.UNCOMMON, CardTarget.SELF);
+        this.baseMagicNumber = 1;
+        this.magicNumber = 1;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        ExposurePower.apply(m, this.magicNumber);
-        if (m != null && m.hasPower(BurnPower.POWER_ID)) {
-            AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, 2));
-        }
+        AbstractDungeon.actionManager.addToBottom(
+                new ApplyPowerAction(p, p, new MiaoPower(p), 1));
     }
 
     @Override
@@ -41,7 +38,13 @@ public class Miao extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(2);
+            // 升级改成固有
+            this.isInnate = true;
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }

@@ -70,8 +70,14 @@ public abstract class ZixiuCard extends CustomCard {
             super.loadCardImage(img);
         } catch (Throwable t) {
             if (LOAD_FAILED.add(img)) {
-                logger.warn("[zixiu] card image failed to load, continuing without texture: "
-                        + img + " (" + t.getClass().getSimpleName() + ")");
+                logger.warn("[zixiu] card image failed to load: " + img
+                        + " (" + t.getClass().getSimpleName() + ")，改用占位图");
+            }
+            // 退回占位图：至少卡面是完整的，而不是一张没有画的空卡
+            try {
+                super.loadCardImage(PLACEHOLDER_IMG);
+            } catch (Throwable ignored) {
+                // 连占位图都加载不出来（无纹理环境），那就真没图了
             }
         }
     }

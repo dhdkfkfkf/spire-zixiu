@@ -13,7 +13,7 @@ public class Jie extends ZixiuCard {
     public static final String GLYPH = "杰";
 
     public Jie() {
-        super(ID, 2, CardType.POWER, CardRarity.RARE, CardTarget.SELF);
+        super(ID, 1, CardType.POWER, CardRarity.RARE, CardTarget.SELF);
         this.baseMagicNumber = JiePower.BONUS;
         this.magicNumber = JiePower.BONUS;
     }

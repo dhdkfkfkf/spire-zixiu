@@ -71,11 +71,6 @@ public class BurnPower extends AbstractPower {
         }
         AbstractDungeon.actionManager.addToBottom(
                 new ApplyPowerAction(target, player, new BurnPower(target, amount), amount));
-        if (player != null) {
-            AbstractPower wang = player.getPower(WangPower.POWER_ID);
-            if (wang instanceof WangPower) {
-                ((WangPower) wang).onBurnApplied();
-            }
-        }
+        // 王的效果改到回合结束（额外爆发），施加时不再有别的钩子
     }
 }

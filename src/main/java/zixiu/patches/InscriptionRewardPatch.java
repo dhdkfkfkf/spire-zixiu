@@ -14,12 +14,15 @@ import zixiu.relics.InscriptionRelic;
 import java.util.ArrayList;
 
 /**
- * 残碑：奖励界面生成后，往遗物奖励里补一个缺失的九字。
+ * 九字发放：奖励界面生成后，往遗物奖励里补一个缺失的九字。
  *
  * 与圣主寻符器同一个挂载点（CombatRewardScreen.setupItemReward），已经带有一条九字奖励时不再插入。
  *
- * 另外带一个小保底：已经拓到 {@link #PITY_AT} 个字却还没摸到残碑时，
- * 这次战斗的遗物奖励里必出一条残碑 —— 否则九字基本只靠事件给的那一两个，永远集不齐。
+ * <ul>
+ *   <li>带着「残碑」：每次有遗物奖励都补一个；</li>
+ *   <li>Boss 的遗物奖励：不看残碑，砚秋每个 Boss 保底一个；</li>
+ *   <li>攒到 {@link #PITY_AT} 个字却还没摸到残碑：这次遗物奖励里塞一块残碑。</li>
+ * </ul>
  */
 @SpirePatch(clz = CombatRewardScreen.class, method = "setupItemReward")
 public class InscriptionRewardPatch {
@@ -59,14 +62,24 @@ public class InscriptionRewardPatch {
             return;
         }
 
-        if (player.hasRelic(ZixiuMod.makeID(CanBei.ID))) {
+        // 九字只在这里发：有残碑时每次遗物奖励都给一个；Boss 的遗物奖励另有一份保底。
+        boolean isBossRoom = AbstractDungeon.getCurrRoom()
+                instanceof com.megacrit.cardcrawl.rooms.MonsterRoomBoss;
+        boolean zixiuPlayer = player.getCardColor() == zixiu.character.ZixiuEnums.ZIXIU_COLOR;
+        boolean wantInscription = player.hasRelic(ZixiuMod.makeID(CanBei.ID))
+                || (isBossRoom && zixiuPlayer);
+        if (wantInscription && !InscriptionRelic.hasAll()) {
             AbstractRelic missing = CanBei.randomMissing();
-            if (missing == null) {
+            if (missing != null) {
+                rewards.add(new RewardItem(missing));
+                org.apache.logging.log4j.LogManager.getLogger(InscriptionRewardPatch.class)
+                        .info("[zixiu] grant inscription " + missing.relicId
+                                + (isBossRoom ? " (boss pity)" : " (canbei)"));
+                if (player.hasRelic(ZixiuMod.makeID(CanBei.ID))) {
+                    player.getRelic(ZixiuMod.makeID(CanBei.ID)).flash();
+                }
                 return;
             }
-            rewards.add(new RewardItem(missing));
-            player.getRelic(ZixiuMod.makeID(CanBei.ID)).flash();
-            return;
         }
 
         // 小保底：攒够了字还没有残碑，就把残碑塞进这次遗物奖励

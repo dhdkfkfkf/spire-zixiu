@@ -15,7 +15,7 @@ public class CanBei extends ZixiuRelic {
     public static final String ID = "CanBei";
 
     public CanBei() {
-        super(ZixiuMod.makeID(ID), "canbei.png", RelicTier.RARE, LandingSound.FLAT);
+        super(ZixiuMod.makeID(ID), "canbei.png", RelicTier.UNCOMMON, LandingSound.FLAT);
     }
 
     public static AbstractRelic randomMissing() {

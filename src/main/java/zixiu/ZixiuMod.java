@@ -119,7 +119,8 @@ public class ZixiuMod implements
         EditCardsSubscriber,
         EditCharactersSubscriber,
         EditRelicsSubscriber,
-        PostInitializeSubscriber {
+        PostInitializeSubscriber,
+        basemod.interfaces.StartGameSubscriber {
 
     public static final String MOD_ID = "zixiu";
 
@@ -270,6 +271,12 @@ public class ZixiuMod implements
         BaseMod.addRelic(relic, basemod.helpers.RelicType.SHARED);
     }
 
+    /** 新开一局：九字碑的「最多遇到 2 次」要跟着这一局重新算，不能跨局累计。 */
+    @Override
+    public void receiveStartGame() {
+        zixiu.events.JiuZiBei.resetVisits();
+    }
+
     @Override
     public void receivePostInitialize() {
         com.badlogic.gdx.graphics.Color potionColor =
@@ -280,11 +287,22 @@ public class ZixiuMod implements
                 makeID("Cinnabar"), ZixiuEnums.ZIXIU);
         BaseMod.addPotion(zixiu.potions.Rubbing.class, potionColor, potionColor, potionColor,
                 makeID("Rubbing"), ZixiuEnums.ZIXIU);
-        BaseMod.addEvent(zixiu.events.CuoZi.ID, zixiu.events.CuoZi.class, "Exordium");
-        BaseMod.addEvent(zixiu.events.CanJuan.ID, zixiu.events.CanJuan.class, "Exordium");
+        // 三个事件都是砚秋专属：错字/残卷 给的是字修卡，塞给别的角色没意义。
+        // 幕数：错字/残卷 第 1~2 幕（第一幕错过还有一次机会）；九字碑 1~3 幕。
+        BaseMod.addEvent(new basemod.eventUtil.AddEventParams.Builder(
+                zixiu.events.CuoZi.ID, zixiu.events.CuoZi.class)
+                .playerClass(ZixiuEnums.ZIXIU)
+                .dungeonIDs("Exordium", "TheCity")
+                .create());
+        BaseMod.addEvent(new basemod.eventUtil.AddEventParams.Builder(
+                zixiu.events.CanJuan.ID, zixiu.events.CanJuan.class)
+                .playerClass(ZixiuEnums.ZIXIU)
+                .dungeonIDs("Exordium", "TheCity")
+                .create());
         BaseMod.addEvent(new basemod.eventUtil.AddEventParams.Builder(
                 zixiu.events.JiuZiBei.ID, zixiu.events.JiuZiBei.class)
                 .playerClass(ZixiuEnums.ZIXIU)
+                .dungeonIDs("Exordium", "TheCity", "TheBeyond")
                 .spawnCondition(zixiu.events.JiuZiBei::canSpawn)
                 .create());
 

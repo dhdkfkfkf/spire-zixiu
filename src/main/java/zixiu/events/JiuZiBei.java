@@ -46,10 +46,24 @@ public class JiuZiBei extends AbstractImageEvent {
         this.imageEventText.setDialogOption(D[3]);
     }
 
+    /**
+     * 能不能进这一幕的事件表。
+     *
+     * 注意：BaseMod 是在**地牢构造时**判定这个条件的，那一刻 {@code actNum} 往往还是 0，
+     * 所以这里不能写 {@code actNum > 0}（写了第一幕就永远进不了表）。幕数交给
+     * {@code AddEventParams.dungeonIDs} 控制。
+     */
     public static boolean canSpawn() {
-        return visits < MAX_VISITS
-                && AbstractDungeon.actNum > 0 && AbstractDungeon.actNum <= 2
-                && !InscriptionRelic.hasAll();
+        boolean ok = visits < MAX_VISITS && !InscriptionRelic.hasAll();
+        org.apache.logging.log4j.LogManager.getLogger(JiuZiBei.class)
+                .info("[zixiu] JiuZiBei table check act=" + AbstractDungeon.actNum
+                        + " dungeon=" + AbstractDungeon.id + " visits=" + visits + " -> " + ok);
+        return ok;
+    }
+
+    /** 新开一局时把「遇到过几次」清零。 */
+    public static void resetVisits() {
+        visits = 0;
     }
 
     @Override

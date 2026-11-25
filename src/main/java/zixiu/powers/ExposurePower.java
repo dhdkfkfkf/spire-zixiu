@@ -59,9 +59,16 @@ public class ExposurePower extends AbstractPower {
         updateDescription();
     }
 
-    public static void apply(AbstractCreature target, int amount) {
+    /**
+     * @return true 表示这次曝光被炅换成了灼烧（敌人没有获得曝光）
+     */
+    public static boolean apply(AbstractCreature target, int amount) {
         if (target == null || amount <= 0) {
-            return;
+            return false;
+        }
+        // 炅：这次曝光整个换成等量灼烧，敌人根本不获得曝光
+        if (JiongPower.convert(target, amount)) {
+            return true;
         }
         AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(
                 target, AbstractDungeon.player, new ExposurePower(target, amount), amount));
@@ -71,5 +78,6 @@ public class ExposurePower extends AbstractPower {
                 ((FlourishPower) flourish).onExposureApplied();
             }
         }
+        return false;
     }
 }

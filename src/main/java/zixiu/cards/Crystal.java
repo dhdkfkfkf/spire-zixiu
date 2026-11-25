@@ -1,11 +1,16 @@
 package zixiu.cards;
 
+import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import com.megacrit.cardcrawl.powers.AbstractPower;
+import zixiu.powers.BurnPower;
 import zixiu.powers.ExposurePower;
 
+/**
+ * 晶：棱面反光，照得更细。施加曝光；目标已经在烧，就多反两张牌回来（原「淼」的效果）。
+ */
 public class Crystal extends ZixiuCard {
 
     public static final String ID = "Crystal";
@@ -19,11 +24,10 @@ public class Crystal extends ZixiuCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        AbstractPower exposure = m.getPower(ExposurePower.POWER_ID);
-        if (exposure != null) {
-            exposure.amount *= 2;
-            exposure.updateDescription();
-            exposure.flash();
+        // 被炅换成灼烧的话，这一发就等于给目标上了灼烧，抽牌照算
+        boolean becomesBurn = ExposurePower.apply(m, this.magicNumber);
+        if (m != null && (becomesBurn || m.hasPower(BurnPower.POWER_ID))) {
+            AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, 2));
         }
     }
 
@@ -36,7 +40,8 @@ public class Crystal extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeBaseCost(0);
+            // 曝光 1 层 -> 2 层
+            upgradeMagicNumber(1);
         }
     }
 }

@@ -17,8 +17,8 @@ public class Thicket extends ZixiuCard {
 
     public Thicket() {
         super(ID, 1, CardType.SKILL, CardRarity.UNCOMMON, CardTarget.SELF);
-        this.baseMagicNumber = 2;
-        this.magicNumber = 2;
+        this.baseMagicNumber = 3;
+        this.magicNumber = 3;
     }
 
     @Override
@@ -42,6 +42,8 @@ public class Thicket extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
+            // 升级：3 张 → 4 张，并且 1 费 → 0 费
+            upgradeMagicNumber(1);
             upgradeBaseCost(0);
         }
     }

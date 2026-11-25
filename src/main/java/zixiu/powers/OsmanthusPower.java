@@ -12,7 +12,7 @@ public class OsmanthusPower extends AbstractPower {
 
     public static final String POWER_ID = ZixiuMod.makeID("OsmanthusPower");
     /** 每张技能牌的格挡，叠一份就 +2。 */
-    public static final int BLOCK = 2;
+    public static final int BLOCK = 3;
 
     public OsmanthusPower(AbstractCreature owner) {
         this.name = "桂";

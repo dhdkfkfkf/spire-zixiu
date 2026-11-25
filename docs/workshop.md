@@ -72,7 +72,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 3. 复制 jar 到工作区、改 `changeNote`，双击 `upload.cmd`。
 4. `git tag v<版本> && git push --tags`，在 GitHub Release 附上 `mod/zixiu.jar` 和更新说明。
 
-## 1.0.10 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
+## 1.0.11 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
 
 **短描述**
 
@@ -110,7 +110,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 选角背景、战斗立绘、死亡图、四张通关分镜（一张背景 + 三格画面）。
 
 ■ 状态
-1.0.10，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
+1.0.11，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
 
 适配游戏版本 12-18-2022（最终版），需要 ModTheSpire / BaseMod / StSLib。
 ```
@@ -118,6 +118,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 **更新说明（changeNote）**
 
 ```
+1.0.11：炅 改成「曝光直接换成等量灼烧」；晶 改用原淼效果、淼 改成「连书触发时按层数给格挡」的能力；灭 改成全体伤害+灼烧、焚 改成全体 3 层灼烧、王 改成灼烧回合末额外爆发、杰 1 费、桂 3 格挡；灶 改成「本回合每拆一张牌给全体 1 层灼烧」、晶 改固定 2 层曝光、焱 改成灼烧翻倍、炅 2 费且升级固有、淼 曝光改 1（升级 2）；九字与事件更容易遇到——九字碑 1~3 幕且每局重置（原本第一幕进不了表）、错字/残卷 加进第二幕、残碑降到罕见、每个 Boss 的遗物奖励保底一个九字；丛 不升级 1 费 3 张、升级 0 费 4 张。
 1.0.10：未 的选牌改成「最后一笔选择赢」（可取消重选；没选就关 = 不打）。
 1.0.9：修复无贴图环境（求解器镜像沙盒）造牌 NPE；卡图路径改成缓存判定。
 1.0.8：未 的选牌流程更稳（先记下选择、等网格界面关掉再结算）。

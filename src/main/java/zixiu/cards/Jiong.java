@@ -18,7 +18,7 @@ public class Jiong extends ZixiuCard {
     public static final String GLYPH = "炅";
 
     public Jiong() {
-        super(ID, 1, CardType.POWER, CardRarity.RARE, CardTarget.SELF);
+        super(ID, 2, CardType.POWER, CardRarity.RARE, CardTarget.SELF);
         this.baseMagicNumber = 1;
         this.magicNumber = 1;
     }
@@ -38,7 +38,13 @@ public class Jiong extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(1);
+            // 升级改成固有（层数不变）
+            this.isInnate = true;
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }

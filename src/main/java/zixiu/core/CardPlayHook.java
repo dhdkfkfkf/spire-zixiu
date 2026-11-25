@@ -54,6 +54,7 @@ public class CardPlayHook implements OnCardUseSubscriber {
             ChainPower.sync();
             if (chain > 0) {
                 applyChainDamage(player, chain);
+                zixiu.powers.MiaoPower.onChain(player, chain);
                 AbstractDungeon.effectList.add(new zixiu.vfx.ChainEffect(
                         "连书 ×" + chain, player.hb.cX, player.hb.cY + 140.0F * Settings.scale));
                 CardCrawlGame.sound.play("ATTACK_FIRE");

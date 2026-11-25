@@ -17,7 +17,6 @@ import zixiu.lexicon.Component;
 import zixiu.lexicon.WordSpec;
 import zixiu.lexicon.ZixiuLexicon;
 import zixiu.powers.HePower;
-import zixiu.powers.JiongPower;
 import zixiu.powers.PengPower;
 import zixiu.powers.SenPower;
 
@@ -353,13 +352,13 @@ public final class HandActions {
         if (sen instanceof SenPower) {
             ((SenPower) sen).onSplit();
         }
-        AbstractPower jiong = AbstractDungeon.player.getPower(JiongPower.POWER_ID);
-        if (jiong instanceof JiongPower) {
-            ((JiongPower) jiong).onSplit();
-        }
         AbstractPower peng = AbstractDungeon.player.getPower(PengPower.POWER_ID);
         if (peng instanceof PengPower) {
             ((PengPower) peng).onSplit();
+        }
+        AbstractPower zao = AbstractDungeon.player.getPower(zixiu.powers.ZaoPower.POWER_ID);
+        if (zao instanceof zixiu.powers.ZaoPower) {
+            ((zixiu.powers.ZaoPower) zao).onSplit();
         }
     }
 

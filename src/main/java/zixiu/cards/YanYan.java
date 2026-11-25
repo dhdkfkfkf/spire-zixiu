@@ -1,6 +1,7 @@
 package zixiu.cards;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -19,10 +20,18 @@ public class YanYan extends ZixiuCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
+        // 三把火：把已经在烧的敌人烧得更旺——身上灼烧层数翻倍（没灼烧的不管）
         for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
-            if (!monster.isDeadOrEscaped()) {
-                BurnPower.apply(monster, this.magicNumber);
+            if (monster == null || monster.isDeadOrEscaped()) {
+                continue;
             }
+            AbstractPower burn = monster.getPower(BurnPower.POWER_ID);
+            if (burn == null || burn.amount <= 0) {
+                continue;
+            }
+            burn.amount *= 2;
+            burn.updateDescription();
+            burn.flash();
         }
     }
 
@@ -35,7 +44,7 @@ public class YanYan extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(2);
+            upgradeBaseCost(0);
         }
     }
 }
