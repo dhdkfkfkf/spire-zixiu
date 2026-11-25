@@ -174,14 +174,36 @@ public final class CardComponents {
      * 不会和「拆」的界面混在一起。
      */
 
-    /** 拆/合产出的牌：标记虚无，并把"虚无"写进描述，玩家悬停能看到词条。 */
-    public static void markEthereal(AbstractCard card) {
+    /**
+     * 方案 1 的产出牌：虚无 + 消耗。
+     *
+     * 两个都要。只加虚无的话，产出打出去会落在弃牌堆、下个循环又被摸回来，
+     * 一场战斗里牌只会越滚越多；补上消耗，产出用一次就进消耗堆，牌组才稳定。
+     *
+     * 合出来的牌一律加消耗，包括状态牌：升级后的「仙」本来靠「不消耗自身」反复清手牌，
+     * 但它只要是合出来的，就按产出规则当一次性用；只有非合成途径拿到、又升级过的仙才不消耗。
+     *
+     * 描述里补词条（原版不会替我们写）：按「消耗 。」这个关键词形态判断，
+     * 免得把仙正文里的「消耗手牌中…」当成已有词条而漏加。
+     */
+    public static void markTransient(AbstractCard card) {
         if (card == null) {
             return;
         }
         card.isEthereal = true;
-        if (card.rawDescription != null && !card.rawDescription.contains("虚无")) {
-            card.rawDescription = card.rawDescription + " 虚无 。";
+        card.exhaust = true;
+        if (card.rawDescription == null) {
+            return;
+        }
+        String text = card.rawDescription;
+        if (!text.contains("消耗 。")) {
+            text = text + " 消耗 。";
+        }
+        if (!text.contains("虚无 。")) {
+            text = text + " 虚无 。";
+        }
+        if (!text.equals(card.rawDescription)) {
+            card.rawDescription = text;
             card.initializeDescription();
         }
     }

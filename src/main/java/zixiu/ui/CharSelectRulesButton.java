@@ -19,7 +19,7 @@ import zixiu.core.ZixiuConfig;
  * 两行、都居中在屏幕水平中线附近，避免像之前那样贴着「启程」按钮往右溢出：
  * <pre>
  *        拆合规则 · 方案一        ← 小号金字
- *    ＜产出虚无，材料入弃牌堆＞    ← 米色，整行可点
+ *    ＜产出虚无·消耗，材料入弃牌堆＞    ← 米色，整行可点
  * </pre>
  * 点这一行就在两种方案之间切换（只有两项，不用分清左右箭头）。
  * 输入处理放在 render 里：BaseMod 的 PostUpdate 钩子在主菜单不跑。
@@ -53,7 +53,7 @@ public class CharSelectRulesButton implements PostRenderSubscriber {
         String title = "拆合规则 · " + (ZixiuConfig.fusionMode() == 1 ? "方案一" : "方案二");
         String value = ZixiuConfig.exhaustsMaterials()
                 ? "＜产出保留，材料消耗＞"
-                : "＜产出虚无，材料入弃牌堆＞";
+                : "＜产出虚无·消耗，材料入弃牌堆＞";
 
         float cy = anchorY();
         float cx = clampInside(anchorX(), title, value);
@@ -76,7 +76,7 @@ public class CharSelectRulesButton implements PostRenderSubscriber {
             title = "拆合规则 · " + (ZixiuConfig.fusionMode() == 1 ? "方案一" : "方案二");
             value = ZixiuConfig.exhaustsMaterials()
                     ? "＜产出保留，材料消耗＞"
-                    : "＜产出虚无，材料入弃牌堆＞";
+                    : "＜产出虚无·消耗，材料入弃牌堆＞";
         }
 
         FontHelper.renderFontCentered(sb, FontHelper.charDescFont, title,

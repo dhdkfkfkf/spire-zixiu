@@ -72,7 +72,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 3. 复制 jar 到工作区、改 `changeNote`，双击 `upload.cmd`。
 4. `git tag v<版本> && git push --tags`，在 GitHub Release 附上 `mod/zixiu.jar` 和更新说明。
 
-## 1.0.4 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
+## 1.0.5 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
 
 **短描述**
 
@@ -92,8 +92,10 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 拆开了是道理，合起来是命。
 
 ■ 玩法
-· 拆：把成品牌拆回部件（原牌进消耗堆），免费、不限次数
+· 拆：把成品牌拆回部件，免费、不限次数
 · 合：2～3 张部件拼成一个新字，免费、不限次数
+· 拆合规则（选角界面可切换）：方案 1 产出虚无且消耗、用掉的牌进弃牌堆；
+  方案 2 产出保留、用掉的牌进消耗堆
 · 墨迹未干：本回合合出来的字不能当回合拆，杜绝无限循环
 · 连书：与上一张共享部件的成品牌接链，对所有敌人造成 2×连书 伤害
 · 曝光 / 灼烧：一加一减两种持续伤害标记
@@ -108,7 +110,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 选角背景、战斗立绘、死亡图、四张通关分镜（一张背景 + 三格画面）。
 
 ■ 状态
-1.0.4，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
+1.0.5，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
 
 适配游戏版本 12-18-2022（最终版），需要 ModTheSpire / BaseMod / StSLib。
 ```
@@ -116,6 +118,6 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 **更新说明（changeNote）**
 
 ```
-1.0.4：修手机版拆字产出掉弃牌堆（「确定」那一下手指还按着，触摸输入顺手把新牌打出去了；
-改成等松手再落地）；回退 1.0.3 的直接写入手牌。
+1.0.5：方案 1 的拆合产出改成「虚无 + 消耗」（打出即进消耗堆，回合结束留在手上也消耗），
+牌组不再越滚越大；1.0.4 修手机版拆字产出掉弃牌堆。
 ```

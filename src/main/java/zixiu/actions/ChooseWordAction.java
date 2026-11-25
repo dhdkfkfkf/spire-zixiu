@@ -75,8 +75,8 @@ public class ChooseWordAction extends AbstractGameAction {
         // 墨迹未干与方案无关：两种方案下合出来的牌当回合都不能拆
         FusionTracker.markFresh(copy);
         // 只有「虚无」随方案变化：方案 1 产出虚无，方案 2 保留
-        if (zixiu.core.ZixiuConfig.etherealResults()) {
-            zixiu.cards.CardComponents.markEthereal(copy);
+        if (zixiu.core.ZixiuConfig.transientResults()) {
+            zixiu.cards.CardComponents.markTransient(copy);
         }
         logger.info("[zixiu] fusion result " + copy.cardID
                 + " fresh=true ethereal=" + copy.isEthereal

@@ -310,8 +310,8 @@ public final class HandActions {
             return;
         }
         // 方案 1：产出牌虚无（回合结束消耗）；方案 2：产出牌保留
-        if (ZixiuConfig.etherealResults()) {
-            zixiu.cards.CardComponents.markEthereal(card);
+        if (ZixiuConfig.transientResults()) {
+            zixiu.cards.CardComponents.markTransient(card);
         }
         logger.info("[zixiu] split part " + card.cardID + " queued ethereal=" + card.isEthereal
                 + " hand=" + AbstractDungeon.player.hand.size());

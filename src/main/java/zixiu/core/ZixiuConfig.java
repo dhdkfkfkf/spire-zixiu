@@ -89,14 +89,14 @@ public final class ZixiuConfig {
         return fusionMode() == 2;
     }
 
-    /** 拆/合产出的牌是否虚无（方案 1）。 */
-    public static boolean etherealResults() {
+    /** 拆/合产出的牌是否虚无且消耗（方案 1）；否则保留（方案 2）。 */
+    public static boolean transientResults() {
         return fusionMode() == 1;
     }
 
     public static String fusionModeLabel() {
         return fusionMode() == 1
-                ? "方案 1：产出虚无 · 材料入弃牌堆"
+                ? "方案 1：产出虚无·消耗 · 材料入弃牌堆"
                 : "方案 2：产出保留 · 材料消耗";
     }
 }

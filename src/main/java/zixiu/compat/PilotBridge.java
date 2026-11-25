@@ -151,7 +151,7 @@ public final class PilotBridge {
     /**
      * 同步合字：和 {@link HandActions#executeFusion} 完全同口径——
      * 材料去处看 {@link zixiu.core.ZixiuConfig#exhaustsMaterials()}（消耗堆 / 弃牌堆），
-     * 产出是否虚无看 {@link zixiu.core.ZixiuConfig#etherealResults()}，
+     * 产出是否虚无+消耗看 {@link zixiu.core.ZixiuConfig#transientResults()}，
      * 升级按「升级材料数 ≥ 未升级材料数」传递。
      *
      * 调用方负责先用 {@link #fusionResults} 过滤出合法组合。
@@ -175,8 +175,8 @@ public final class PilotBridge {
         }
         AbstractCard copy = result.makeStatEquivalentCopy();
         FusionTracker.markFresh(copy);
-        if (zixiu.core.ZixiuConfig.etherealResults()) {
-            zixiu.cards.CardComponents.markEthereal(copy);
+        if (zixiu.core.ZixiuConfig.transientResults()) {
+            zixiu.cards.CardComponents.markTransient(copy);
         }
         AbstractDungeon.player.hand.addToHand(copy);
 
@@ -186,7 +186,7 @@ public final class PilotBridge {
 
     /**
      * 同步拆字：口径同 {@link HandActions#executeSplit}——
-     * 源牌去处看方案（消耗堆 / 弃牌堆），部件继承源牌的升级状态，产出是否虚无也看方案。
+     * 源牌去处看方案（消耗堆 / 弃牌堆），部件继承源牌的升级状态，产出是否虚无+消耗也看方案。
      */
     public static void resolveSplit(AbstractCard card) {
         String glyph = CardComponents.glyphOf(card);
@@ -208,8 +208,8 @@ public final class PilotBridge {
             if (upgraded) {
                 HandActions.upgradeIfPossible(component);
             }
-            if (zixiu.core.ZixiuConfig.etherealResults()) {
-                zixiu.cards.CardComponents.markEthereal(component);
+            if (zixiu.core.ZixiuConfig.transientResults()) {
+                zixiu.cards.CardComponents.markTransient(component);
             }
             AbstractDungeon.player.hand.addToHand(component);
         }
