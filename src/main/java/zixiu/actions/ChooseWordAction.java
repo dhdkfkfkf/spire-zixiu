@@ -81,7 +81,7 @@ public class ChooseWordAction extends AbstractGameAction {
         logger.info("[zixiu] fusion result " + copy.cardID
                 + " fresh=true ethereal=" + copy.isEthereal
                 + " mode=" + zixiu.core.ZixiuConfig.fusionMode());
-        AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
-                copy, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
+        // 直接插入：手机版在满手时会把 ShowCardAndAddToHandEffect 的牌转进弃牌堆
+        zixiu.cards.CardComponents.insertIntoHand(copy);
     }
 }

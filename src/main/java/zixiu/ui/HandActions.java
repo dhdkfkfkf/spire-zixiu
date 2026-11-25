@@ -309,13 +309,12 @@ public final class HandActions {
         if (card == null) {
             return;
         }
-        card.current_x = -1000.0F * Settings.xScale;
         // 方案 1：产出牌虚无（回合结束消耗）；方案 2：产出牌保留
         if (ZixiuConfig.etherealResults()) {
             zixiu.cards.CardComponents.markEthereal(card);
         }
-        AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
-                card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
+        // 直接插入：ShowCardAndAddToHandEffect 在手机版满手时会转进弃牌堆
+        zixiu.cards.CardComponents.insertIntoHand(card);
     }
 
     /** 合字触发：遗物 + 能力。外部（求解器）同步执行时也走这里。 */
