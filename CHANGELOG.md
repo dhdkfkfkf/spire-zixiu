@@ -1,5 +1,24 @@
 # 更新日志
 
+## 1.0.4
+
+**修：手机上拆出来的牌直接进弃牌堆（根因已确认）**
+
+- 手机日志确认的原因是「被顺手打出」，不是手牌上限：拆解在选牌界面点「确定」的同一帧触发，
+  手指还按在屏幕上，部件又生成在屏幕中央、正好在手指下面，手机版的触摸输入把这沓里最上面
+  一张打出去了（`split` 之后 18ms 就是一条 `publish on card use`）。打出的牌自然进弃牌堆。
+  桌面版要靠拖动出牌，所以一直复现不了。合字没有这个问题，因为合字结果本来就走延迟落地。
+- 修法：拆出的部件改走合字同一条通道（`DeferredCardInsert`，等按键松开、输入安静再插牌），
+  不再在「确定」那一帧立刻落地。
+- 回退 1.0.3 的「直接写入手牌」（`hand.addToHand`），飞入动画恢复。
+- 秃笔的部件牌保持「始终进手牌」，不再按手牌张数丢进弃牌堆。
+- 拆/合产出分两条日志（排队 / 真正进手牌），带当时的手牌数：
+  ```
+  [zixiu] split part zixiu:Mu queued ethereal=true hand=4
+  [zixiu] split part zixiu:Mu inserted hand=5
+  [zixiu] fusion result zixiu:Lin fresh=true ethereal=true mode=1 hand=13
+  ```
+
 ## 1.0.3
 
 **拆合产出不再丢牌**

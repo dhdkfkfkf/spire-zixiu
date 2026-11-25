@@ -313,8 +313,26 @@ public final class HandActions {
         if (ZixiuConfig.etherealResults()) {
             zixiu.cards.CardComponents.markEthereal(card);
         }
-        // 直接插入：ShowCardAndAddToHandEffect 在手机版满手时会转进弃牌堆
-        zixiu.cards.CardComponents.insertIntoHand(card);
+        logger.info("[zixiu] split part " + card.cardID + " queued ethereal=" + card.isEthereal
+                + " hand=" + AbstractDungeon.player.hand.size());
+        DeferredCardInsert.enqueue(card, DeferredCardInsert.Kind.SPLIT);
+    }
+
+    /**
+     * 真正把拆出的部件放进手牌（由 {@link DeferredCardInsert} 在输入安静后调用）。
+     *
+     * 不能像以前那样拆完立刻落地：拆解是在选牌界面的「确定」那一下触发的，手机上手指
+     * 还按着屏幕、位置就在新牌附近，触摸输入会顺手把这一沓里最上面那张打出去，
+     * 打出的牌自然进了弃牌堆——看起来就是「拆出来的牌直接掉进弃牌堆」。
+     */
+    public static void insertSplitResult(AbstractCard card) {
+        if (card == null) {
+            return;
+        }
+        logger.info("[zixiu] split part " + card.cardID + " inserted hand="
+                + AbstractDungeon.player.hand.size());
+        AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
+                card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
     }
 
     /** 合字触发：遗物 + 能力。外部（求解器）同步执行时也走这里。 */

@@ -39,9 +39,8 @@ public class ChooseOneComponentAction extends AbstractGameAction {
             AbstractCard card = AbstractDungeon.cardRewardScreen.discoveryCard.makeStatEquivalentCopy();
             card.current_x = -1000.0F * Settings.xScale;
 
-            // 之前按 hand.size() < 10 判断，手牌一多（现在上限 20）就直接进弃牌堆；
-            // 改成直接插入手牌，不再受上限影响。
-            zixiu.cards.CardComponents.insertIntoHand(card);
+            AbstractDungeon.effectList.add(new ShowCardAndAddToHandEffect(
+                    card, (float) Settings.WIDTH / 2.0F, (float) Settings.HEIGHT / 2.0F));
 
             this.retrieveCard = true;
             AbstractDungeon.cardRewardScreen.discoveryCard = null;

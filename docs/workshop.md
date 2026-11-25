@@ -72,7 +72,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 3. 复制 jar 到工作区、改 `changeNote`，双击 `upload.cmd`。
 4. `git tag v<版本> && git push --tags`，在 GitHub Release 附上 `mod/zixiu.jar` 和更新说明。
 
-## 1.0.3 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
+## 1.0.4 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
 
 **短描述**
 
@@ -108,7 +108,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 选角背景、战斗立绘、死亡图、四张通关分镜（一张背景 + 三格画面）。
 
 ■ 状态
-1.0.3，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
+1.0.4，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
 
 适配游戏版本 12-18-2022（最终版），需要 ModTheSpire / BaseMod / StSLib。
 ```
@@ -116,7 +116,6 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 **更新说明（changeNote）**
 
 ```
-1.0.1：角色定名砚秋并换全套新美术（选角背景 / 战斗立绘 / 死亡图 / 通关动画）；
-卡框与稀有度描边重制，费用球恢复墨池朱砂；连书成为初始遗物；沓与灼烧改版；
-九字真言重做为「言灵」轮转；新增残碑小保底与合字金光提示；修复主菜单闪退与金光残留。
+1.0.4：修手机版拆字产出掉弃牌堆（「确定」那一下手指还按着，触摸输入顺手把新牌打出去了；
+改成等松手再落地）；回退 1.0.3 的直接写入手牌。
 ```

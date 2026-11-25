@@ -174,29 +174,6 @@ public final class CardComponents {
      * 不会和「拆」的界面混在一起。
      */
 
-    /**
-     * 直接把牌塞进手牌，绕过所有手牌上限检查。
-     *
-     * 不要再用 ShowCardAndAddToHandEffect：手机版在满手时会把它转进弃牌堆
-     * （桌面版不会），拆/合产出的牌就这么「凭空进了弃牌堆」。
-     */
-    public static void insertIntoHand(AbstractCard card) {
-        if (card == null || com.megacrit.cardcrawl.dungeons.AbstractDungeon.player == null) {
-            return;
-        }
-        card.current_x = com.megacrit.cardcrawl.core.Settings.WIDTH / 2.0F;
-        card.current_y = com.megacrit.cardcrawl.core.Settings.HEIGHT / 2.0F;
-        com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.addToHand(card);
-        // 诊断用：手机版如果还有别的地方在满手时把牌挪走，日志能看出插入时的张数
-        org.apache.logging.log4j.LogManager.getLogger(CardComponents.class)
-                .info("[zixiu] insert-into-hand " + card.cardID
-                        + " hand=" + com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.size()
-                        + " ethereal=" + card.isEthereal);
-        com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.refreshHandLayout();
-        com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.applyPowers();
-        com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.onCardDrawOrDiscard();
-    }
-
     /** 拆/合产出的牌：标记虚无，并把"虚无"写进描述，玩家悬停能看到词条。 */
     public static void markEthereal(AbstractCard card) {
         if (card == null) {
