@@ -187,6 +187,11 @@ public final class CardComponents {
         card.current_x = com.megacrit.cardcrawl.core.Settings.WIDTH / 2.0F;
         card.current_y = com.megacrit.cardcrawl.core.Settings.HEIGHT / 2.0F;
         com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.addToHand(card);
+        // 诊断用：手机版如果还有别的地方在满手时把牌挪走，日志能看出插入时的张数
+        org.apache.logging.log4j.LogManager.getLogger(CardComponents.class)
+                .info("[zixiu] insert-into-hand " + card.cardID
+                        + " hand=" + com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.size()
+                        + " ethereal=" + card.isEthereal);
         com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.refreshHandLayout();
         com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.hand.applyPowers();
         com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.onCardDrawOrDiscard();
