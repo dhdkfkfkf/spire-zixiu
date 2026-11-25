@@ -22,6 +22,8 @@ public final class FusionTracker {
 
     private static int chain = 0;
     private static java.util.Set<zixiu.lexicon.Component> lastWordParts = null;
+    /** 上一张成品牌是哪个字（只用来显示：连书遗物里那句「上一字：森（木，木，木）」）。 */
+    private static String lastWordGlyph = null;
 
     private FusionTracker() {
     }
@@ -69,6 +71,7 @@ public final class FusionTracker {
         fusionsThisCombat = 0;
         chain = 0;
         lastWordParts = null;
+        lastWordGlyph = null;
     }
 
     /**
@@ -76,6 +79,11 @@ public final class FusionTracker {
      * 共享则连书 +1，否则归零。返回本次之后的连书数。
      */
     public static int recordWord(java.util.Collection<zixiu.lexicon.Component> parts) {
+        return recordWord(parts, null);
+    }
+
+    /** 同上，另外记下这张牌是哪个字（显示用）。 */
+    public static int recordWord(java.util.Collection<zixiu.lexicon.Component> parts, String glyph) {
         java.util.Set<zixiu.lexicon.Component> current =
                 java.util.EnumSet.noneOf(zixiu.lexicon.Component.class);
         if (parts != null) {
@@ -92,11 +100,17 @@ public final class FusionTracker {
         }
         chain = shares ? chain + 1 : 0;
         lastWordParts = current;
+        lastWordGlyph = glyph;
         return chain;
     }
 
     public static int chain() {
         return chain;
+    }
+
+    /** 上一张成品牌是哪个字（只用来显示，可能是 null）。 */
+    public static String lastWordGlyph() {
+        return lastWordGlyph;
     }
 
     /** 上一张成品牌的部件集合（连书判定用），只读副本。 */
@@ -117,6 +131,13 @@ public final class FusionTracker {
     public static void restore(int splits, int fusions, int newChain,
                                java.util.Collection<zixiu.lexicon.Component> lastParts,
                                java.util.Collection<AbstractCard> freshCards) {
+        restore(splits, fusions, newChain, lastParts, freshCards, null);
+    }
+
+    public static void restore(int splits, int fusions, int newChain,
+                               java.util.Collection<zixiu.lexicon.Component> lastParts,
+                               java.util.Collection<AbstractCard> freshCards,
+                               String glyph) {
         splitsThisTurn = splits;
         fusionsThisTurn = fusions;
         chain = newChain;
@@ -132,6 +153,7 @@ public final class FusionTracker {
         if (freshCards != null) {
             FRESH.addAll(freshCards);
         }
+        lastWordGlyph = glyph;
     }
 
     public static void clear() {

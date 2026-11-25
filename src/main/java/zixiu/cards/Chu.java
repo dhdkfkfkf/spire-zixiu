@@ -20,8 +20,8 @@ public class Chu extends ZixiuCard {
     public Chu() {
         super(ID, 2, CardType.ATTACK, CardRarity.RARE, CardTarget.ENEMY);
         this.baseDamage = 14;
-        this.baseMagicNumber = 6;
-        this.magicNumber = 5;
+        this.baseMagicNumber = 4;
+        this.magicNumber = 4;
     }
 
     @Override
@@ -65,6 +65,8 @@ public class Chu extends ZixiuCard {
         if (!this.upgraded) {
             upgradeName();
             upgradeDamage(4);
+            // 每拆一张的加伤 4 -> 5
+            upgradeMagicNumber(1);
         }
     }
 }

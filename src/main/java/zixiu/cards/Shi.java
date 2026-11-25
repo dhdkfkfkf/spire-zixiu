@@ -40,6 +40,8 @@ public class Shi extends ZixiuCard {
         if (!this.upgraded) {
             upgradeName();
             upgradeBlock(3);
+            // 升级后拆过的能量 1 -> 2
+            upgradeMagicNumber(1);
         }
     }
 }

@@ -50,7 +50,7 @@ public class CardPlayHook implements OnCardUseSubscriber {
             if (yin instanceof CausePower) {
                 ((CausePower) yin).onWordPlayed();
             }
-            int chain = FusionTracker.recordWord(ZixiuLexicon.partsOf(glyph));
+            int chain = FusionTracker.recordWord(ZixiuLexicon.partsOf(glyph), glyph);
             ChainPower.sync();
             if (chain > 0) {
                 applyChainDamage(player, chain);

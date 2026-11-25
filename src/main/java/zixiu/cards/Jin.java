@@ -15,6 +15,9 @@ public class Jin extends ZixiuCard {
     public Jin() {
         super(ID, 1, CardType.ATTACK, CardRarity.BASIC, CardTarget.ENEMY);
         this.baseDamage = 6;
+        // 和原版打击同标签：打击木偶、完美打击、潘多拉/「回到基础」这类事件才认它
+        this.tags.add(CardTags.STRIKE);
+        this.tags.add(CardTags.STARTER_STRIKE);
     }
 
     @Override

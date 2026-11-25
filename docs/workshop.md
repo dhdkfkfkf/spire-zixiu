@@ -72,7 +72,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 3. 复制 jar 到工作区、改 `changeNote`，双击 `upload.cmd`。
 4. `git tag v<版本> && git push --tags`，在 GitHub Release 附上 `mod/zixiu.jar` 和更新说明。
 
-## 1.0.5 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
+## 1.0.6 工坊文案（复制到 `config.json` 的 `description` / `changeNote`）
 
 **短描述**
 
@@ -110,7 +110,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 选角背景、战斗立绘、死亡图、四张通关分镜（一张背景 + 三格画面）。
 
 ■ 状态
-1.0.5，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
+1.0.6，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
 
 适配游戏版本 12-18-2022（最终版），需要 ModTheSpire / BaseMod / StSLib。
 ```
@@ -118,6 +118,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 **更新说明（changeNote）**
 
 ```
-1.0.5：方案 1 的拆合产出改成「虚无 + 消耗」（打出即进消耗堆，回合结束留在手上也消耗），
-牌组不再越滚越大；1.0.4 修手机版拆字产出掉弃牌堆。
+1.0.6：连书提示——能接链的手牌冒金光，连书遗物实时显示「上一字：森（木，木，木）」；
+击/守 认原版打击/防御标签；仕升级 2 能量、吉 0 费、出 拆解加伤 4(5)、杳 加消耗。
+1.0.5：方案 1 的拆合产出改成「虚无 + 消耗」，牌组不再越滚越大。
 ```

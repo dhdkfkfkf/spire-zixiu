@@ -111,7 +111,7 @@
   },
   "zixiu:Zhong": {
     "NAME": "众",
-    "DESCRIPTION": "对每个敌人造成 !D! 点伤害，每命中一个抽 1（上限 2）。"
+    "DESCRIPTION": "对每个敌人造成 !D! 点伤害，每命中一个敌人抽 1 张牌。"
   },
   "zixiu:Fen": {
     "NAME": "焚",
@@ -158,11 +158,11 @@
   },
   "zixiu:Thicket": {
     "NAME": "丛",
-    "DESCRIPTION": "获得 !B! 点 格挡 ，将 !M! 张随机部件牌加入手牌。"
+    "DESCRIPTION": "将 !M! 张随机部件牌加入手牌。"
   },
   "zixiu:Benevolence": {
     "NAME": "仁",
-    "DESCRIPTION": "治疗 !M! 点生命；若已满血，改为获得 8 点 格挡 。"
+    "DESCRIPTION": "治疗 !M! 点生命；若已满血，改为获得 !B! 点 格挡 。"
   },
   "zixiu:Belly": {
     "NAME": "肚",
@@ -237,7 +237,7 @@
   },
   "zixiu:Dim": {
     "NAME": "杳",
-    "DESCRIPTION": "本回合受到的伤害降为 1。"
+    "DESCRIPTION": "本回合受到的伤害降为 1。 消耗 。"
   },
   "zixiu:Whole": {
     "NAME": "全",
@@ -287,7 +287,7 @@
   },
   "zixiu:Wei": {
     "NAME": "未",
-    "DESCRIPTION": "施加 !M! 层 zixiu:曝光 ，抽 2 张牌。"
+    "DESCRIPTION": "从抽牌堆选择一张牌，免费打出两次，然后将其消耗。 消耗 。"
   },
   "zixiu:Renew": {
     "NAME": "吐",

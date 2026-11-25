@@ -16,7 +16,7 @@ public class Lucky extends ZixiuCard {
     private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
 
     public Lucky() {
-        super(ID, 1, CardType.SKILL, CardRarity.COMMON, CardTarget.SELF);
+        super(ID, 0, CardType.SKILL, CardRarity.COMMON, CardTarget.SELF);
         this.baseMagicNumber = 1;
         this.magicNumber = 1;
     }

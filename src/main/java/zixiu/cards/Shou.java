@@ -13,6 +13,8 @@ public class Shou extends ZixiuCard {
     public Shou() {
         super(ID, 1, CardType.SKILL, CardRarity.BASIC, CardTarget.SELF);
         this.baseBlock = 5;
+        // 和原版防御同标签：潘多拉、「回到基础」这类事件才认它
+        this.tags.add(CardTags.STARTER_DEFEND);
     }
 
     @Override

@@ -14,6 +14,7 @@ public class Dim extends ZixiuCard {
 
     public Dim() {
         super(ID, 1, CardType.SKILL, CardRarity.RARE, CardTarget.SELF);
+        this.exhaust = true;
         this.baseMagicNumber = 1;
         this.magicNumber = 1;
     }

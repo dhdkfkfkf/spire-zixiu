@@ -14,14 +14,17 @@ public class Benevolence extends ZixiuCard {
 
     public Benevolence() {
         super(ID, 1, CardType.SKILL, CardRarity.UNCOMMON, CardTarget.SELF);
-        this.baseMagicNumber = 6;
-        this.magicNumber = 6;
+        this.baseMagicNumber = 5;
+        this.magicNumber = 5;
+        // 满血时改给的格挡，用 !B! 显示，也跟着升级走
+        this.baseBlock = 5;
+        this.block = 5;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         if (p.currentHealth >= p.maxHealth) {
-            AbstractDungeon.actionManager.addToBottom(new GainBlockAction(p, p, 8));
+            AbstractDungeon.actionManager.addToBottom(new GainBlockAction(p, p, this.block));
         } else {
             AbstractDungeon.actionManager.addToBottom(new HealAction(p, p, this.magicNumber));
         }
@@ -36,7 +39,9 @@ public class Benevolence extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(2);
+            // 治疗 5 → 6，满血格挡 5 → 6
+            upgradeMagicNumber(1);
+            upgradeBlock(1);
         }
     }
 }

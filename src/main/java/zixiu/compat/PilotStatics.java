@@ -37,6 +37,8 @@ public final class PilotStatics {
     public final int fusionMode;
     public final int chain;
     public final Set<Component> lastWordParts;
+    /** 上一张成品牌是哪个字（只影响连书遗物的显示文字）。 */
+    public final String lastWordGlyph;
     public final Set<AbstractCard> fresh;
     public final boolean taWindowOpen;
     public final int yanlingIndex;
@@ -44,7 +46,8 @@ public final class PilotStatics {
 
     private PilotStatics(int splitsThisTurn, int fusionsThisTurn, int fusionsThisCombat,
                          int fusionMode, int chain,
-                         Set<Component> lastWordParts, Set<AbstractCard> fresh,
+                         Set<Component> lastWordParts, String lastWordGlyph,
+                         Set<AbstractCard> fresh,
                          boolean taWindowOpen, int yanlingIndex,
                          boolean yanlingDiscountPending) {
         this.splitsThisTurn = splitsThisTurn;
@@ -53,6 +56,7 @@ public final class PilotStatics {
         this.fusionMode = fusionMode;
         this.chain = chain;
         this.lastWordParts = lastWordParts;
+        this.lastWordGlyph = lastWordGlyph;
         this.fresh = fresh;
         this.taWindowOpen = taWindowOpen;
         this.yanlingIndex = yanlingIndex;
@@ -72,6 +76,7 @@ public final class PilotStatics {
                 zixiu.core.ZixiuConfig.fusionMode(),
                 FusionTracker.chain(),
                 parts,
+                FusionTracker.lastWordGlyph(),
                 fresh,
                 TaPower.windowOpen(),
                 YanlingPower.index(AbstractDungeon.player),
@@ -80,7 +85,8 @@ public final class PilotStatics {
 
     /** 把快照写回当前世界。 */
     public void restore() {
-        FusionTracker.restore(splitsThisTurn, fusionsThisTurn, chain, lastWordParts, fresh);
+        FusionTracker.restore(splitsThisTurn, fusionsThisTurn, chain, lastWordParts, fresh,
+                lastWordGlyph);
         FusionTracker.restoreCombat(fusionsThisCombat);
         zixiu.core.ZixiuConfig.setFusionMode(fusionMode);
         TaPower.setWindowOpen(taWindowOpen);

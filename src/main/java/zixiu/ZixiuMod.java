@@ -153,6 +153,7 @@ public class ZixiuMod implements
         BaseMod.subscribe(new SplitPreview());
         BaseMod.subscribe(new zixiu.ui.CharSelectRulesButton());
         BaseMod.subscribe(new zixiu.ui.FusionGlow());
+        BaseMod.subscribe(new zixiu.ui.ChainHints());
         BaseMod.subscribe(new zixiu.ui.DeferredCardInsert());
         BaseMod.subscribe(new zixiu.core.PoolDiagnostics());
         BaseMod.addColor(ZixiuEnums.ZIXIU_COLOR,

@@ -31,9 +31,9 @@ public class Zhong extends ZixiuCard {
                 hit++;
             }
         }
-        int draw = Math.min(hit, 2);
-        if (draw > 0) {
-            AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, draw));
+        // 不设上限：命中几个就抽几张
+        if (hit > 0) {
+            AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, hit));
         }
     }
 
