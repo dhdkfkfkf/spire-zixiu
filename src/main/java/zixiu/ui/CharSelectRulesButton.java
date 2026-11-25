@@ -4,11 +4,10 @@ import basemod.interfaces.PostRenderSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
-import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.screens.charSelect.CharacterOption;
 import com.megacrit.cardcrawl.screens.charSelect.CharacterSelectScreen;
 import zixiu.character.ZixiuCharacter;
@@ -17,24 +16,27 @@ import zixiu.core.ZixiuConfig;
 /**
  * 选角界面的「拆合规则」选择器。
  *
- * 版式照圣主（fuZhouMod 的 FinalBossChoiceSelector）：锚在「启程」按钮上方，
- * 一行金色标题、一行米色当前值，左右各一个 &lt; &gt; 文字箭头（悬停变金），点箭头切换。
- * 只在选中砚秋时出现。
- *
- * 输入处理放在 render 里：BaseMod 的 PostUpdate 钩子在主菜单不跑，只挂 PostUpdate 的话
- * 文字能画出来但点不动。
+ * 两行、都居中在屏幕水平中线附近，避免像之前那样贴着「启程」按钮往右溢出：
+ * <pre>
+ *        拆合规则 · 方案一        ← 小号金字
+ *    ＜产出虚无，材料入弃牌堆＞    ← 米色，整行可点
+ * </pre>
+ * 点这一行就在两种方案之间切换（只有两项，不用分清左右箭头）。
+ * 输入处理放在 render 里：BaseMod 的 PostUpdate 钩子在主菜单不跑。
  */
 public class CharSelectRulesButton implements PostRenderSubscriber {
 
-    /** 箭头相对锚点的水平偏移 / 命中框半宽 / 标题相对当前值的上移量。 */
-    private static final float ARROW_X_OFFSET = 118.0F;
-    private static final float ARROW_HIT_HALF = 32.0F;
-    private static final float LABEL_Y_OFFSET = 44.0F;
-    private static final float ARROW_TEXT_Y_NUDGE = 4.0F;
-    private static final float ANCHOR_Y_FROM_CONFIRM = 190.0F;
-    private static final float ANCHOR_X_FROM_CONFIRM = 110.0F;
+    /** 标题相对当前值那一行的上移量。 */
+    private static final float LABEL_Y_OFFSET = 30.0F;
+    /** 锚点：屏幕水平中线、距底部的高度比例。 */
+    private static final float ANCHOR_X_RATIO = 0.5F;
+    private static final float ANCHOR_Y_RATIO = 0.20F;
+    /** 整行可点区域的额外余量（上下）。 */
+    private static final float CLICK_PAD_Y = 16.0F;
 
-    /** 自己维护左键按下沿：PostRender 里 justClickedLeft 可能已经被 InputHelper 清掉了。 */
+    private static final GlyphLayout LAYOUT = new GlyphLayout();
+
+    /** 自己维护左键按下沿：PostRender 里 justClickedLeft 可能已经被清掉了。 */
     private static boolean wasLeftDown;
 
     @Override
@@ -42,79 +44,66 @@ public class CharSelectRulesButton implements PostRenderSubscriber {
         if (!visible()) {
             return;
         }
-        float cx = anchorX();
-        float cy = anchorY();
         float s = Settings.scale;
-        float half = ARROW_HIT_HALF * s;
+        float cx = Settings.WIDTH * ANCHOR_X_RATIO;
+        float cy = Settings.HEIGHT * ANCHOR_Y_RATIO;
 
-        float leftCx = cx - ARROW_X_OFFSET * s;
-        float rightCx = cx + ARROW_X_OFFSET * s;
-        boolean hoveringLeft = inside(leftCx, cy, half);
-        boolean hoveringRight = inside(rightCx, cy, half);
+        String title = "拆合规则 · " + (ZixiuConfig.fusionMode() == 1 ? "方案一" : "方案二");
+        String value = ZixiuConfig.exhaustsMaterials()
+                ? "＜产出保留，材料消耗＞"
+                : "＜产出虚无，材料入弃牌堆＞";
+
+        // 整行（含两侧尖括号）作为点击区
+        LAYOUT.setText(FontHelper.tipBodyFont, value);
+        float halfW = LAYOUT.width / 2.0F + 8.0F * s;
+        float halfH = LAYOUT.height / 2.0F + CLICK_PAD_Y * s;
+        boolean hovering = Math.abs(InputHelperX() - cx) <= halfW
+                && Math.abs(InputHelperY() - cy) <= halfH;
 
         boolean down = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
-        boolean pressedNow = (down && !wasLeftDown) || InputHelper.justClickedLeft;
+        boolean pressedNow = (down && !wasLeftDown) || com.megacrit.cardcrawl.helpers.input.InputHelper.justClickedLeft;
         wasLeftDown = down;
-        if ((hoveringLeft || hoveringRight) && pressedNow) {
+        if (hovering && pressedNow) {
             ZixiuConfig.toggleFusionMode();
             ScreenToast.show("拆合规则：" + ZixiuConfig.fusionModeLabel());
-            // 同一个按住状态不要重复触发
             wasLeftDown = true;
+            // 切换后字符串变了，重新算一次标题/数值
+            title = "拆合规则 · " + (ZixiuConfig.fusionMode() == 1 ? "方案一" : "方案二");
+            value = ZixiuConfig.exhaustsMaterials()
+                    ? "＜产出保留，材料消耗＞"
+                    : "＜产出虚无，材料入弃牌堆＞";
         }
 
-        // 标题（金）+ 当前值（米色），两行居中
-        FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont,
-                "拆合规则 · " + (ZixiuConfig.fusionMode() == 1
-                        ? "方案 1（产出虚无）" : "方案 2（产出保留）"),
-                cx, cy + LABEL_Y_OFFSET * s, Settings.GOLD_COLOR);
-        FontHelper.renderFontCentered(sb, FontHelper.tipBodyFont,
-                ZixiuConfig.exhaustsMaterials() ? "材料消耗" : "材料入弃牌堆",
-                cx, cy, Settings.CREAM_COLOR);
-
-        // 左右箭头：悬停变金
-        Color arrowColor = Settings.CREAM_COLOR;
-        FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, "<",
-                leftCx, cy + ARROW_TEXT_Y_NUDGE * s,
-                hoveringLeft ? Settings.GOLD_COLOR : arrowColor);
-        FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, ">",
-                rightCx, cy + ARROW_TEXT_Y_NUDGE * s,
-                hoveringRight ? Settings.GOLD_COLOR : arrowColor);
+        FontHelper.renderFontCentered(sb, FontHelper.charDescFont, title,
+                cx, cy + LABEL_Y_OFFSET * s,
+                hovering ? Settings.GOLD_COLOR : new Color(0.79F, 0.64F, 0.36F, 0.9F));
+        FontHelper.renderFontCentered(sb, FontHelper.tipBodyFont, value,
+                cx, cy, hovering ? Settings.GOLD_COLOR : Settings.CREAM_COLOR);
     }
 
-    private static boolean inside(float x, float y, float half) {
-        return Math.abs(InputHelper.mX - x) <= half && Math.abs(InputHelper.mY - y) <= half;
+    private static float InputHelperX() {
+        return com.megacrit.cardcrawl.helpers.input.InputHelper.mX;
+    }
+
+    private static float InputHelperY() {
+        return com.megacrit.cardcrawl.helpers.input.InputHelper.mY;
     }
 
     private static CharacterSelectScreen screen() {
-        return CardCrawlGame.mainMenuScreen == null ? null : CardCrawlGame.mainMenuScreen.charSelectScreen;
-    }
-
-    /** 锚点：「启程」按钮上方（比圣主的 Boss 选择器再高一点）。 */
-    private static float anchorX() {
-        CharacterSelectScreen screen = screen();
-        if (screen != null && screen.confirmButton != null && screen.confirmButton.hb != null) {
-            return screen.confirmButton.hb.cX - ANCHOR_X_FROM_CONFIRM * Settings.scale;
-        }
-        return Settings.WIDTH * 0.5F;
-    }
-
-    private static float anchorY() {
-        CharacterSelectScreen screen = screen();
-        if (screen != null && screen.confirmButton != null && screen.confirmButton.hb != null) {
-            return screen.confirmButton.hb.cY + ANCHOR_Y_FROM_CONFIRM * Settings.scale;
-        }
-        return Settings.HEIGHT * 0.28F;
+        return com.megacrit.cardcrawl.core.CardCrawlGame.mainMenuScreen == null
+                ? null
+                : com.megacrit.cardcrawl.core.CardCrawlGame.mainMenuScreen.charSelectScreen;
     }
 
     /** 只在选角界面、且当前选中的是砚秋时显示。 */
     private static boolean visible() {
-        // 关键：进局后 mainMenuScreen.screen 仍停留在 CHAR_SELECT，
-        // 只判它会让选择器在战斗里继续画、继续吃点击。用 CardCrawlGame.mode 卡死。
-        if (CardCrawlGame.mode != CardCrawlGame.GameMode.CHAR_SELECT) {
+        // 进局后 mainMenuScreen.screen 仍停留在 CHAR_SELECT，必须用 CardCrawlGame.mode 卡死
+        if (com.megacrit.cardcrawl.core.CardCrawlGame.mode
+                != com.megacrit.cardcrawl.core.CardCrawlGame.GameMode.CHAR_SELECT) {
             return false;
         }
-        if (CardCrawlGame.mainMenuScreen == null
-                || CardCrawlGame.mainMenuScreen.screen
+        if (com.megacrit.cardcrawl.core.CardCrawlGame.mainMenuScreen == null
+                || com.megacrit.cardcrawl.core.CardCrawlGame.mainMenuScreen.screen
                         != com.megacrit.cardcrawl.screens.mainMenu.MainMenuScreen.CurScreen.CHAR_SELECT) {
             return false;
         }

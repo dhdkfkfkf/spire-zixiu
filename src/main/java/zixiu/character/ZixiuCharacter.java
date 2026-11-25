@@ -74,8 +74,8 @@ public class ZixiuCharacter extends CustomPlayer {
     @Override
     public CharSelectInfo getLoadout() {
         return new CharSelectInfo(NAME,
-                // 选角界面的简介是按空格折行的，纯中文不会自动换行，所以手动断成两行
-                "旧家出身的公子，家道中落后只剩一支笔、一方砚。\n"
+                // renderSmartText 按空格切词、遇到单独的 "NL" 才换行（纯中文不会自动折行）
+                "旧家出身的公子，家道中落后只剩一支笔、一方砚。 NL "
                         + "他不修仙、不炼丹，只信手里的字：拆开是道理，合上是命。",
                 STARTING_HP, MAX_HP, 0, STARTING_GOLD, CARD_DRAW,
                 this, getStartingRelics(), getStartingDeck(), false);
