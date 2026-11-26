@@ -72,6 +72,12 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 3. 复制 jar 到工作区、改 `changeNote`，双击 `upload.cmd`。
 4. `git tag v<版本> && git push --tags`，在 GitHub Release 附上 `mod/zixiu.jar` 和更新说明。
 
+## 1.0.19 更新说明（changeNote）
+
+```
+1.0.19：清理（无玩法改动）——删除闲置的 shoulder.png 与 ShoulderArt 补丁（篝火两个肩像槽位共用 shoulder2.png，画面不变）；胜利统计界面保持原版黑底，不再附带未使用的背景图。卡牌 / 遗物 / 事件 / 数值与 1.0.18 相同。
+```
+
 ## 1.0.18 更新说明（changeNote）
 
 ```
@@ -137,7 +143,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 选角背景、战斗立绘、死亡图、四张通关分镜（一张背景 + 三格画面）。
 
 ■ 状态
-1.0.18，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
+1.0.19，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
 
 适配游戏版本 12-18-2022（最终版），需要 ModTheSpire / BaseMod / StSLib。
 ```
