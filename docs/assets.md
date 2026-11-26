@@ -13,7 +13,7 @@
 | 选角按钮 | `zixiu/images/charSelect/button.png` | 200×200 |
 | 选角立绘 | `zixiu/images/charSelect/portrait.png` | 1920×1200 |
 | 战斗立绘 | `zixiu/images/char/char.png` | 468×201（透明背景；或改用 Spine .atlas/.json/.png，30fps） |
-| 肩部 | `zixiu/images/char/shoulder.png` | 1920×1136 |
+| 肩部（篝火） | `zixiu/images/char/shoulder2.png` | 1920×1136 |
 | 尸体 | `zixiu/images/char/corpse.png` | 512×512 |
 | 事件 | `images/events/<name>.png` | 600×600 |
 

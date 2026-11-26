@@ -36,13 +36,17 @@ public class ZixiuCharacter extends CustomPlayer {
      */
 
     private static final String CHAR_IMG = "zixiu/images/char/char.png";
-    private static final String SHOULDER_2 = "zixiu/images/char/shoulder2.png";
-    private static final String SHOULDER_1 = "zixiu/images/char/shoulder.png";
+    /**
+     * 原版有两个肩像槽位（shoulder2 用在篝火，shoulder 在篝火 UI 隐藏时顶上），
+     * 都只服务于「篝火」这一处；砚秋只留「坐在火边」那张，两个槽位共用它。
+     * 死亡图是 corpse.png，胜利统计屏原版自己就是黑底（不画肩像）。
+     */
+    private static final String SHOULDER = "zixiu/images/char/shoulder2.png";
     private static final String CORPSE_IMG = "zixiu/images/char/corpse.png";
 
     public ZixiuCharacter(String name, AbstractPlayer.PlayerClass playerClass) {
         super(name, playerClass, new ZixiuEnergyOrb(), new StaticAnimation());
-        initializeClass(CHAR_IMG, SHOULDER_2, SHOULDER_1, CORPSE_IMG, getLoadout(),
+        initializeClass(CHAR_IMG, SHOULDER, SHOULDER, CORPSE_IMG, getLoadout(),
                 20.0F, -10.0F, 220.0F, 290.0F, new EnergyManager(ENERGY_PER_TURN));
     }
 
