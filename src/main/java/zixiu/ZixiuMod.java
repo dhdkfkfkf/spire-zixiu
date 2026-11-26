@@ -110,6 +110,7 @@ import zixiu.relics.ZhuBi;
 import zixiu.ui.HandActionButton;
 import zixiu.ui.HandActions;
 import zixiu.ui.ScreenToast;
+import zixiu.ui.FusionPreview;
 import zixiu.ui.SplitPreview;
 
 @SpireInitializer
@@ -152,6 +153,8 @@ public class ZixiuMod implements
         BaseMod.subscribe(new CardPlayHook());
         BaseMod.subscribe(new ScreenToast());
         BaseMod.subscribe(new SplitPreview());
+        BaseMod.subscribe(new FusionPreview());
+        BaseMod.subscribe(new zixiu.ui.ZixiuLibrary());
         BaseMod.subscribe(new zixiu.ui.CharSelectRulesButton());
         BaseMod.subscribe(new zixiu.ui.FusionGlow());
         BaseMod.subscribe(new zixiu.ui.ChainHints());
@@ -312,7 +315,11 @@ public class ZixiuMod implements
     }
 
     /**
-     * 模组设置面板：九字遗物隔离开关（默认开启，改完重启生效）。
+     * 模组设置面板：
+     * <ul>
+     *   <li>九字遗物隔离开关（默认开启，改完重启生效）；</li>
+     *   <li>新华字典（卡牌图鉴）开关（默认开启，改完立即生效）。</li>
+     * </ul>
      */
     private void registerConfigPanel() {
         basemod.ModPanel panel = new basemod.ModPanel();
@@ -326,6 +333,18 @@ public class ZixiuMod implements
                 text -> { },
                 button -> zixiu.core.ZixiuConfig.setIsolation(button.enabled));
         panel.addUIElement(toggle);
+
+        // 新华字典（图鉴）开关：有些玩家不想要，或者担心和其它界面 mod 抢输入。
+        basemod.ModLabeledToggleButton libraryToggle = new basemod.ModLabeledToggleButton(
+                "启用「字典」卡牌图鉴（顶栏的红色字典图标，关闭后立即生效）",
+                400.0F, 650.0F,
+                com.badlogic.gdx.graphics.Color.WHITE,
+                com.megacrit.cardcrawl.helpers.FontHelper.charDescFont,
+                zixiu.core.ZixiuConfig.libraryEnabled(),
+                panel,
+                text -> { },
+                button -> zixiu.core.ZixiuConfig.setLibraryEnabled(button.enabled));
+        panel.addUIElement(libraryToggle);
 
         com.badlogic.gdx.graphics.Texture badge =
                 com.megacrit.cardcrawl.helpers.ImageMaster.loadImage("zixiu/images/ui/badge.png");

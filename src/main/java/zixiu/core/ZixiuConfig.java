@@ -9,6 +9,7 @@ import java.util.Properties;
  *
  * <ul>
  *   <li>九字遗物是否只出现在字修的角色池里（模组加载时读取，改完重启生效）；</li>
+ *   <li>新华字典（卡牌图鉴）是否启用，立即生效；</li>
  *   <li>拆合规则方案（1 / 2），在选角界面的按钮上切换，立即生效。</li>
  * </ul>
  */
@@ -16,10 +17,13 @@ public final class ZixiuConfig {
 
     private static final String FILE = "zixiuConfig";
     private static final String ISOLATION = "inscriptionIsolation";
+    private static final String LIBRARY = "cardLibrary";
     private static final String FUSION_MODE = "fusionMode";
 
     private static SpireConfig config;
     private static boolean isolation = true;
+    /** 「新华字典」卡牌图鉴：关掉之后顶栏不再出「典」，也不接管任何输入。 */
+    private static boolean library = true;
     /** 1 = 产出虚无、材料进弃牌堆；2 = 产出保留、材料消耗（进消耗堆）。 */
     private static int fusionMode = 1;
 
@@ -30,13 +34,16 @@ public final class ZixiuConfig {
         try {
             Properties defaults = new Properties();
             defaults.setProperty(ISOLATION, "true");
+            defaults.setProperty(LIBRARY, "true");
             defaults.setProperty(FUSION_MODE, "1");
             config = new SpireConfig("zixiu", FILE, defaults);
             isolation = config.getBool(ISOLATION);
+            library = config.getBool(LIBRARY);
             fusionMode = config.getInt(FUSION_MODE);
         } catch (Exception e) {
             config = null;
             isolation = true;
+            library = true;
             fusionMode = 1;
         }
     }
@@ -52,6 +59,25 @@ public final class ZixiuConfig {
         }
         try {
             config.setBool(ISOLATION, value);
+            config.save();
+        } catch (Exception ignored) {
+            // 保存失败只影响下次启动时的默认值，不影响本次运行。
+        }
+    }
+
+    // ---- 新华字典 ----
+
+    public static boolean libraryEnabled() {
+        return library;
+    }
+
+    public static void setLibraryEnabled(boolean value) {
+        library = value;
+        if (config == null) {
+            return;
+        }
+        try {
+            config.setBool(LIBRARY, value);
             config.save();
         } catch (Exception ignored) {
             // 保存失败只影响下次启动时的默认值，不影响本次运行。

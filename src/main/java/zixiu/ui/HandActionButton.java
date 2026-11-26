@@ -1,6 +1,5 @@
 package zixiu.ui;
 
-import basemod.interfaces.PostRenderSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,13 +22,17 @@ import java.util.function.Supplier;
  * 1. Hitbox 尺寸必须在每帧重算——模块加载时 Settings.scale 还是 0。
  * 2. Hitbox.update() 只把 clickStarted 转成 clicked，从不自己设置 clickStarted。
  */
-public class HandActionButton implements PostUpdateSubscriber, PostRenderSubscriber {
+public class HandActionButton implements PostUpdateSubscriber {
 
     private static final Logger logger = LogManager.getLogger(HandActionButton.class);
     private static final float SIZE = 90.0F;
     private static final float OFFSET_X = 40.0F;
 
     private final String label;
+
+    /** 所有按钮实例，交给 {@link zixiu.patches.HandActionButtonLayer} 在 AbstractDungeon.render 之后统一画。 */
+    private static final java.util.List<HandActionButton> ALL =
+            new java.util.ArrayList<HandActionButton>();
 
     private static Texture glow;
     private final float offsetY;
@@ -49,6 +52,19 @@ public class HandActionButton implements PostUpdateSubscriber, PostRenderSubscri
         this.enabled = enabled;
         this.action = action;
         this.disabledToast = disabledToast;
+        ALL.add(this);
+    }
+
+    /**
+     * 由 {@link zixiu.patches.HandActionButtonLayer} 调用。
+     *
+     * 画在 {@code AbstractDungeon.render} 之后、鼠标光标之前——原来挂在 BaseMod 的 PostRender 上，
+     * 那个钩子在整个 frame 的最后（光标之后），按钮文字/光晕会盖住鼠标指针。
+     */
+    public static void renderAll(SpriteBatch sb) {
+        for (HandActionButton button : ALL) {
+            button.render(sb);
+        }
     }
 
     @Override
@@ -91,8 +107,7 @@ public class HandActionButton implements PostUpdateSubscriber, PostRenderSubscri
         }
     }
 
-    @Override
-    public void receivePostRender(SpriteBatch sb) {
+    private void render(SpriteBatch sb) {
         if (!this.visible.getAsBoolean()) {
             return;
         }
