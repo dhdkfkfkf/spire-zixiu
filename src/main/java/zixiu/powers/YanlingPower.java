@@ -38,7 +38,7 @@ public class YanlingPower extends AbstractPower {
     public static final String POWER_ID = ZixiuMod.makeID("YanlingPower");
     public static final String STATE_NAME = "九字真言·言灵";
 
-    public static final String[] NAMES = {"临", "兵", "斗", "者", "皆", "阵", "列", "在", "前"};
+    public static final String[] NAMES = {"临", "兵", "斗", "者", "皆", "阵", "列", "前", "行"};
     private static final String[] EFFECTS = {
             "获得 3 点格挡。",
             "对随机敌人造成 9 点伤害。",
@@ -57,7 +57,7 @@ public class YanlingPower extends AbstractPower {
 
     /** 「领悟」提示只弹一次。 */
     private static boolean announced;
-    /** 「在」：下一张牌减 1 费的欠账。 */
+    /** 「前」：下一张牌减 1 费的欠账。 */
     private static boolean discountPending;
 
     public YanlingPower(AbstractCreature owner, int index) {
@@ -161,7 +161,7 @@ public class YanlingPower extends AbstractPower {
         yanling.trigger();
     }
 
-    /** 「在」的减费结算：打出耗能 ≥1 的牌时返还 1 点能量。 */
+    /** 「前」的减费结算：打出耗能 ≥1 的牌时返还 1 点能量。 */
     public static boolean consumeDiscount(AbstractCard card) {
         if (!discountPending || card == null || card.costForTurn < 1) {
             return false;
@@ -170,7 +170,7 @@ public class YanlingPower extends AbstractPower {
         return true;
     }
 
-    /** 求解器镜像用：「在」的减费欠账。 */
+    /** 求解器镜像用：「前」的减费欠账。 */
     public static boolean discountPending() {
         return discountPending;
     }
