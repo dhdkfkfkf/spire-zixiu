@@ -21,7 +21,7 @@ public class Sen extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(p, p, new SenPower(p), SenPower.BLOCK));
+                new ApplyPowerAction(p, p, new SenPower(p), this.magicNumber));
     }
 
     @Override
@@ -33,6 +33,7 @@ public class Sen extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
+            // 升级：固有（数值不变）
             this.isInnate = true;
             String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
             if (upgradeDesc != null) {

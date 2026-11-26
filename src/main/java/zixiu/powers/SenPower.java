@@ -11,13 +11,13 @@ import zixiu.ZixiuMod;
 public class SenPower extends AbstractPower {
 
     public static final String POWER_ID = ZixiuMod.makeID("SenPower");
-    public static final int BLOCK = 6;
+    public static final int BLOCK = 4;
 
     public SenPower(AbstractCreature owner) {
         this.name = "森";
         this.ID = POWER_ID;
         this.owner = owner;
-        // 数值就放在 amount 上：叠一张就 +6（原版 ApplyPowerAction 按 ID 叠层）
+        // 数值就放在 amount 上：叠一张就 +4（原版 ApplyPowerAction 按 ID 叠层）
         this.amount = BLOCK;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;

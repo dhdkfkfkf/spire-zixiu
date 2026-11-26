@@ -177,6 +177,13 @@ public class ZixiuCharacter extends CustomPlayer {
             "zixiu/images/scenes/yanqiu3.png"
     };
 
+    /** 三格画面下的文字。 */
+    private static final String[] CUTSCENE_TEXTS = {
+            "最后一笔落下时，塔顶的风忽然停了。",
+            "他把砚里的残墨洗净，像洗掉这一路拆开又合上的字。",
+            "然后他提起笔，在新的纸上写下第一个字。"
+    };
+
     @Override
     public com.badlogic.gdx.graphics.Texture getCutsceneBg() {
         return exists(CUTSCENE_BG)
@@ -193,8 +200,9 @@ public class ZixiuCharacter extends CustomPlayer {
         }
         java.util.ArrayList<com.megacrit.cardcrawl.cutscenes.CutscenePanel> panels =
                 new java.util.ArrayList<com.megacrit.cardcrawl.cutscenes.CutscenePanel>();
-        for (String path : CUTSCENE_PANELS) {
-            panels.add(new com.megacrit.cardcrawl.cutscenes.CutscenePanel(path));
+        for (int i = 0; i < CUTSCENE_PANELS.length; i++) {
+            panels.add(new com.megacrit.cardcrawl.cutscenes.CutscenePanel(
+                    CUTSCENE_PANELS[i], CUTSCENE_TEXTS[i]));
         }
         return panels;
     }

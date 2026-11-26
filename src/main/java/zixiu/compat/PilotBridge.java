@@ -38,6 +38,28 @@ public final class PilotBridge {
     private PilotBridge() {
     }
 
+    // ---- 「未」选牌的握手 ----
+
+    /**
+     * 求解器实时选牌的握手标志。
+     *
+     * 求解器替玩家填「未」的网格选择时把它置 true、答完再清掉；置 true 时
+     * {@code PlayFromDrawPileAction} 会**自己取走选择并关界面**，不再等界面关闭——
+     * 否则两边互等（求解器等我们消费、我们等界面关掉）就会卡在选牌界面。
+     *
+     * 对照：送葬人的 BetterSelectCardsAction 用「这次选择是不是玩家点的」来判断，
+     * 我们用这个显式标志，触摸端也不用依赖 hover 状态。
+     */
+    private static boolean solverSelecting;
+
+    public static boolean solverSelecting() {
+        return solverSelecting;
+    }
+
+    public static void setSolverSelecting(boolean value) {
+        solverSelecting = value;
+    }
+
     /** 当前连书数（没有连书遗物时也照实返回，链是否生效看 {@link #chainRelic()}）。 */
     public static int chain() {
         return FusionTracker.chain();

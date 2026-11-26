@@ -19,8 +19,8 @@ public class Beng extends ZixiuCard {
     public Beng() {
         super(ID, 2, CardType.ATTACK, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
         this.baseDamage = 11;
-        this.baseMagicNumber = 4;
-        this.magicNumber = 4;
+        this.baseMagicNumber = 3;
+        this.magicNumber = 3;
     }
 
     @Override
@@ -67,7 +67,9 @@ public class Beng extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
+            // 升级：11 -> 14 伤害，每拆一张 3 -> 4
             upgradeDamage(3);
+            upgradeMagicNumber(1);
         }
     }
 }

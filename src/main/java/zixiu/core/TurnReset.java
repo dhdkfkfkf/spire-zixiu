@@ -16,6 +16,8 @@ public class TurnReset implements OnPlayerTurnStartSubscriber, OnStartBattleSubs
         // 拆/合产出的牌走 hand.addToHand 直接插入，不占上限，所以可以超过 20 张。
         basemod.BaseMod.MAX_HAND_SIZE = AbstractDungeon.player instanceof ZixiuCharacter
                 ? 20 : basemod.BaseMod.DEFAULT_MAX_HAND_SIZE;
+        // 言灵：没集齐九字时，每场战斗只在第一回合触发一次
+        YanlingPower.resetCombatTrigger();
     }
 
     @Override

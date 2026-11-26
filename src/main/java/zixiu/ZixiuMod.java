@@ -275,6 +275,8 @@ public class ZixiuMod implements
     @Override
     public void receiveStartGame() {
         zixiu.events.JiuZiBei.resetVisits();
+        zixiu.patches.ForceZixiuEvent.resetRun();
+        zixiu.patches.InscriptionRewardPatch.resetRun();
     }
 
     @Override

@@ -4,11 +4,11 @@ import com.megacrit.cardcrawl.actions.common.HealAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-/** 皆：每当你拆解一张牌，治疗 3 点生命。 */
+/** 皆：每当你拆解一张牌，治疗 1 点生命。 */
 public class Jie extends InscriptionRelic {
 
     public static final String ID = "Jie";
-    public static final int HEAL = 3;
+    public static final int HEAL = 1;
 
     public Jie() {
         super(ID, "jie.png");

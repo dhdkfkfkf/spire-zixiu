@@ -74,10 +74,21 @@ public class YanlingPower extends AbstractPower {
     @Override
     public void updateDescription() {
         int i = clamp(this.amount);
-        this.description = "当前第 " + i + " 字「" + NAMES[i - 1] + "」：" + EFFECTS[i - 1]
-                + (InscriptionRelic.hasAll()
-                ? "（打出 n 单位牌推进 n，指针自动轮转）"
-                : "（集齐九字后出牌推进）");
+        StringBuilder sb = new StringBuilder();
+        sb.append("当前第 ").append(i).append(" 字「").append(NAMES[i - 1]).append("」：")
+                .append(EFFECTS[i - 1])
+                .append(InscriptionRelic.hasAll()
+                        ? "（打出 n 单位牌推进 n，指针自动轮转）"
+                        : "（每场战斗第一回合触发一次；集齐九字后出牌推进）");
+        // 把 1~9 每个字的言灵都列出来，查起来不用翻文档
+        sb.append(" NL ");
+        for (int k = 0; k < NAMES.length; k++) {
+            if (k > 0) {
+                sb.append(" NL ");
+            }
+            sb.append(NAMES[k]).append("：").append(EFFECTS[k]);
+        }
+        this.description = sb.toString();
     }
 
     // ---- 生命周期 ----
@@ -108,16 +119,31 @@ public class YanlingPower extends AbstractPower {
                 new ApplyPowerAction(player, player, new YanlingPower(player, start), start));
     }
 
-    /** 回合开始：触发当前言灵（未集齐时唯一一次机会）。 */
+    /** 本场战斗是否已经触发过「未集齐」的那一次。 */
+    private static boolean triggeredThisCombat;
+
+    /** 战斗开始时清空。 */
+    public static void resetCombatTrigger() {
+        triggeredThisCombat = false;
+    }
+
+    /** 回合开始：集齐了每回合触发；没集齐只在本次战斗的第一回合触发一次。 */
     public static void onPlayerTurnStart(AbstractPlayer player) {
         ensure(player);
         if (player == null) {
             return;
         }
         AbstractPower power = player.getPower(POWER_ID);
-        if (power instanceof YanlingPower) {
-            ((YanlingPower) power).trigger();
+        if (!(power instanceof YanlingPower)) {
+            return;
         }
+        if (!InscriptionRelic.hasAll()) {
+            if (triggeredThisCombat) {
+                return;
+            }
+            triggeredThisCombat = true;
+        }
+        ((YanlingPower) power).trigger();
     }
 
     /** 打出一张牌之后：集齐了才推进并再触发一次。 */

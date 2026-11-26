@@ -502,3 +502,61 @@ zixiu | 砚秋 | zixiu.
 - 变化：九字碑事件 1~3 幕、每局重置次数；错字/残卷 进第二幕；残碑 稀有 → 罕见；
   每个 Boss 的遗物奖励保底一个缺失的九字。
 - 如果求解器的评估模型里假设了「九字只能从事件来」，可以更新成「事件 + Boss 保底 + 残碑」三个来源。
+
+## 1.0.12 追加：崩 / 末 / 杜（求解器）
+
+- 崩（`zixiu:Beng`）：2 费全体，11(+3) 伤害；每拆一张 +3(+1)。
+- 末（`zixiu:Mo`）：2 费单体，**6(+2)** 伤害；目标**每失去 10% 最大生命 +3(+1)** 伤害
+  （`floor(缺失比例 × 10) × M`，最多 10 档）。不再吃本回合拆解数。
+- 杜（`zixiu:Blockade`）：2 费技能（升级 1 费），给 `zixiu:DuPower`（玩家 BUFF，本回合有效）：
+  **每次攻击（DamageType.NORMAL）真正打掉血**就获得 1 金币 × amount；被完全格挡不算，
+  灼烧/连书/因（THORNS、HP_LOSS）不算。判定点：`AbstractMonster.damage` 之后看 `lastDamageTaken`。
+  推演里「获得金币」只影响局外经济，战斗内评估可以忽略，但别把它当成伤害来源。
+
+## 1.0.12 追加：未 的选牌握手（求解器必须接一处）
+
+现症：求解器实时选牌时打「未」，网格界面停在屏幕上，玩家手动也点不出去。
+原因是两边互等：求解器等模组消费选择，模组等界面关闭。
+
+**接口（反射调用即可）**
+
+| 方法 | 用途 |
+|---|---|
+| `PilotBridge.setSolverSelecting(boolean)` | 你替玩家填「未」的选择**之前**置 `true`，答完/放弃时清 `false` |
+| `PilotBridge.solverSelecting()` | 只读，用于自检 |
+
+**行为**
+
+- `solverSelecting == true` 且 `selectedCards` 非空 → `PlayFromDrawPileAction` **自己取走选择、
+  `closeCurrentScreen()`、继续结算**，不再等界面关闭；消费后自动把标志清零。
+- 玩家手点路径不变（标志为 false 时仍然等确定/关界面，最后一笔选择赢）。
+- 兜底：选择填好后 **12 秒**没人收口（例如输入被某个世界静音），动作也会自己收并打出去，
+  所以不会再出现永久卡死。日志：`[zixiu] wei consume selection (solver|stuck-timeout) <卡 id>`。
+
+**要跟的一句话版**
+
+> 1.0.12 加了「未」的选牌握手：`PilotBridge.setSolverSelecting(true)` → 填 `selectedCards` →
+> 模组会自己取走选择并关界面（不用你按确定）；答完记得 `setSolverSelecting(false)`（我们消费时也会清零）。
+> 另外 12 秒兜底会自己收口，`[zixiu] wei consume selection (stuck-timeout)` 说明当时没人收。
+
+## 1.0.12 追加：事件劫持与精英遗物保底（不影响战斗推演）
+
+- `ForceZixiuEvent` 补丁挂在 `AbstractDungeon.getEvent`：每一幕第一个事件房强制成九字碑
+  （砚秋、九字未集齐、九字碑还有次数）。纯奖励/事件层，`PilotBridge` 不用动。
+- `InscriptionRewardPatch` 现在是 `CombatRewardScreen.setupItemReward` 的 **Prefix**
+  （原来挂 Postfix 是白挂：那个方法开头就把 `room.rewards` 拷进界面自己的列表了）。
+  作用：残碑/ Boss 九字保底 / 首次精英的字修遗物保底 现在才真正生效。
+- 如果求解器的「本局收益评估」建模了遗物获取，可以按「每局至少 1 件字修遗物（精英）+ 每幕 1 次九字碑」估。
+
+## 1.0.13 追加：九字遗物与言灵（求解器）
+
+- **行**：本回合既合过字又拆过牌的那一刻，**立刻** +3 敏捷（`DexterityPower`），
+  `XingPower.amount` 记录这 3 点，下回合开始时按 amount 扣回并移除。
+  推演里：敏捷在这回合就参与伤害计算，下回合开始清零。
+- **斗**：改为「每回合第奇数次**合出字**时抽 1 张」（原来是拆解、抽 2）。
+- **皆**：拆解治疗 1；**者**：合字格挡 3；
+  **前**：一回合内打出「一张部件牌 + 一张成品牌」后抽 1（每回合一次）。
+- **森**：`SenPower` 每拆一张 **4** 点，升级仍是固有。
+- **言灵**：未集齐九字时**每场战斗只在第一回合触发一次**（`YanlingPower.resetCombatTrigger()`
+  在战斗开始时清零）；集齐后仍是每张牌推进、每回合开始触发。buff 说明列出九字全表。
+- 佳：升级改成「一张成品牌 -2 费」；唱：1（升级 2）层曝光。

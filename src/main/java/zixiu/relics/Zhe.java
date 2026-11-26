@@ -4,11 +4,11 @@ import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-/** 者：每当你合出一个字，获得 5 点格挡。 */
+/** 者：每当你合出一个字，获得 3 点格挡。 */
 public class Zhe extends InscriptionRelic {
 
     public static final String ID = "Zhe";
-    public static final int BLOCK = 5;
+    public static final int BLOCK = 3;
 
     public Zhe() {
         super(ID, "zhe.png");

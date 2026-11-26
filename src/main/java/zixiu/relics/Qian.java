@@ -6,12 +6,16 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import zixiu.cards.ComponentCard;
 
-/** 前：每回合第偶数次打出部件牌时，抽 1 张牌。 */
+/** 前：每回合打出一张部件牌和一张成品牌后，抽 1 张牌（一回合一次）。 */
 public class Qian extends InscriptionRelic {
 
     public static final String ID = "Qian";
 
-    private int playedThisTurn = 0;
+    /** 本回合打出过部件牌 / 成品牌没有。 */
+    private boolean playedComponent;
+    private boolean playedWord;
+    /** 本回合是否已经抽过（一对只抽一次）。 */
+    private boolean drawnThisTurn;
 
     public Qian() {
         super(ID, "qian.png");
@@ -19,18 +23,28 @@ public class Qian extends InscriptionRelic {
 
     @Override
     public void atTurnStart() {
-        playedThisTurn = 0;
+        playedComponent = false;
+        playedWord = false;
+        drawnThisTurn = false;
     }
 
     @Override
     public void onCardPlayed(AbstractCard card) {
-        if (!(card instanceof ComponentCard)) {
+        boolean component = card instanceof ComponentCard;
+        boolean word = !component && zixiu.cards.CardComponents.glyphOf(card) != null;
+        if (!component && !word) {
             return;
         }
-        playedThisTurn++;
-        if (playedThisTurn % 2 != 0) {
+        if (component) {
+            playedComponent = true;
+        } else {
+            playedWord = true;
+        }
+        // 一部件 + 一成品牌，两样都打过了才抽，一回合一次
+        if (drawnThisTurn || !playedComponent || !playedWord) {
             return;
         }
+        drawnThisTurn = true;
         this.flash();
         addToBot(new DrawCardAction(AbstractDungeon.player, 1));
     }

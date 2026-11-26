@@ -35,6 +35,12 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
      */
     private AbstractCard picked;
     private boolean opened = false;
+    /** 界面开着、且已经有牌被选中时的计时（秒）。 */
+    private float filledSeconds;
+    /** 兜底：选择填好之后过了这么久还没人收口，就自己收（防止两边互等卡死）。 */
+    private static final float STUCK_TIMEOUT = 12.0F;
+    /** 已经为哪张牌打过「在等」的日志，避免刷屏。 */
+    private AbstractCard waitingLogged;
 
     public PlayFromDrawPileAction(AbstractMonster target, int times) {
         this.target = target;
@@ -60,6 +66,8 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
                     "选择一张牌：打出 " + this.times + " 次后消耗",
                     false, false, true, false);
             this.opened = true;
+            this.filledSeconds = 0.0F;
+            logger.info("[zixiu] wei open grid (times=" + this.times + ")");
             return;
         }
         if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.GRID) {
@@ -68,6 +76,31 @@ public class PlayFromDrawPileAction extends AbstractGameAction {
             this.picked = AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()
                     ? null
                     : AbstractDungeon.gridSelectScreen.selectedCards.get(0);
+            if (this.picked == null) {
+                this.filledSeconds = 0.0F;
+                this.waitingLogged = null;
+                return;
+            }
+            this.filledSeconds += com.badlogic.gdx.Gdx.graphics.getDeltaTime();
+
+            boolean bySolver = zixiu.compat.PilotBridge.solverSelecting();
+            boolean stuck = this.filledSeconds >= STUCK_TIMEOUT;
+            if (bySolver || stuck) {
+                // 自己收口：把选好的牌取走、关掉界面，下一帧走下面的开打逻辑。
+                // 不然「求解器等我们消费、我们等界面关闭」会互等，玩家手动也点不出去。
+                logger.info("[zixiu] wei consume selection (" + (bySolver ? "solver" : "stuck-timeout")
+                        + ") " + this.picked.cardID + " after " + this.filledSeconds + "s");
+                AbstractDungeon.gridSelectScreen.selectedCards.clear();
+                zixiu.compat.PilotBridge.setSolverSelecting(false);
+                this.filledSeconds = 0.0F;
+                AbstractDungeon.closeCurrentScreen();
+                return;
+            }
+            if (this.waitingLogged != this.picked) {
+                this.waitingLogged = this.picked;
+                logger.info("[zixiu] wei waiting for grid close, selection=" + this.picked.cardID
+                        + " solverSelecting=" + bySolver);
+            }
             return;
         }
         if (this.picked == null && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {

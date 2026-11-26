@@ -65,8 +65,8 @@
   },
   "zixiu:Sen": {
     "NAME": "森",
-    "DESCRIPTION": "每当你拆解一张牌，获得 6 点 格挡 。",
-    "UPGRADE_DESCRIPTION": "固有 。 每当你拆解一张牌，获得 6 点 格挡 。"
+    "DESCRIPTION": "每当你拆解一张牌，获得 !M! 点 格挡 。",
+    "UPGRADE_DESCRIPTION": "固有 。 每当你拆解一张牌，获得 !M! 点 格挡 。"
   },
   "zixiu:Yan": {
     "NAME": "炎",
@@ -138,7 +138,7 @@
   },
   "zixiu:Blockade": {
     "NAME": "杜",
-    "DESCRIPTION": "获得 !B! 点 格挡 。"
+    "DESCRIPTION": "本回合内，你每有一次攻击造成实际伤害，获得 1 点金币。"
   },
   "zixiu:Grove": {
     "NAME": "林",
@@ -150,8 +150,8 @@
   },
   "zixiu:Guard": {
     "NAME": "保",
-    "DESCRIPTION": "获得 !B! 点格挡。本回合你受到的下一次攻击伤害减半。",
-    "UPGRADE_DESCRIPTION": "获得 !B! 点格挡。本回合你受到的所有攻击伤害减半。"
+    "DESCRIPTION": "获得 !B! 点 格挡 。本回合你受到的下一次攻击伤害减半。",
+    "UPGRADE_DESCRIPTION": "获得 !B! 点 格挡 。本回合你受到的所有攻击伤害减半。"
   },
   "zixiu:Drizzle": {
     "NAME": "淋",
@@ -204,7 +204,7 @@
   },
   "zixiu:Fine": {
     "NAME": "佳",
-    "DESCRIPTION": "手牌中 !M! 张成品牌本回合费用 -1。"
+    "DESCRIPTION": "将手牌中一张成品牌本回合费用 -!M!。"
   },
   "zixiu:But": {
     "NAME": "但",
@@ -225,8 +225,8 @@
   },
   "zixiu:Immortal": {
     "NAME": "仙",
-    "DESCRIPTION": "消耗 。 消耗手牌中所有状态牌与诅咒牌。",
-    "UPGRADE_DESCRIPTION": "消耗手牌中所有状态牌与诅咒牌。"
+    "DESCRIPTION": "消耗 。 手牌中所有状态牌与诅咒牌一并 消耗 。",
+    "UPGRADE_DESCRIPTION": "手牌中所有状态牌与诅咒牌一并 消耗 。"
   },
   "zixiu:Trio": {
     "NAME": "三",
@@ -284,11 +284,11 @@
   },
   "zixiu:Mo": {
     "NAME": "末",
-    "DESCRIPTION": "造成 !D! 点伤害。本回合每拆解过一张牌，伤害 +!M!。"
+    "DESCRIPTION": "造成 !D! 点伤害。目标每失去 10% 生命，此牌伤害 +!M!。"
   },
   "zixiu:Wei": {
     "NAME": "未",
-    "DESCRIPTION": "从抽牌堆选择一张牌，免费打出两次，然后将其消耗。 消耗 。"
+    "DESCRIPTION": "从抽牌堆选择一张牌，免费打出两次；之后那张牌与这张牌都会 消耗 。"
   },
   "zixiu:Renew": {
     "NAME": "吐",

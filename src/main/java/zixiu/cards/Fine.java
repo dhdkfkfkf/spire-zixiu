@@ -18,16 +18,13 @@ public class Fine extends ZixiuCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        // magicNumber = 减费几张（1 → 升级 2 张），每张 -1 费
-        int left = this.magicNumber;
+        // magicNumber = 每张减多少费（1 → 升级 2）；只减一张成品牌
+        int discount = this.magicNumber;
         for (AbstractCard card : p.hand.group) {
-            if (left <= 0) {
-                break;
-            }
             if (CardComponents.glyphOf(card) != null && card.costForTurn > 0) {
-                card.costForTurn = Math.max(0, card.costForTurn - 1);
+                card.costForTurn = Math.max(0, card.costForTurn - discount);
                 card.isCostModifiedForTurn = true;
-                left--;
+                break;
             }
         }
     }
@@ -41,6 +38,7 @@ public class Fine extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
+            // 升级：一张 -1 -> 一张 -2
             upgradeMagicNumber(1);
         }
     }

@@ -11,22 +11,22 @@ import com.megacrit.cardcrawl.powers.DexterityPower;
 import zixiu.ZixiuMod;
 
 /**
- * 行：下回合获得 X 点敏捷，下回合结束时移除。
+ * 行：本回合获得的敏捷，到下回合开始时还回去。
  *
- * 用「见过几个回合开始」来计时，不依赖回合结束各钩子的先后顺序：
- * 在回合 N 结束时施加，回合 N+1 开始时计数到 1，回合 N+1 结束时移除。
+ * 施加的当下敏捷就生效；{@code atStartOfTurn} 只在「下一个回合开始」跑一次，
+ * 到那时按 amount 扣回敏捷并把自己摘掉（用一个 spent 标记保证只结算一次，
+ * 避免之前「减一次之后既不结束也不再减」的老问题）。
  */
 public class XingPower extends AbstractPower {
 
     public static final String POWER_ID = ZixiuMod.makeID("XingPower");
 
-    private int turnsSeen = 0;
+    private boolean spent;
 
     public XingPower(AbstractCreature owner) {
         this.name = "行";
         this.ID = POWER_ID;
         this.owner = owner;
-        // amount = 这次给的敏捷；叠一份就 +敏捷（两条「行」就是 +10）
         this.amount = 1;
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
@@ -34,6 +34,7 @@ public class XingPower extends AbstractPower {
         updateDescription();
     }
 
+    /** 立刻 +dexterity 点敏捷，并挂一个「下回合开始收回」的标记。 */
     public static void apply(AbstractPlayer player, int dexterity) {
         AbstractDungeon.actionManager.addToBottom(
                 new ApplyPowerAction(player, player, new DexterityPower(player, dexterity), dexterity));
@@ -43,19 +44,15 @@ public class XingPower extends AbstractPower {
 
     @Override
     public void updateDescription() {
-        this.description = "下回合获得 " + this.amount + " 点敏捷，下回合结束时失去。";
+        this.description = "本回合获得 " + this.amount + " 点敏捷，下回合开始时失去。";
     }
 
     @Override
     public void atStartOfTurn() {
-        this.turnsSeen++;
-    }
-
-    @Override
-    public void atEndOfRound() {
-        if (this.turnsSeen < 1) {
+        if (this.spent) {
             return;
         }
+        this.spent = true;
         this.flash();
         addToBot(new ReducePowerAction(this.owner, this.owner, DexterityPower.POWER_ID, this.amount));
         addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, POWER_ID));

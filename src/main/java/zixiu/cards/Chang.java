@@ -16,8 +16,8 @@ public class Chang extends ZixiuCard {
 
     public Chang() {
         super(ID, 0, CardType.SKILL, CardRarity.UNCOMMON, CardTarget.ALL_ENEMY);
-        this.baseMagicNumber = 2;
-        this.magicNumber = 2;
+        this.baseMagicNumber = 1;
+        this.magicNumber = 1;
     }
 
     @Override
