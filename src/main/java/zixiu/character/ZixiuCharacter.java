@@ -177,11 +177,14 @@ public class ZixiuCharacter extends CustomPlayer {
             "zixiu/images/scenes/yanqiu3.png"
     };
 
-    /** 三格画面下的文字。 */
-    private static final String[] CUTSCENE_TEXTS = {
-            "最后一笔落下时，塔顶的风忽然停了。",
-            "他把砚里的残墨洗净，像洗掉这一路拆开又合上的字。",
-            "然后他提起笔，在新的纸上写下第一个字。"
+    /**
+     * 每格的音效（CutscenePanel 的第二个参数就是音效 key，不是文本）。
+     * 全是纸张系：轻纸声 → 纸页翻飞 → 书页落下。
+     */
+    private static final String[] CUTSCENE_SFX = {
+            "CARD_SELECT",
+            "CARD_DRAW_8",
+            "CARD_OBTAIN"
     };
 
     @Override
@@ -202,7 +205,7 @@ public class ZixiuCharacter extends CustomPlayer {
                 new java.util.ArrayList<com.megacrit.cardcrawl.cutscenes.CutscenePanel>();
         for (int i = 0; i < CUTSCENE_PANELS.length; i++) {
             panels.add(new com.megacrit.cardcrawl.cutscenes.CutscenePanel(
-                    CUTSCENE_PANELS[i], CUTSCENE_TEXTS[i]));
+                    CUTSCENE_PANELS[i], CUTSCENE_SFX[i]));
         }
         return panels;
     }

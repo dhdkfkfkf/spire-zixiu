@@ -13,7 +13,6 @@ public class Lucky extends ZixiuCard {
     public static final String ID = "Lucky";
     public static final String GLYPH = "吉";
 
-    private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
 
     public Lucky() {
         super(ID, 0, CardType.SKILL, CardRarity.COMMON, CardTarget.SELF);
@@ -24,7 +23,7 @@ public class Lucky extends ZixiuCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         for (int i = 0; i < this.magicNumber; i++) {
-            Component component = POOL[AbstractDungeon.cardRandomRng.random(POOL.length - 1)];
+            Component component = Component.values()[AbstractDungeon.cardRandomRng.random(Component.values().length - 1)];
             AbstractCard card = CardComponents.createComponent(component);
             if (card != null) {
                 AbstractDungeon.actionManager.addToBottom(new MakeTempCardInHandAction(card, false));

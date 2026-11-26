@@ -140,6 +140,24 @@ public final class CardComponents {
         return FACTORY.containsKey(glyph);
     }
 
+    /** 所有实现了的成品牌字形——「随机成品牌」的奖励用这个池子，别另写死小表。 */
+    public static java.util.List<String> implementedGlyphs() {
+        return new java.util.ArrayList<String>(FACTORY.keySet());
+    }
+
+    /** 按稀有度筛出实现了的成品牌字形（各建一次实例只为读 rarity）。 */
+    public static java.util.List<String> glyphsOfRarity(AbstractCard.CardRarity rarity) {
+        java.util.List<String> out = new java.util.ArrayList<String>();
+        for (java.util.Map.Entry<String, java.util.function.Supplier<AbstractCard>> e
+                : FACTORY.entrySet()) {
+            AbstractCard card = e.getValue().get();
+            if (card != null && card.rarity == rarity) {
+                out.add(e.getKey());
+            }
+        }
+        return out;
+    }
+
     public static AbstractCard createComponent(Component component) {
         switch (component) {
             case HUO:

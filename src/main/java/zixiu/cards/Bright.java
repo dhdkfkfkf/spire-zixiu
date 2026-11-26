@@ -14,8 +14,8 @@ public class Bright extends ZixiuCard {
 
     public Bright() {
         super(ID, 1, CardType.SKILL, CardRarity.COMMON, CardTarget.ENEMY);
-        this.baseMagicNumber = 2;
-        this.magicNumber = 2;
+        this.baseMagicNumber = 1;
+        this.magicNumber = 1;
     }
 
     @Override

@@ -30,8 +30,6 @@ public class CanJuan extends AbstractImageEvent {
     private static final String[] D = STRINGS != null && STRINGS.DESCRIPTIONS != null
             && STRINGS.DESCRIPTIONS.length >= 8 ? STRINGS.DESCRIPTIONS : FALLBACK;
 
-    private static final String[] RARE = {"焚", "灭", "淡", "桂", "晶", "杳"};
-    private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
 
     private int screen = 0;
 
@@ -52,7 +50,13 @@ public class CanJuan extends AbstractImageEvent {
 
         String result;
         if (buttonPressed == 0) {
-            AbstractCard card = CardComponents.create(RARE[AbstractDungeon.cardRandomRng.random(RARE.length - 1)]);
+            java.util.List<String> pool = CardComponents.glyphsOfRarity(
+                    AbstractCard.CardRarity.RARE);
+            if (pool.isEmpty()) {
+                pool = CardComponents.implementedGlyphs();
+            }
+            AbstractCard card = CardComponents.create(
+                    pool.get(AbstractDungeon.cardRandomRng.random(pool.size() - 1)));
             if (card != null) {
                 AbstractDungeon.player.masterDeck.addToTop(card);
             }
@@ -60,7 +64,7 @@ public class CanJuan extends AbstractImageEvent {
             result = D[4];
         } else if (buttonPressed == 1) {
             for (int i = 0; i < 2; i++) {
-                Component component = POOL[AbstractDungeon.cardRandomRng.random(POOL.length - 1)];
+                Component component = Component.values()[AbstractDungeon.cardRandomRng.random(Component.values().length - 1)];
                 AbstractCard card = CardComponents.createComponent(component);
                 if (card != null) {
                     AbstractDungeon.player.masterDeck.addToTop(card);

@@ -12,7 +12,6 @@ import zixiu.lexicon.Component;
 
 public class Ink extends AbstractPotion {
 
-    private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
 
     public Ink() {
         super("墨汁", ZixiuMod.makeID("Ink"), PotionRarity.COMMON, PotionSize.S, PotionColor.BLUE);
@@ -23,7 +22,7 @@ public class Ink extends AbstractPotion {
     @Override
     public void use(AbstractCreature target) {
         for (int i = 0; i < 2; i++) {
-            Component component = POOL[AbstractDungeon.cardRandomRng.random(POOL.length - 1)];
+            Component component = Component.values()[AbstractDungeon.cardRandomRng.random(Component.values().length - 1)];
             AbstractCard card = CardComponents.createComponent(component);
             if (card != null) {
                 addToBot(new MakeTempCardInHandAction(card, false));

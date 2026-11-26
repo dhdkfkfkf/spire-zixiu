@@ -23,11 +23,16 @@ public class XingPower extends AbstractPower {
 
     private boolean spent;
 
-    public XingPower(AbstractCreature owner) {
+    /**
+     * @param dexterity 这次加了多少敏捷就记多少——收回时按 amount 扣。
+     *                  原版对「新建实例」不会走 stackPower，所以 amount 必须在这里给对，
+     *                  否则只会收回 1 点（求解器 S317 抓到的就是这个）。
+     */
+    public XingPower(AbstractCreature owner, int dexterity) {
         this.name = "行";
         this.ID = POWER_ID;
         this.owner = owner;
-        this.amount = 1;
+        this.amount = Math.max(1, dexterity);
         this.type = PowerType.BUFF;
         this.isTurnBased = false;
         PowerIcons.apply(this, "Xing");
@@ -39,7 +44,7 @@ public class XingPower extends AbstractPower {
         AbstractDungeon.actionManager.addToBottom(
                 new ApplyPowerAction(player, player, new DexterityPower(player, dexterity), dexterity));
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(player, player, new XingPower(player), dexterity));
+                new ApplyPowerAction(player, player, new XingPower(player, dexterity), dexterity));
     }
 
     @Override

@@ -30,8 +30,6 @@ public class CuoZi extends AbstractImageEvent {
     private static final String[] D = STRINGS != null && STRINGS.DESCRIPTIONS != null
             && STRINGS.DESCRIPTIONS.length >= 8 ? STRINGS.DESCRIPTIONS : FALLBACK;
 
-    private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
-    private static final String[] WORDS = {"呆", "杏", "困", "束"};
 
     private int screen = 0;
 
@@ -53,7 +51,7 @@ public class CuoZi extends AbstractImageEvent {
         String result;
         if (buttonPressed == 0) {
             for (int i = 0; i < 2; i++) {
-                Component component = POOL[AbstractDungeon.cardRandomRng.random(POOL.length - 1)];
+                Component component = Component.values()[AbstractDungeon.cardRandomRng.random(Component.values().length - 1)];
                 AbstractCard card = CardComponents.createComponent(component);
                 if (card != null) {
                     AbstractDungeon.player.masterDeck.addToTop(card);
@@ -61,7 +59,9 @@ public class CuoZi extends AbstractImageEvent {
             }
             result = D[4];
         } else if (buttonPressed == 1) {
-            AbstractCard card = CardComponents.create(WORDS[AbstractDungeon.cardRandomRng.random(WORDS.length - 1)]);
+            java.util.List<String> pool = CardComponents.implementedGlyphs();
+            AbstractCard card = CardComponents.create(
+                    pool.get(AbstractDungeon.cardRandomRng.random(pool.size() - 1)));
             if (card != null) {
                 AbstractDungeon.player.masterDeck.addToTop(card);
             }

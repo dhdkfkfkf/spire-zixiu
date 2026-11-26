@@ -16,7 +16,6 @@ public class JiuShuQian extends ZixiuRelic {
 
     public static final String ID = "JiuShuQian";
 
-    private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
 
     public JiuShuQian() {
         super(ZixiuMod.makeID(ID), "jiushuqian.png", RelicTier.COMMON, LandingSound.FLAT);
@@ -34,7 +33,7 @@ public class JiuShuQian extends ZixiuRelic {
                 return;
             }
         }
-        Component component = POOL[AbstractDungeon.cardRandomRng.random(POOL.length - 1)];
+        Component component = Component.values()[AbstractDungeon.cardRandomRng.random(Component.values().length - 1)];
         AbstractCard card = CardComponents.createComponent(component);
         if (card != null) {
             this.flash();

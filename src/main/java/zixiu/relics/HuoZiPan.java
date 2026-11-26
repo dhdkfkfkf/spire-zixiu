@@ -15,7 +15,6 @@ public class HuoZiPan extends ZixiuRelic {
 
     public static final String ID = "HuoZiPan";
 
-    private static final Component[] POOL = {Component.REN, Component.KOU, Component.MU, Component.HUO};
 
     public HuoZiPan() {
         super(ZixiuMod.makeID(ID), "huozipan.png", RelicTier.RARE, LandingSound.FLAT);
@@ -28,7 +27,7 @@ public class HuoZiPan extends ZixiuRelic {
 
     @Override
     public void atTurnStartPostDraw() {
-        Component component = POOL[AbstractDungeon.cardRandomRng.random(POOL.length - 1)];
+        Component component = Component.values()[AbstractDungeon.cardRandomRng.random(Component.values().length - 1)];
         AbstractCard card = CardComponents.createComponent(component);
         if (card != null) {
             this.flash();

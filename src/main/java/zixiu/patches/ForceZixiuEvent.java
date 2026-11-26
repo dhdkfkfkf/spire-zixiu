@@ -30,15 +30,10 @@ public class ForceZixiuEvent {
 
     /** 这一幕已经劫持过没有（1~3 幕各一次）。 */
     private static int hijackedAct = -1;
-    /** 这一幕已经进过几个事件房（用来让劫持别总砸在第一个房间上）。 */
-    private static int roomsThisAct;
-    private static int roomsAct = -1;
 
     /** 新开一局时清空。 */
     public static void resetRun() {
         hijackedAct = -1;
-        roomsThisAct = 0;
-        roomsAct = -1;
     }
 
     @SpirePrefixPatch
@@ -55,22 +50,8 @@ public class ForceZixiuEvent {
             return SpireReturn.Continue();
         }
 
-        // 这一幕第几个事件房
-        if (roomsAct != act) {
-            roomsAct = act;
-            roomsThisAct = 0;
-        }
-        roomsThisAct++;
-
-        // 别总砸在第一个事件房上：第一个房间只有一半概率，第二个房间必定触发。
-        // （圣主其实也是「条件满足就劫持」，实际效果就是砸在当幕第一个符合条件的事件房，
-        //   这里稍微放缓一点，读起来没那么生硬。）
-        if (roomsThisAct == 1 && !rng.randomBoolean(0.5F)) {
-            logger.info("[zixiu] event hijack skipped first room (act=" + act + ")，下一个事件房再试");
-            return SpireReturn.Continue();
-        }
         hijackedAct = act;
-        logger.info("[zixiu] event hijack -> JiuZiBei (act=" + act + ", room=" + roomsThisAct + ")");
+        logger.info("[zixiu] event hijack -> JiuZiBei (act=" + act + ")");
         return SpireReturn.Return(new JiuZiBei());
     }
 }

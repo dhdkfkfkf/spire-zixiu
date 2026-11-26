@@ -9,7 +9,8 @@
   },
   "zixiu:Huo": {
     "NAME": "火",
-    "DESCRIPTION": "造成 !D! 点伤害。"
+    "DESCRIPTION": "造成 !D! 点伤害。",
+    "UPGRADE_DESCRIPTION": "造成 !D! 点伤害，施加 1 层 zixiu:灼烧 。"
   },
   "zixiu:Mu": {
     "NAME": "木",
@@ -45,7 +46,8 @@
   },
   "zixiu:Ri": {
     "NAME": "日",
-    "DESCRIPTION": "施加 !M! 层 zixiu:曝光 。"
+    "DESCRIPTION": "造成 !D! 点伤害。",
+    "UPGRADE_DESCRIPTION": "造成 !D! 点伤害，施加 1 层 zixiu:曝光 。"
   },
   "zixiu:Dai": {
     "NAME": "呆",
