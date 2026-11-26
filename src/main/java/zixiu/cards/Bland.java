@@ -1,47 +1,53 @@
 package zixiu.cards;
 
-import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
-import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
-import com.megacrit.cardcrawl.powers.WeakPower;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 淡：看淡了就不受影响。
+ *
+ * <p>移除自身所有负面状态；升级后再移除所有敌人身上的正面状态。费用固定 2。
+ */
 public class Bland extends ZixiuCard {
 
     public static final String ID = "Bland";
     public static final String GLYPH = "淡";
 
     public Bland() {
-        super(ID, 1, CardType.SKILL, CardRarity.RARE, CardTarget.ALL);
-        this.baseMagicNumber = 2;
-        this.magicNumber = 2;
+        super(ID, 2, CardType.SKILL, CardRarity.RARE, CardTarget.ALL);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        List<String> debuffs = new ArrayList<String>();
-        for (AbstractPower power : p.powers) {
-            if (power.type == AbstractPower.PowerType.DEBUFF) {
-                debuffs.add(power.ID);
+        removePowers(p, AbstractPower.PowerType.DEBUFF);
+        if (this.upgraded) {
+            for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
+                if (!monster.isDeadOrEscaped()) {
+                    removePowers(monster, AbstractPower.PowerType.BUFF);
+                }
             }
         }
-        for (String id : debuffs) {
-            AbstractDungeon.actionManager.addToBottom(new RemoveSpecificPowerAction(p, p, id));
-        }
-        for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
-            if (!monster.isDeadOrEscaped()) {
-                AbstractDungeon.actionManager.addToBottom(new ApplyPowerAction(
-                        monster, p, new WeakPower(monster, this.magicNumber, false), this.magicNumber));
+    }
+
+    private void removePowers(com.megacrit.cardcrawl.core.AbstractCreature target,
+                              AbstractPower.PowerType type) {
+        List<String> ids = new ArrayList<String>();
+        for (AbstractPower power : target.powers) {
+            if (power.type == type) {
+                ids.add(power.ID);
             }
         }
-        AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, 1));
+        for (String id : ids) {
+            AbstractDungeon.actionManager.addToBottom(
+                    new RemoveSpecificPowerAction(target, target, id));
+        }
     }
 
     @Override
@@ -53,7 +59,11 @@ public class Bland extends ZixiuCard {
     public void upgrade() {
         if (!this.upgraded) {
             upgradeName();
-            upgradeMagicNumber(1);
+            String upgradeDesc = strings(ID).UPGRADE_DESCRIPTION;
+            if (upgradeDesc != null) {
+                this.rawDescription = upgradeDesc;
+                initializeDescription();
+            }
         }
     }
 }

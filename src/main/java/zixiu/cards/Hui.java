@@ -8,7 +8,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
 /**
- * 回：口口相还，牌也回流。
+ * 回：口口相还，旧牌出去，新牌进来（原「吐」的效果）。
  */
 public class Hui extends ZixiuCard {
 
@@ -23,8 +23,8 @@ public class Hui extends ZixiuCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, this.magicNumber));
         AbstractDungeon.actionManager.addToBottom(new DiscardAction(p, p, 1, false));
+        AbstractDungeon.actionManager.addToBottom(new DrawCardAction(p, this.magicNumber));
     }
 
     @Override

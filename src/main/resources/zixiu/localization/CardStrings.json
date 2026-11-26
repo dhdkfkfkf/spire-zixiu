@@ -173,7 +173,8 @@
   },
   "zixiu:Bland": {
     "NAME": "淡",
-    "DESCRIPTION": "移除自身所有负面状态；对所有敌人施加 !M! 层 虚弱 ，抽 1 张牌。"
+    "DESCRIPTION": "移除自身所有负面状态。",
+    "UPGRADE_DESCRIPTION": "移除自身所有负面状态，并移除所有敌人的正面状态。"
   },
   "zixiu:Osmanthus": {
     "NAME": "桂",
@@ -274,7 +275,7 @@
   },
   "zixiu:Hui": {
     "NAME": "回",
-    "DESCRIPTION": "抽 !M! 张牌，然后弃 1 张牌。"
+    "DESCRIPTION": "弃 1 张牌，然后抽 !M! 张牌。"
   },
   "zixiu:Lu": {
     "NAME": "吕",
@@ -294,7 +295,7 @@
   },
   "zixiu:Renew": {
     "NAME": "吐",
-    "DESCRIPTION": "弃 1 张牌，然后抽 !M! 张牌。"
+    "DESCRIPTION": "每有 !M! 金币，对目标造成 1 点伤害。"
   },
   "zixiu:Peng": {
     "NAME": "朋",
