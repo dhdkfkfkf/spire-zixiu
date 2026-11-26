@@ -72,6 +72,12 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 3. 复制 jar 到工作区、改 `changeNote`，双击 `upload.cmd`。
 4. `git tag v<版本> && git push --tags`，在 GitHub Release 附上 `mod/zixiu.jar` 和更新说明。
 
+## 1.0.18 更新说明（changeNote）
+
+```
+1.0.18：修正九字真言·言灵的字表——第八、九字「前」「行」之前误写成「在」「前」；纯文字修正，效果与触发逻辑不变。
+```
+
 ## 1.0.17 更新说明（changeNote）
 
 ```
@@ -131,7 +137,7 @@ java -cp tools/out CropSquare src/main/resources/zixiu/images/charSelect/portrai
 选角背景、战斗立绘、死亡图、四张通关分镜（一张背景 + 三格画面）。
 
 ■ 状态
-1.0.17，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
+1.0.18，战斗验证初步完成：可正常从头打到结局，数值仍在调整。欢迎反馈。
 
 适配游戏版本 12-18-2022（最终版），需要 ModTheSpire / BaseMod / StSLib。
 ```
